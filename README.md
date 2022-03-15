@@ -51,12 +51,58 @@
 	- Paladin -> 이동 및 공격, 회전 블렌딩 적용해야함(먼저 이동,공격 플레이어 움직임 구현 후 하는것을 추천)
 
 	1.2
-	- Archer -> 활  추가
-	- > 아처 애니메이션 쓸것들 뺀 후, Idle에 활 위치 적용시키고, 애니메이션에 활 위치값 맞추기 
-		-> Standing Block 부터 하면됨
+	- Archer -> 이동 및 공격, 회전 블렌딩 적용해야함(먼저 이동,공격 플레이어 움직임 구현 후 하는것을 추천)
+	
+	1.3
+	- 현재 PlayerController 작성 후 , StaticData 작성중에 있음
 
 ------------------
 2. 몬스터
 	2.1 Animator override Controller 사용할것
 	- 참고 : https://bbangdeveloper.tistory.com/entry/Animation-Animator-Override-Controller
+
+-------------------
+3. 데이터
+
+★ 밑에 데이터 뭘 넣어야 하는지 짜고 있음
+참고 - https://github.com/mikito/unity-excel-importer
+
+	3.1 몬스터와 플레이어 모두 사용하는 데이터
+
+	인덱스
+	이름
+	캐릭터 타입
+	공격력
+	방어력
+	최대체력
+	캐릭터 타입
+	공격 타입
+	이동속도
+	리소스경로
+
+	3.2 플레이어만 가지고 있는 데이터
+
+		3.2.1 변동하지 않는 데이터
+		마나
+		스테미너
+
+		3.2.2 변동하는 데이터 (GrowthData)
+		레벨
+		경험치, 최대 경험치
+		체력, 최대 체력
+		공격력
+		방어력
+
+	3.3 몬스터만 가지고 있는 데이터
+
+	드롭경험치
+	드롭아이템
+	생성지역
+	
+---------------
+4. 애니메이션 블랜딩
+
+★ 데이터 설정 후, 아바타 마스크를 이용하여 애니메이션을 블랜딩 시킬것임
+참조 - https://www.youtube.com/watch?v=BStXjU-mJvk
+참조 - 책
 
