@@ -29,3 +29,9 @@ public class UsePlayerData : PlayerData
 
     }
 }
+
+[Serializable]
+public class PlayerDataI
+{
+    public UsePlayerData[] usePlayers = new UsePlayerData[5];
+}
