@@ -66,9 +66,12 @@
 
 작성한 데이터를 리스트 형태로 넣어 빼서 쓸 수 있도록 할것
 json 읽는 코드 작성하여 게임 시작 시, 값에 넣도록 설정할 것임(GameManager에 데이터 삽입부 작성할 것임) 
-LitJson으로 작성중.. ★
 
-참고 - https://m.blog.naver.com/PostView.naver?isHttpsRedirect=true&blogId=pxkey&logNo=221302704547
+LitJson은 하나하나 따로 읽을 수 있어서 다수의 값을 찾을때 번거로움,
+JsonUtiliy는 json이 배열일 경우 값을 못찾음,
+그래서 NewtonSoft.json 로 사용하고 있음@@@@@ 
+
+참고 - https://wergia.tistory.com/163
 
 	3.1 몬스터와 플레이어 모두 사용하는 데이터
 
