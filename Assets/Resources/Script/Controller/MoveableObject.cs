@@ -7,8 +7,9 @@ using UnityEngine;
 /// </summary>
 public class MoveableObject : MonoBehaviour
 {
-    // 총괄 데이터
 
+    // 캐릭터 상태
+    public Define.State State;
 
     // 캐릭터 콜라이더
     protected Collider coll;

@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class PlayerContoller : MoveableObject
 {
-    
+    public UsePlayerData playerData;
+
     protected override void Awake()
     {
         base.Awake();
