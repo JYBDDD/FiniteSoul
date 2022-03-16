@@ -65,9 +65,10 @@
 3. 데이터
 
 작성한 데이터를 리스트 형태로 넣어 빼서 쓸 수 있도록 할것
-json 읽는 코드 작성하여 게임 시작 시, 값에 넣도록 설정할 것임(GameManager에 데이터 삽입부 작성할 것임) ★
+json 읽는 코드 작성하여 게임 시작 시, 값에 넣도록 설정할 것임(GameManager에 데이터 삽입부 작성할 것임) 
+LitJson으로 작성중.. ★
 
-참고 - https://github.com/mikito/unity-excel-importer
+참고 - https://m.blog.naver.com/PostView.naver?isHttpsRedirect=true&blogId=pxkey&logNo=221302704547
 
 	3.1 몬스터와 플레이어 모두 사용하는 데이터
 
