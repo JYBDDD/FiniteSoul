@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
-using Newtonsoft.Json;
 using System.Text;
 
 public class GameManager : Singleton<GameManager>
@@ -29,7 +28,7 @@ public class GameManager : Singleton<GameManager>
         // 플레이어 데이터
         TextAsset textAsset = Resources.Load<TextAsset>("Document/Json/Player");
 
-        // TODO jsonUtility는 배열일시 못가져옴,
+        // jsonUtility는 배열일 시 못가져옴,
         // Litjson은 값을 따로따로 찾는 것이기때문에 값을 넣을 수는 있지만, 한꺼번에 넣기가 번거로움,
 
 
@@ -43,17 +42,6 @@ public class GameManager : Singleton<GameManager>
 
     //  그냥 엑셀 데이터를 json으로 바꾸는부분부터 다시 해야될듯 싶다
     // 엑셀 데이터를 json 배열로 바꿀수 있는것으로 작성해야할듯 TODO
-
-    /*private T LoadJsonFile<T>(string fileName)
-    {
-        FileStream fileStream = new FileStream(string.Format("{0}/{1}.json", Application.dataPath + "/Resources/Document/Json/", fileName),FileMode.Open);
-        byte[] data = new byte[fileStream.Length];
-        fileStream.Read(data, 0, data.Length);
-        fileStream.Close();
-        string jsonData = Encoding.UTF8.GetString(data);
-        return JsonConvert.DeserializeObject<T>(jsonData);
-    }*/
-
 
     
 
