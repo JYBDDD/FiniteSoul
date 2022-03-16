@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using LitJson;
 using System.IO;
+using Newtonsoft.Json;
+using System.Text;
 
 public class GameManager : Singleton<GameManager>
 {
@@ -28,8 +29,11 @@ public class GameManager : Singleton<GameManager>
         // 플레이어 데이터
         //var playerData = JsonConvertData<UsePlayerData>("Player");
         TextAsset textAsset = Resources.Load<TextAsset>("Document/Json/Player");
-        
-        // TODO jsonUtility는 배열일시 못가져옴, Litjson을 사용해야할듯
+
+        // TODO jsonUtility는 배열일시 못가져옴,
+        // Litjson은 값을 따로따로 찾는 것이기때문에 값을 넣을 수는 있지만, 한꺼번에 넣기가 번거로움,
+        FullData.playersData.Add(LoadJsonFile<UsePlayerData>("Player"));
+
 
         // 성장 데이터
 
@@ -38,14 +42,21 @@ public class GameManager : Singleton<GameManager>
         // 몬스터 데이터
     }
 
-    IEnumerator LoadJsonFile(string path)   // 여기 작성중 TODO
+    private T LoadJsonFile<T>(string fileName)
     {
-        string jsonStr = File.ReadAllText(Application.dataPath + $"/Resources/Document/Json/{path}");
-        JsonData jsonData = JsonMapper.ToObject(jsonStr);
-        //Parsing
+        TextAsset textAsset = Resources.Load<TextAsset>($"Document/Json/{fileName}.json");      // 경로가 틀린거 같은데 ?? TODO
+        string path = textAsset.ToString();
+        FileStream fileStream = new FileStream(path, FileMode.Open);
 
-        yield return null;
+        byte[] data = new byte[fileStream.Length];
+        fileStream.Read(data, 0, data.Length);
+        fileStream.Close();
+        string jsonData = Encoding.UTF8.GetString(data);
+        return JsonConvert.DeserializeObject<T>(jsonData);
     }
+
+
+    
 
     /*/// <summary>
     /// Json 데이터 변환

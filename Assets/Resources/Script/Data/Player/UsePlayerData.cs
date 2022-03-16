@@ -26,5 +26,6 @@ public class UsePlayerData : PlayerData
     public UsePlayerData(GrowthStatData growthStatData)
     {
         growthStat = growthStatData;
+
     }
 }
