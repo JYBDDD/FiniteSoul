@@ -13,3 +13,4 @@ public class FullDataCollection
     public List<GrowthStatData> growthsData;
     public List<UseMonsterData> monstersData;
 }
+

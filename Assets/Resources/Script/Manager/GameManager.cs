@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using System.Text;
+using Newtonsoft.Json;
 
 public class GameManager : Singleton<GameManager>
 {
@@ -18,15 +19,19 @@ public class GameManager : Singleton<GameManager>
     public static FullDataCollection FullData { get => Instance.fullData;}
     private FullDataCollection fullData = new FullDataCollection();
 
-
     #region 데이터 삽입 및 변환부
     /// <summary>
     /// FullDataCollection 에 데이터 삽입
     /// </summary>
     private void InsertDataSetting()
     {
+        Dictionary<int, UsePlayerData> usePlayerDic;
+        UsePlayerData[] arrPlayerData;
+
         // 플레이어 데이터
-        TextAsset textAsset = Resources.Load<TextAsset>("Document/Json/Player");
+        ParsingJsonData("Player");
+        Debug.Log(usePlayerDic.Count);      // 값 들어간것 같은데??? 이제 뺴기만 하면 될듯  TODO
+        
 
         // jsonUtility는 배열일 시 못가져옴,
         // Litjson은 값을 따로따로 찾는 것이기때문에 값을 넣을 수는 있지만, 한꺼번에 넣기가 번거로움,
@@ -38,11 +43,36 @@ public class GameManager : Singleton<GameManager>
 
 
         // 몬스터 데이터
+
+        void ParsingJsonData(string name)
+        {
+            string path = Path.Combine(Application.dataPath , $"Resources/Document/Json");
+
+            FileStream fileStream = new FileStream(string.Format("{0}/{1}.json", path, name), FileMode.Open);
+            byte[] data = new byte[fileStream.Length];
+            fileStream.Read(data, 0, data.Length);
+            fileStream.Close();
+            string jsonData = Encoding.UTF8.GetString(data);
+
+            arrPlayerData = JsonConvert.DeserializeObject<UsePlayerData[]>(jsonData);
+
+            usePlayerDic = new Dictionary<int, UsePlayerData>();
+
+            foreach(UsePlayerData pData in arrPlayerData)
+            {
+                usePlayerDic.Add(pData.index, pData);
+            }
+
+
+
+
+
+
+            //return JsonConvert.DeserializeObject<T>(jsonData);      // 지금 json 값이 배열이라 역직렬화 할수 없다고 나옴, 배열 아니면 잘됨
+        }
     }
 
-    //  그냥 엑셀 데이터를 json으로 바꾸는부분부터 다시 해야될듯 싶다
-    // 엑셀 데이터를 json 배열로 바꿀수 있는것으로 작성해야할듯 TODO
-
+    
     
 
     /*/// <summary>
