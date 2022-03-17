@@ -72,6 +72,7 @@ JsonUtiliy는 json이 배열일 경우 값을 못찾음,
 그래서 NewtonSoft.json 로 사용하고 있음@@@@@ 
 
 참고 - https://wergia.tistory.com/163
+참고 - https://gamekw9154.tistory.com/24
 
 	3.1 몬스터와 플레이어 모두 사용하는 데이터
 
