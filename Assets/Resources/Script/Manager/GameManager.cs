@@ -58,12 +58,14 @@ public class GameManager : Singleton<GameManager>
 
             usePlayerDic = new Dictionary<int, UsePlayerData>();
 
+            int i = 0;
             foreach(UsePlayerData pData in arrPlayerData)
             {
-                usePlayerDic.Add(pData.index, pData);
+                usePlayerDic.Add(i, pData);
+                ++i;
             }
 
-
+            // 플레이어일시 해당 딕셔너리 값을 풀데이터 리스트 값에 넣어주기 -> 성장스텟도 똑같이 TODO
 
 
 
