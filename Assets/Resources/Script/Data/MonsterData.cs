@@ -15,11 +15,6 @@ public class MonsterData : StaticData
     public string name;
 
     /// <summary>
-    /// 캐릭터 타입
-    /// </summary>
-    public Define.CharacterType characterType;
-
-    /// <summary>
     /// 공격 타입
     /// </summary>
     public Define.AtkType atkType;

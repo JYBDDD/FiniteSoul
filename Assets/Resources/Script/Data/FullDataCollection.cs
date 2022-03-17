@@ -9,8 +9,8 @@ using UnityEngine;
 [Serializable]
 public class FullDataCollection
 {
-    public List<UsePlayerData> playersData;
-    public List<GrowthStatData> growthsData;
-    public List<UseMonsterData> monstersData;
+    public List<UsePlayerData> playersData = new List<UsePlayerData>();
+    public List<GrowthStatData> growthsData = new List<GrowthStatData>();
+    public List<UseMonsterData> monstersData = new List<UseMonsterData>();
 }
 
