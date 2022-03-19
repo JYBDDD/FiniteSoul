@@ -7,20 +7,6 @@ using UnityEngine;
 /// </summary>
 public class CameraController : MonoBehaviour
 {
-    float angle;
-    Vector2 target, mouse;  // 필요없음 지워도 됨 TODO
-
-    private void Update()
-    {
-        
-    }
-
-    private void CameraRotation()
-    {
-        // 카메라가 바라보는 목표 -> 마우스 위치 TODO
-
-        transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        angle = Mathf.Atan2(mouse.y - target.y, mouse.x - target.x) * Mathf.Rad2Deg;
-        this.transform.rotation = Quaternion.AngleAxis(angle - 90, Vector3.forward);
-    }
+    // 플레이어 현재 위치보다 0.4초 정도 늦게 따라가도록 하기 TODO
+    // PlayerController PlayerLookAtMouse() 부터 작업하기 TODO
 }

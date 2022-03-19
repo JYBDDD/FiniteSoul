@@ -16,9 +16,6 @@ public class PlayerController : MoveableObject
     {
         Initialize();
 
-        // 시작 시 플레이어 자식에 메인카메라가 존재하지 않는다면 메인카메라를 넣어줄 것 TODO
-        //  -> 현재 임시적으로 팔라딘에게 넣어줌
-
         InputManager.Instance.KeyAction += Move;
         InputManager.Instance.KeyAction += Jump;
     }
@@ -28,6 +25,8 @@ public class PlayerController : MoveableObject
     /// </summary>
     public virtual void Update()    // FSM 을 PlayerController 와 MonsterController 가 각각 가지고 있도록 나눌 것임
     {
+        PlayerLookAtMouse();
+
         switch (State)
         {
             case Define.State.Idle:
@@ -123,6 +122,15 @@ public class PlayerController : MoveableObject
 
 
     #endregion
+
+    /// <summary>
+    /// 플레이어가 마우스위치를 바라보도록 하는 메서드
+    /// </summary>
+    protected void PlayerLookAtMouse()
+    {
+        // 마우스 월드좌표 받아오는 걸로 좌표 가져와서 여기에 넣어줘야 할듯 TODO
+        //transform.rotation = new Quaternion(transform.rotation.x, Input.mousePosition, transform.rotation.z, 0);
+    }
 
 
 }
