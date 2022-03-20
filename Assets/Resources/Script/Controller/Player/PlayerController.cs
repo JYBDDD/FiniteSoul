@@ -25,8 +25,6 @@ public class PlayerController : MoveableObject
     /// </summary>
     public virtual void Update()    // FSM 을 PlayerController 와 MonsterController 가 각각 가지고 있도록 나눌 것임
     {
-        PlayerLookAtMouse();
-
         switch (State)
         {
             case Define.State.Idle:
@@ -106,9 +104,9 @@ public class PlayerController : MoveableObject
         float floatX = Input.GetAxisRaw("Horizontal") * 3f;
         float floatZ = Input.GetAxisRaw("Vertical") * 3f;
 
-        Vector3 posVec = new Vector3(floatX, 0, floatZ).normalized * Time.deltaTime;
+        Vector3 posVec = new Vector3(floatX, 0, floatZ).normalized;
 
-        transform.Translate(posVec.x, 0, posVec.z);
+        transform.Translate(posVec * Time.deltaTime);
     }
 
     private void Jump()
@@ -123,13 +121,48 @@ public class PlayerController : MoveableObject
 
     #endregion
 
+
+    /*protected void PlayerLookAtMouse()
+    {
+
+
+        if (isBoolRay)
+        {
+            transform.LookAt(hit.point);
+            var tempRot = transform.eulerAngles;
+            tempRot.x = 0;
+            tempRot.z = 0;
+            transform.eulerAngles = tempRot;
+            // 천천히 돌아보도록 Lerp 넣기 TODO
+            
+        }
+    }*/
+
     /// <summary>
     /// 플레이어가 마우스위치를 바라보도록 하는 메서드
     /// </summary>
-    protected void PlayerLookAtMouse()
+    IEnumerator PlayerLookRotate()
     {
-        // 마우스 월드좌표 받아오는 걸로 좌표 가져와서 여기에 넣어줘야 할듯 TODO
-        //transform.rotation = new Quaternion(transform.rotation.x, Input.mousePosition, transform.rotation.z, 0);
+        float _time = 0;
+
+        RaycastHit hit;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        bool isBoolRay = Physics.Raycast(ray, out hit/*, mask*/);
+
+        while (_time < 0.5f)
+        {
+            _time += Time.deltaTime;
+            transform.LookAt(hit.point);
+            var tempRot = transform.eulerAngles;
+            tempRot.x = 0;
+            tempRot.z = 0;
+            transform.eulerAngles = tempRot;
+            // 돌리는 시간을 0.5초 정도로 주고 해당 시간만큼 Lerp로 0.1씩 돌리게 하면 될듯 TODO
+        }
+
+
+
+        yield return null;
     }
 
 
