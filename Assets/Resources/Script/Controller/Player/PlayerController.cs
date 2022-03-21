@@ -9,6 +9,9 @@ public class PlayerController : MoveableObject
 {
     public UsePlayerData playerData;
 
+    // 플레이어가 바라보는 방향값을 담고 있는 RayCastHit
+    RaycastHit GetRayHit;
+
     /// <summary>
     /// 플레이어들만 사용하는 Awake()
     /// </summary>
@@ -25,6 +28,8 @@ public class PlayerController : MoveableObject
     /// </summary>
     public virtual void Update()    // FSM 을 PlayerController 와 MonsterController 가 각각 가지고 있도록 나눌 것임
     {
+        PlayerLookRotate();
+
         switch (State)
         {
             case Define.State.Idle:
@@ -121,49 +126,42 @@ public class PlayerController : MoveableObject
 
     #endregion
 
-
-    /*protected void PlayerLookAtMouse()
-    {
-
-
-        if (isBoolRay)
-        {
-            transform.LookAt(hit.point);
-            var tempRot = transform.eulerAngles;
-            tempRot.x = 0;
-            tempRot.z = 0;
-            transform.eulerAngles = tempRot;
-            // 천천히 돌아보도록 Lerp 넣기 TODO
-            
-        }
-    }*/
-
     /// <summary>
     /// 플레이어가 마우스위치를 바라보도록 하는 메서드
     /// </summary>
-    IEnumerator PlayerLookRotate()
+    private void PlayerLookRotate()
     {
-        float _time = 0;
-
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         bool isBoolRay = Physics.Raycast(ray, out hit/*, mask*/);
 
-        while (_time < 0.5f)
+
+        if (isBoolRay)    // 마우스 위치가 변경되었다면 실행
         {
-            _time += Time.deltaTime;
-            transform.LookAt(hit.point);
+            GetRayHit = hit;
             var tempRot = transform.eulerAngles;
             tempRot.x = 0;
             tempRot.z = 0;
             transform.eulerAngles = tempRot;
-            // 돌리는 시간을 0.5초 정도로 주고 해당 시간만큼 Lerp로 0.1씩 돌리게 하면 될듯 TODO
+
+            // 방향 벡터
+            Vector3 dir = hit.transform.position - transform.position;
+            dir.y = 0;
+
+            // 방향 쿼터니언 값
+            Quaternion rot = Quaternion.LookRotation(dir.normalized);
+
+            // 방향 쿼터니언 값을 전달 TODO
+
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(GetRayHit.point), Time.deltaTime * 2f);
         }
-
-
-
-        yield return null;
     }
+
+    private void PPP()
+    {
+        
+    }
+
 
 
 }
