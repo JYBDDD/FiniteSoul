@@ -31,6 +31,7 @@ public static class Define
     {
         Idle,
         Walk,
+        Evasion,
         Running,
         Attack,
         Jump,

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,8 +10,7 @@ public class PlayerController : MoveableObject
 {
     public UsePlayerData playerData;
 
-    // 플레이어가 바라보는 방향값을 담고 있는 RayCastHit
-    RaycastHit GetRayHit;
+    Ray originRay = new Ray();
 
     /// <summary>
     /// 플레이어들만 사용하는 Awake()
@@ -30,66 +30,93 @@ public class PlayerController : MoveableObject
     {
         PlayerLookRotate();
 
+        if (!Input.anyKey)
+            State = Define.State.Idle;
+
+        if (Input.GetKey(KeyCode.Space))          // 회피
+            State = Define.State.Evasion;
+
+        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.W))      // 뛰기
+            State = Define.State.Running;
+
         switch (State)
         {
             case Define.State.Idle:
-                StartCoroutine(IdleState());
+                IdleState();
                 break;
             case Define.State.Walk:
-                StartCoroutine(WalkState());
+                WalkState();
+                break;
+            case Define.State.Evasion:
+                EvasionState();
                 break;
             case Define.State.Running:
-                StartCoroutine(RunningState());
+                RunningState();
                 break;
             case Define.State.Attack:
-                StartCoroutine(AttackState());
+                AttackState();
                 break;
             case Define.State.Jump:
-                StartCoroutine(JumpState());
+                JumpState();
                 break;
             case Define.State.Hurt:
-                StartCoroutine(HurtState());
+                HurtState();
                 break;
             case Define.State.Die:
-                StartCoroutine(DieState());
+                DieState();
                 break;
         }
     }
 
-    protected virtual IEnumerator IdleState()
-    {
 
-        yield return null;
+    // Paladin, Archer 공통으로 사용되는 부분만 작성되었음
+
+    protected virtual void IdleState()
+    {
+        anim.SetFloat("MoveX", Mathf.Lerp(anim.GetFloat("MoveX"), 0, Time.deltaTime * 2f));
+        anim.SetFloat("MoveZ", Mathf.Lerp(anim.GetFloat("MoveZ"), 0, Time.deltaTime * 2f));
     }
 
-    protected virtual IEnumerator WalkState()
+    protected virtual void WalkState()
     {
-        yield return null;
+        if (Input.GetKey(KeyCode.W))         // 전진키
+            anim.SetFloat("MoveZ", Mathf.Lerp(anim.GetFloat("MoveZ"), 1, Time.deltaTime * 4f));
+
+        if(Input.GetKey(KeyCode.S))                                     // 후진키
+            anim.SetFloat("MoveZ", Mathf.Lerp(anim.GetFloat("MoveZ"), -1, Time.deltaTime * 4f));
+
     }
 
-    protected virtual IEnumerator RunningState()
+    private void EvasionState()
     {
-        yield return null;
+        anim.Play("Evasion");
+        // 해당 애니메이션이 실행중일때 일시적으로 이동속도 * 2  TODO
     }
 
-    protected virtual IEnumerator AttackState()
+    protected virtual void RunningState()
     {
-        yield return null;
+        // 해당 애니메이션이 실행중일때 이동속도 * 2  TODO
+        anim.SetFloat("MoveZ", Mathf.Lerp(anim.GetFloat("MoveZ"), 2, Time.deltaTime * 4f));
     }
 
-    protected virtual IEnumerator JumpState()
+    protected virtual void AttackState()
     {
-        yield return null;
+       
     }
 
-    protected virtual IEnumerator HurtState()
+    protected virtual void JumpState()
     {
-        yield return null;
+        
     }
 
-    protected virtual IEnumerator DieState()
+    protected virtual void HurtState()
     {
-        yield return null;
+        
+    }
+
+    protected virtual void DieState()
+    {
+        
     }
 
     public override void Initialize()
@@ -112,6 +139,7 @@ public class PlayerController : MoveableObject
         Vector3 posVec = new Vector3(floatX, 0, floatZ).normalized;
 
         transform.Translate(posVec * Time.deltaTime);
+        State = Define.State.Walk;
     }
 
     private void Jump()
@@ -133,34 +161,24 @@ public class PlayerController : MoveableObject
     {
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        bool isBoolRay = Physics.Raycast(ray, out hit/*, mask*/);
 
-
-        if (isBoolRay)    // 마우스 위치가 변경되었다면 실행
+        if (ray.direction != originRay.direction)    // 마우스 위치가 변경되었다면 실행
         {
-            GetRayHit = hit;
+            originRay = ray;
+
+            Physics.Raycast(ray, out hit); 
+
             var tempRot = transform.eulerAngles;
             tempRot.x = 0;
             tempRot.z = 0;
             transform.eulerAngles = tempRot;
 
-            // 방향 벡터
-            Vector3 dir = hit.transform.position - transform.position;
-            dir.y = 0;
 
-            // 방향 쿼터니언 값
-            Quaternion rot = Quaternion.LookRotation(dir.normalized);
-
-            // 방향 쿼터니언 값을 전달 TODO
-
-            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(GetRayHit.point), Time.deltaTime * 2f);
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(hit.point), Time.deltaTime * 2f);
         }
     }
 
-    private void PPP()
-    {
-        
-    }
+
 
 
 
