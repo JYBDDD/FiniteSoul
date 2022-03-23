@@ -1,0 +1,12 @@
+[
+  {
+    "index": "1001",
+    "name": "FirstVillage",
+    "monsterIndex": "1001"
+  },
+  {
+    "index": "1002",
+    "name": "LastVillage",
+    "monsterIndex": "1002"
+  }
+]

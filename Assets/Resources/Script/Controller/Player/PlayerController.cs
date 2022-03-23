@@ -10,6 +10,7 @@ public class PlayerController : MoveableObject
 {
     public UsePlayerData playerData;
 
+    // 캐릭터가 바라보는 방향을 결정하는 Ray
     Ray originRay = new Ray();
 
     /// <summary>
@@ -28,16 +29,13 @@ public class PlayerController : MoveableObject
     /// </summary>
     public virtual void Update()    // FSM 을 PlayerController 와 MonsterController 가 각각 가지고 있도록 나눌 것임
     {
+        Debug.Log(State);
         PlayerLookRotate();
 
-        if (!Input.anyKey)
-            State = Define.State.Idle;
-
-        if (Input.GetKey(KeyCode.Space))          // 회피
-            State = Define.State.Evasion;
-
-        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.W))      // 뛰기
-            State = Define.State.Running;
+        if (!Input.GetKey(KeyCode.LeftShift))
+        {
+            anim.SetBool("RunBool", false);
+        }
 
         switch (State)
         {
@@ -54,7 +52,18 @@ public class PlayerController : MoveableObject
                 RunningState();
                 break;
             case Define.State.Attack:
-                AttackState();
+                if (playerData.atkType == Define.AtkType.Normal)    
+                {
+                    // 근접 공격이라면
+                    NormalAttackState();
+
+                }
+                else
+                {
+                    // 원거리 공격이라면
+                    ProjectileAttackState();
+
+                }
                 break;
             case Define.State.Jump:
                 JumpState();
@@ -73,35 +82,124 @@ public class PlayerController : MoveableObject
 
     protected virtual void IdleState()
     {
+        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))         // Walk
+        {
+            State = Define.State.Walk;
+            return;
+        }
+        if (Input.GetKey(KeyCode.Space))     // Evasion
+        {
+            anim.SetBool("Evasion", true);
+            State = Define.State.Evasion;
+            return;
+        }
+        if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.LeftShift))      // Running
+        {
+            State = Define.State.Running;
+            return;
+        }
+        if (Input.GetKey(KeyCode.Mouse0))    // Attack
+        {
+            anim.SetBool("Attack", true);
+            State = Define.State.Attack;
+            return;
+        }
+
         anim.SetFloat("MoveX", Mathf.Lerp(anim.GetFloat("MoveX"), 0, Time.deltaTime * 2f));
         anim.SetFloat("MoveZ", Mathf.Lerp(anim.GetFloat("MoveZ"), 0, Time.deltaTime * 2f));
+        State = Define.State.Idle;
     }
 
     protected virtual void WalkState()
     {
         if (Input.GetKey(KeyCode.W))         // 전진키
+        {
             anim.SetFloat("MoveZ", Mathf.Lerp(anim.GetFloat("MoveZ"), 1, Time.deltaTime * 4f));
-
+        }
         if(Input.GetKey(KeyCode.S))                                     // 후진키
+        {
             anim.SetFloat("MoveZ", Mathf.Lerp(anim.GetFloat("MoveZ"), -1, Time.deltaTime * 4f));
+        }
+        if(Input.GetKey(KeyCode.Space))     // Evasion;
+        {
+            anim.SetBool("Evasion", true);
+            State = Define.State.Evasion;
+            return;
+        }
+        if (!Input.anyKey)  // Idle
+        {
+            State = Define.State.Idle;
+            return;
+        }
+        if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.LeftShift))      // Running
+        {
+            State = Define.State.Running;
+            return;
+        }
+        if (Input.GetKey(KeyCode.Mouse0))    // Attack
+        {
+            anim.SetBool("Attack", true);
+            State = Define.State.Attack;
+            return;
+        }
 
+
+        State = Define.State.Walk;
     }
 
-    private void EvasionState()
+    protected virtual void EvasionState()
     {
-        anim.Play("Evasion");
         // 해당 애니메이션이 실행중일때 일시적으로 이동속도 * 2  TODO
+
+        if(!anim.GetBool("Evasion"))
+        {
+            State = Define.State.Idle;
+            return;
+        }
+
+        anim.SetBool("Evasion", true);
+        State = Define.State.Evasion;
     }
 
     protected virtual void RunningState()
     {
         // 해당 애니메이션이 실행중일때 이동속도 * 2  TODO
+
+        if(!Input.GetKey(KeyCode.LeftShift))
+        {
+            State = Define.State.Idle;
+            anim.SetBool("RunBool", false);
+            return;
+        }
+        if (Input.GetKey(KeyCode.Mouse0))    // Attack
+        {
+            anim.SetBool("Attack", true);
+            State = Define.State.Attack;
+            return;
+        }
+
+        anim.SetBool("RunBool", true);
         anim.SetFloat("MoveZ", Mathf.Lerp(anim.GetFloat("MoveZ"), 2, Time.deltaTime * 4f));
+        State = Define.State.Running;
     }
 
-    protected virtual void AttackState()
+    protected virtual void NormalAttackState()
     {
-       
+        if(!anim.GetBool("Attack"))
+        {
+            State = Define.State.Idle;
+            return;
+        }
+
+        anim.SetBool("Attack", true);
+        State = Define.State.Attack;
+    }
+
+    /// ------------------------------------------------------------  현재 FSM  NormalAttack 까지 구현 , 밑에 부분은 미구현 상태 TODO
+
+    protected virtual void ProjectileAttackState()
+    {
+
     }
 
     protected virtual void JumpState()
@@ -139,7 +237,6 @@ public class PlayerController : MoveableObject
         Vector3 posVec = new Vector3(floatX, 0, floatZ).normalized;
 
         transform.Translate(posVec * Time.deltaTime);
-        State = Define.State.Walk;
     }
 
     private void Jump()
@@ -166,7 +263,10 @@ public class PlayerController : MoveableObject
         {
             originRay = ray;
 
-            Physics.Raycast(ray, out hit); 
+            Physics.Raycast(ray, out hit);
+
+            if (hit.point == Vector3.zero)
+                return;
 
             var tempRot = transform.eulerAngles;
             tempRot.x = 0;
@@ -178,8 +278,19 @@ public class PlayerController : MoveableObject
         }
     }
 
-
-
-
-
+    /// <summary>
+    /// 회피 애니메이션에 들어가는 메서드
+    /// </summary>
+    private void AnimEvasionEnd()
+    {
+        anim.SetBool("Evasion", false);
+    }
+    /// <summary>
+    /// 공격 애니메이션에 들어가는 메서드
+    /// </summary>
+    /// <returns></returns>
+    private void AnimAttackEnd()
+    {
+        anim.SetBool("Attack", false);
+    }
 }

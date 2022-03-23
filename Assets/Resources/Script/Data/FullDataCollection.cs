@@ -12,5 +12,6 @@ public class FullDataCollection
     public List<UsePlayerData> playersData = new List<UsePlayerData>();
     public List<GrowthStatData> growthsData = new List<GrowthStatData>();
     public List<UseMonsterData> monstersData = new List<UseMonsterData>();
+    public List<StageData> stagesData = new List<StageData>();
 }
 

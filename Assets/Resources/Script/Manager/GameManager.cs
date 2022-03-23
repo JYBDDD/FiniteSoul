@@ -34,7 +34,11 @@ public class GameManager : Singleton<GameManager>
         GrowthStatData[] arrGrowthData;
         ParsingJsonData("GrowthStat");
 
-        // 몬스터 데이터
+        // 몬스터 데이터 삽입 추가 TODO
+
+        // 스테이지 데이터
+        StageData[] arrStageData;
+        ParsingJsonData("Stage");
 
         void ParsingJsonData(string name)
         {
@@ -64,10 +68,18 @@ public class GameManager : Singleton<GameManager>
                     FullData.growthsData.Add(arrGrowthData[i]);
                 }
             }
+            else if(name == "Stage" && FullData.stagesData.Count <= 0)
+            {
+                arrStageData = JsonConvert.DeserializeObject<StageData[]>(jsonData);
 
-            // 몬스터 데이터 삽입 추가 TODO
+                for (int i = 0; i < arrStageData.Length; ++i)
+                {
+                    FullData.stagesData.Add(arrStageData[i]);
+                }
+            }
+            
 
-            // 스테이지 데이터 삽입 추가 TODO
+            
 
         }
     }
