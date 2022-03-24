@@ -40,16 +40,6 @@ public class PlayerData : StaticData
     public float maxMana;
 
     /// <summary>
-    /// 공격력
-    /// </summary>
-    public float atk;
-
-    /// <summary>
-    /// 방어력
-    /// </summary>
-    public float def;
-
-    /// <summary>
     /// 이동 속도
     /// </summary>
     public float moveSpeed;

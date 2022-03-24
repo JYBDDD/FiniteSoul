@@ -1,0 +1,15 @@
+[
+  {
+    "index": "1001",
+    "level": "0",
+    "stageIndex": "1000",
+    "posX": "0",
+    "posY": "0",
+    "posZ": "0",
+    "rune": "0",
+    "raiseHp": "0",
+    "currentHp": "0",
+    "raiseAtk": "0",
+    "raiseDef": "0"
+  }
+]
