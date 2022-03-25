@@ -88,8 +88,6 @@
 
 1. 할 것    TODO
 
-	4.1. 1001 스테이지 생성 (씬 만들기)
-
 	4.2. StartSceneAdjust 
 		-> 새로하기 버튼 LoadScene("1001") 로 수정
 
