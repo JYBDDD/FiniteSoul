@@ -98,6 +98,7 @@
 
 	4.4. StageManager
 		-> 플레이어 생성	-> ResourceUtil.LoadSaveFile() 에서 데이터가져와서 넣어주기
+			-> PlayerManager 에 SetStat() 메서드 하나 만들어서 이어하기라면 휘발성데이터 붙여쓰기
 		-> 몬스터 생성	-> FullData.MonsterData 에서 ResourcePath 로 데이터 넣어주기
 		-> 워프(위치)  이건 넣을까 말까 고민중..
 
