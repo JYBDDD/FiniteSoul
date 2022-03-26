@@ -88,11 +88,12 @@
 
 1. 할 것    TODO
 
-	4.2. StartSceneAdjust 
-		-> 새로하기 버튼 LoadScene("1001") 로 수정
 
-	4.3. Build Setting
-		-> 씬 전환 시킬 (1001)씬 넣어줄 것
+	4.3 1001 씬에서 캐릭터 회전 재대로 다시 잡기
+		-> PlayerController 쪽 캐릭터 회전
+			-> Mouse 를 위로 올리면 카메라만 회전하도록하기
+			-> 밑으로 내리는건 최대 15까지만
+			- 참고 - https://mayquartet.tistory.com/44
 
 	4.4. StageManager
 		-> 플레이어 생성	-> ResourceUtil.LoadSaveFile() 에서 데이터가져와서 넣어주기
