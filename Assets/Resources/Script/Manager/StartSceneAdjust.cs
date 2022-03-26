@@ -50,7 +50,7 @@ public class StartSceneAdjust : MonoBehaviour
     public void NewButtonSet()
     {
         // 첫시작은 무조건 1001 스테이지에서 생성  (현재는 SampleScene) TODO
-        LoadingSceneAdjust.LoadScene("SampleScene");
+        LoadingSceneAdjust.LoadScene("1001");
     }
 
     /// <summary>
