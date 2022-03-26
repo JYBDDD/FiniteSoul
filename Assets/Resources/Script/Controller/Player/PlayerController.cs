@@ -30,7 +30,7 @@ public class PlayerController : MoveableObject
     public virtual void Update()    // FSM 을 PlayerController 와 MonsterController 가 각각 가지고 있도록 나눌 것임
     {
         Debug.Log(State);
-        PlayerLookRotate();
+        /////////PlayerLookRotate();
 
         if (!Input.GetKey(KeyCode.LeftShift))
         {
@@ -75,6 +75,11 @@ public class PlayerController : MoveableObject
                 DieState();
                 break;
         }
+    }
+
+    protected virtual void FixedUpdate()
+    {
+        PlayerLookingMouse();
     }
 
 
@@ -251,7 +256,7 @@ public class PlayerController : MoveableObject
 
     #endregion
 
-    /// <summary>
+    /*/// <summary>
     /// 플레이어가 마우스위치를 바라보도록 하는 메서드
     /// </summary>
     private void PlayerLookRotate()
@@ -276,8 +281,30 @@ public class PlayerController : MoveableObject
 
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(hit.point), Time.deltaTime * 2f);
         }
+    }*/
+
+    private void PlayerLookingMouse()
+    {
+        float h = Input.GetAxis("Mouse X");     // 좌,우
+
+        float v = Input.GetAxis("Mouse Y");     // 상,하
+        //Mathf.Min(v, 15);
+
+
+        if (!(h == 0 && v == 0))
+        {
+            // 좌,우 아직 안됨
+            //transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(new Vector3(h,0,h)), Time.deltaTime * 3f);
+
+            Camera.main.transform.rotation = Quaternion.Lerp(Camera.main.transform.rotation, Quaternion.LookRotation(new Vector3(0, v, 0)), Time.deltaTime * 3f);
+            // 이제 15 아래로 못내리게
+
+        }
+
+
     }
 
+    #region 애니메이션에 들어가는 메서드
     /// <summary>
     /// 회피 애니메이션에 들어가는 메서드
     /// </summary>
@@ -293,4 +320,5 @@ public class PlayerController : MoveableObject
     {
         anim.SetBool("Attack", false);
     }
+    #endregion
 }
