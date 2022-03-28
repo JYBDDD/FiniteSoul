@@ -146,12 +146,12 @@ public class ResoureUtil : MonoBehaviour
     }
 
     /// <summary>
-    /// 프리팹 폴더에서 가져올 프리팹
+    /// 프리팹 폴더에서 가져올 프리팹(즉시 생성)
     /// </summary>
     /// <param name="path"></param>
     public static GameObject InsertPrefabs(string path)
     {
-        return Resources.Load<GameObject>($"Prefabs/{path}");
+        return Instantiate(Resources.Load<GameObject>($"Prefabs/{path}"));
     }
 
     /// <summary>

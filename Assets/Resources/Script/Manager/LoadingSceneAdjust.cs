@@ -23,7 +23,7 @@ public class LoadingSceneAdjust : MonoBehaviour
     {
         SceneManager.LoadScene("LoadingScene");     // 먼저 로딩씬 전환
         nextSceneName = sceneName;
-        StageManager.Instance.StageDataInsert(nextSceneName);
+        StageManager.StageDataInsert(nextSceneName);
     }
 
   
