@@ -10,8 +10,8 @@ public class PlayerController : MoveableObject
 {
     public UsePlayerData playerData;
 
-    // 캐릭터가 바라보는 방향을 결정하는 Ray
-    Ray originRay = new Ray();
+    // 캐릭터가 바라보는 방향을 MouseX (좌,우)
+    float mouseX = 0;
 
     /// <summary>
     /// 플레이어들만 사용하는 Awake()
@@ -31,7 +31,6 @@ public class PlayerController : MoveableObject
     {
         Debug.Log(State);
         PlayerLookingMouse();
-        //LookAround();
 
         if (!Input.GetKey(KeyCode.LeftShift))
         {
@@ -77,6 +76,15 @@ public class PlayerController : MoveableObject
                 break;
         }
     }
+
+    /*/// <summary>
+    /// 게임 종료시 저장
+    /// </summary>
+    private void OnApplicationQuit()
+    {
+        ResoureUtil.SaveData(playerData.index, playerData.level, StageManager.Instance.stageData.index, transform.position, playerData.currentRune,
+            playerData.maxHp, playerData.currentHp, playerData.atk, playerData.def);
+    }*/
 
 
     // Paladin, Archer 공통으로 사용되는 부분만 작성되었음
@@ -252,43 +260,27 @@ public class PlayerController : MoveableObject
 
     #endregion
 
+    /// <summary>
+    /// 캐릭터 회전, 카메라 회전 (마우스 위치)
+    /// </summary>
     private void PlayerLookingMouse()
     {
-        float h = Input.GetAxis("Mouse X");     // 좌,우
+        mouseX += Input.GetAxis("Mouse X") * 10f;     // 좌,우
 
-        float v = Input.GetAxis("Mouse Y");     // 상,하
+        float mouseY = Input.GetAxis("Mouse Y");     // 상,하
 
         Vector3 camAngle = Camera.main.transform.rotation.eulerAngles;
-        float x = camAngle.x - v;
+        float x = camAngle.x - mouseY;
+        
 
-        if (!(h == 0 && v == 0))
+        if (!(mouseX == 0 && mouseY == 0))
         {
-            // 좌,우 아직 안됨
-            transform.rotation = Quaternion.Euler(0,h * 10,0);      /// TODO
+            transform.eulerAngles = new Vector3(0, mouseX, 0);  // 좌, 우 회전
 
-            //Camera.main.transform.rotation = Quaternion.Euler(x, v, camAngle.z);
+            //Camera.main.transform.rotation = Quaternion.Euler(x, transform.eulerAngles.y, 0);   // 상, 하 회전
 
         }
-
-
     }
-
-    private void LookAround()
-    {
-        Vector2 mouseDelta = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")); 
-        Vector3 camAngle = Camera.main.transform.rotation.eulerAngles; 
-        float x = camAngle.x - mouseDelta.y; 
-        if (x < 180f) 
-        {
-            x = Mathf.Clamp(x, -1f, 70f); 
-        } 
-        /*else 
-        {
-            x = Mathf.Clamp(x, 335f, 361f); 
-        } */
-        Camera.main.transform.rotation = Quaternion.Euler(x, camAngle.y + mouseDelta.x, camAngle.z); 
-    }
-
 
         #region 애니메이션에 들어가는 메서드
         /// <summary>

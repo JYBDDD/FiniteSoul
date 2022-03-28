@@ -25,6 +25,16 @@ public class PlayerData : StaticData
     public float maxHp;
 
     /// <summary>
+    /// 공격력
+    /// </summary>
+    public float atk;
+
+    /// <summary>
+    /// 방어력
+    /// </summary>
+    public float def;
+
+    /// <summary>
     /// 최대 스테미너
     /// </summary>
     public float maxStamina;

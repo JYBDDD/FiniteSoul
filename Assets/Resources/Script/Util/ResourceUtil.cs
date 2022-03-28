@@ -53,7 +53,7 @@ public class ResoureUtil : MonoBehaviour
     /// <returns></returns>
     public static bool LoadConfirmFile()
     {
-        string path = Resources.Load<TextAsset>("Document/SaveData/SaveData.json").ToString();
+        string path = Resources.Load<TextAsset>("Document/SaveData/SaveData").ToString();
 
         PlayerVolatilityData playerVolatilityData = JsonUtility.FromJson<PlayerVolatilityData>(path);
 
@@ -71,14 +71,15 @@ public class ResoureUtil : MonoBehaviour
     /// </summary>
     public static UsePlayerData LoadSaveFile()
     {
-        string path = Resources.Load<TextAsset>("Document/SaveData/SaveData.json").ToString();
+        var textAsset = Resources.Load<TextAsset>("Document/SaveData/SaveData");
+        string path = textAsset.ToString();
 
-        PlayerVolatilityData playerVolatilityData = JsonUtility.FromJson<PlayerVolatilityData>(path);
+        PlayerVolatilityData[] playerVolatilityData = JsonConvert.DeserializeObject<PlayerVolatilityData[]>(path);
 
-        UsePlayerData playerData = GameManager.Instance.FullData.playersData.Where(_ => _.index == playerVolatilityData.index).SingleOrDefault();
+        UsePlayerData playerData = GameManager.Instance.FullData.playersData.Where(_ => _.index == playerVolatilityData[0].index).SingleOrDefault();
         GrowthStatData growthStatData = GameManager.Instance.FullData.growthsData.Where(_ => _.index == playerData.growthRef).SingleOrDefault();
 
-        return new UsePlayerData(growthStatData,playerData,playerVolatilityData);
+        return new UsePlayerData(growthStatData,playerData,playerVolatilityData[0]);
     }
 
     /// <summary>
@@ -142,6 +143,37 @@ public class ResoureUtil : MonoBehaviour
 
 
         }
+    }
+
+    /// <summary>
+    /// 프리팹 폴더에서 가져올 프리팹
+    /// </summary>
+    /// <param name="path"></param>
+    public static GameObject InsertPrefabs(string path)
+    {
+        return Resources.Load<GameObject>($"Prefabs/{path}");
+    }
+
+    /// <summary>
+    /// 데이터 저장
+    /// </summary>
+    /// <param name="index"></param>
+    /// <param name="stageIndex"></param>
+    /// <param name="pos"></param>
+    /// <param name="rune"></param>
+    /// <param name="raiseHp"></param>
+    /// <param name="currentHp"></param>
+    /// <param name="raiseAtk"></param>
+    /// <param name="raiseDef"></param>
+    public static void SaveData(int index, int level,int stageIndex, Vector3 pos, float rune, float raiseHp, float currentHp, float raiseAtk, float raiseDef)
+    {
+        // 저장 파일 위치
+        var path = Resources.Load("Document/SaveData/SaveData.json");
+        // 저장할 플레이어 데이터 -> 저장 파일 위치 덮어쓰기
+
+        var json = JsonUtility.ToJson(new PlayerVolatilityData(index, level, stageIndex, pos, rune, raiseHp, currentHp, raiseAtk, raiseDef),true);
+        File.WriteAllText("path", json);
+
     }
 
 }

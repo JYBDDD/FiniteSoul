@@ -63,4 +63,19 @@ public class PlayerVolatilityData
     /// 능력치를 올리지 않았거나, 올린 방어력
     /// </summary>
     public float raiseDef;
+
+    public PlayerVolatilityData(int index, int level, int stageIndex, Vector3 pos, float rune, float raiseHp, float currentHp, float raiseAtk, float raiseDef)
+    {
+        this.index = index;
+        this.level = level;
+        this.stageIndex = stageIndex;
+        this.posX = pos.x;
+        this.posY = pos.y;
+        this.posZ = pos.z;
+        this.rune = rune;
+        this.raiseHp = raiseHp;
+        this.currentHp = currentHp;
+        this.raiseAtk = raiseAtk;
+        this.raiseDef = raiseDef;
+    }
 }
