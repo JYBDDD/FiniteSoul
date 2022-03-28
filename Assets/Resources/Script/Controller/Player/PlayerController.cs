@@ -30,7 +30,8 @@ public class PlayerController : MoveableObject
     public virtual void Update()    // FSM 을 PlayerController 와 MonsterController 가 각각 가지고 있도록 나눌 것임
     {
         Debug.Log(State);
-        /////////PlayerLookRotate();
+        PlayerLookingMouse();
+        //LookAround();
 
         if (!Input.GetKey(KeyCode.LeftShift))
         {
@@ -75,11 +76,6 @@ public class PlayerController : MoveableObject
                 DieState();
                 break;
         }
-    }
-
-    protected virtual void FixedUpdate()
-    {
-        PlayerLookingMouse();
     }
 
 
@@ -256,59 +252,49 @@ public class PlayerController : MoveableObject
 
     #endregion
 
-    /*/// <summary>
-    /// 플레이어가 마우스위치를 바라보도록 하는 메서드
-    /// </summary>
-    private void PlayerLookRotate()
-    {
-        RaycastHit hit;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-        if (ray.direction != originRay.direction)    // 마우스 위치가 변경되었다면 실행
-        {
-            originRay = ray;
-
-            Physics.Raycast(ray, out hit);
-
-            if (hit.point == Vector3.zero)
-                return;
-
-            var tempRot = transform.eulerAngles;
-            tempRot.x = 0;
-            tempRot.z = 0;
-            transform.eulerAngles = tempRot;
-
-
-            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(hit.point), Time.deltaTime * 2f);
-        }
-    }*/
-
     private void PlayerLookingMouse()
     {
         float h = Input.GetAxis("Mouse X");     // 좌,우
 
         float v = Input.GetAxis("Mouse Y");     // 상,하
-        //Mathf.Min(v, 15);
 
+        Vector3 camAngle = Camera.main.transform.rotation.eulerAngles;
+        float x = camAngle.x - v;
 
         if (!(h == 0 && v == 0))
         {
             // 좌,우 아직 안됨
-            //transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(new Vector3(h,0,h)), Time.deltaTime * 3f);
+            transform.rotation = Quaternion.Euler(0,h * 10,0);      /// TODO
 
-            Camera.main.transform.rotation = Quaternion.Lerp(Camera.main.transform.rotation, Quaternion.LookRotation(new Vector3(0, v, 0)), Time.deltaTime * 3f);
-            // 이제 15 아래로 못내리게
+            //Camera.main.transform.rotation = Quaternion.Euler(x, v, camAngle.z);
 
         }
 
 
     }
 
-    #region 애니메이션에 들어가는 메서드
-    /// <summary>
-    /// 회피 애니메이션에 들어가는 메서드
-    /// </summary>
-    private void AnimEvasionEnd()
+    private void LookAround()
+    {
+        Vector2 mouseDelta = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")); 
+        Vector3 camAngle = Camera.main.transform.rotation.eulerAngles; 
+        float x = camAngle.x - mouseDelta.y; 
+        if (x < 180f) 
+        {
+            x = Mathf.Clamp(x, -1f, 70f); 
+        } 
+        /*else 
+        {
+            x = Mathf.Clamp(x, 335f, 361f); 
+        } */
+        Camera.main.transform.rotation = Quaternion.Euler(x, camAngle.y + mouseDelta.x, camAngle.z); 
+    }
+
+
+        #region 애니메이션에 들어가는 메서드
+        /// <summary>
+        /// 회피 애니메이션에 들어가는 메서드
+        /// </summary>
+        private void AnimEvasionEnd()
     {
         anim.SetBool("Evasion", false);
     }
