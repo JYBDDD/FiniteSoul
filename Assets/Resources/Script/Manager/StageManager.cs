@@ -15,6 +15,21 @@ public class StageManager : Singleton<StageManager>
     // 씬 전환이 완료되고, 스테이지가 바뀌었을때 PlayerSpawn()을 호출해줘야함      TODO
 
 
+    public IEnumerator StageSetting()
+    {
+        /*while (SceneManager)
+        {
+            Debug.Log("조건문 안");
+
+            PlayerSpawn();
+
+            yield break;
+        }*/
+
+
+        yield return null;
+    }
+
     /// <summary>
     /// 플레이어 생성
     /// </summary>

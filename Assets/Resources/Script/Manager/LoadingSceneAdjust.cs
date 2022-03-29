@@ -58,6 +58,7 @@ public class LoadingSceneAdjust : MonoBehaviour
                 if (loadingProgress.fillAmount > 0.99f)     // 로딩이 완료되었다면, 씬 전환
                 {
                     op.allowSceneActivation = true;
+                    StartCoroutine(StageManager.Instance.StageSetting());
                     yield break;
                 }
             }
