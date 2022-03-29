@@ -13,6 +13,34 @@ public class PlayerController : MoveableObject
     // 캐릭터가 바라보는 방향을 MouseX (좌,우)
     float mouseX = 0;
 
+    // 플레이어 이동값
+    float moveX = 0;
+    float moveZ = 0;
+
+    /// <summary>
+    /// 스텟 변경시 변경된 스탯을 재설정 해주는 메소드
+    /// </summary>
+    public void SetStat()
+    {
+        // 룬으로 레벨업시 교체되는 데이터
+        playerData.maxHp = playerData.growthStat.maxHp;
+        playerData.atk = playerData.growthStat.atk;
+        playerData.def = playerData.growthStat.def;
+        playerData.maxRune = playerData.growthStat.maxRune * playerData.level * playerData.growthStat.growthRune;
+
+        // 첫설정일 경우 최대 Hp로 설정
+        if(playerData.playerVolatility.currentHp == 0)
+        {
+            playerData.currentHp = playerData.maxHp;
+        }
+
+        // 변동없는 데이터
+        playerData.currentMana = playerData.maxMana;
+        playerData.currentStamina = playerData.maxStamina;
+
+        // 휘발성데이터가 추가해야되는 상황이라면 값을 여기서 다시 재설정 TODO
+    }
+
     /// <summary>
     /// 플레이어들만 사용하는 Awake()
     /// </summary>
@@ -25,9 +53,9 @@ public class PlayerController : MoveableObject
     }
 
     /// <summary>
-    /// (상위 부모) Update() -> FSM
+    /// (상위 부모) Update() -> FSM (플레이어 용)
     /// </summary>
-    public virtual void Update()    // FSM 을 PlayerController 와 MonsterController 가 각각 가지고 있도록 나눌 것임
+    public virtual void Update()
     {
         Debug.Log(State);
         PlayerLookingMouse();
@@ -226,34 +254,31 @@ public class PlayerController : MoveableObject
         
     }
 
-    public override void Initialize()
-    {
-        base.Initialize();
-    }
-
-    public override void SetStat()
-    {
-        base.SetStat();
-    }
-
     #region 캐릭터 움직임 구현부
     private void Move()
     {
-        // 이동 값 지정해줘야함 TODO
-        float floatX = Input.GetAxisRaw("Horizontal") * 3f;
-        float floatZ = Input.GetAxisRaw("Vertical") * 3f;
+        Vector3 posVec = new Vector3(moveX, 0, moveZ).normalized;
 
-        Vector3 posVec = new Vector3(floatX, 0, floatZ).normalized;
-
-        transform.Translate(posVec * Time.deltaTime);
+        // 왼 시프트를 누른상태라면 이동속도 2f 곱
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            moveX = Input.GetAxisRaw("Horizontal");
+            moveZ = Input.GetAxisRaw("Vertical");
+            transform.Translate(posVec * (playerData.moveSpeed * 2f) * Time.deltaTime);
+        }
+        else
+        {
+            moveX = Input.GetAxisRaw("Horizontal");
+            moveZ = Input.GetAxisRaw("Vertical");
+            transform.Translate(posVec * playerData.moveSpeed * Time.deltaTime);
+        }
     }
 
     private void Jump()
     {
         if(Input.GetKeyDown(KeyCode.C))
         {
-            // 점프 값 지정해줘야함 TODO
-            rigid.AddForce(Vector3.up * 7f,ForceMode.Impulse);
+            rigid.AddForce(Vector3.up * playerData.jumpForce,ForceMode.Impulse);
         }
     }
 

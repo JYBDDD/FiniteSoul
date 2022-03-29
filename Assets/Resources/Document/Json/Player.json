@@ -6,7 +6,7 @@
     "atkType": "Normal",
     "maxStamina": "100",
     "maxMana": "100",
-    "moveSpeed": "8",
+    "moveSpeed": "2.5",
     "jumpForce": "6",
     "growthRef": "1001",
     "resourcePath": "Prefabs/Player/Paladin"
@@ -18,7 +18,7 @@
     "atkType": "Projectile",
     "maxStamina": "100",
     "maxMana": "100",
-    "moveSpeed": "10",
+    "moveSpeed": "3",
     "jumpForce": "7",
     "growthRef": "1002",
     "resourcePath": "Prefabs/Player/Archer"

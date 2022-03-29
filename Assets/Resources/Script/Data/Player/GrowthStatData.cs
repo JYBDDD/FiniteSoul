@@ -28,9 +28,9 @@ public class GrowthStatData : StaticData
     public float maxRune;
 
     /// <summary>
-    /// ·é * ·¹º§ * growthExp
+    /// ·é * ·¹º§ * growthRune
     /// </summary>
-    public float growthExp;
+    public float growthRune;
 
     /// <summary>
     /// °ø°Ý·Â

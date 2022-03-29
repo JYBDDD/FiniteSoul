@@ -37,10 +37,12 @@ public class UsePlayerData : PlayerData
         growthStat = growthStatData;
 
         index = usePlayerData.index;
+        level = playerVolatilityData.level;
         name = usePlayerData.name;
         type = usePlayerData.type;
         atkType = usePlayerData.atkType;
         maxStamina = usePlayerData.maxStamina;
+        maxMana = usePlayerData.maxMana;
         moveSpeed = usePlayerData.moveSpeed;
         jumpForce = usePlayerData.jumpForce;
         growthRef = usePlayerData.growthRef;

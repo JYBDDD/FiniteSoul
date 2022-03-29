@@ -12,10 +12,5 @@ public class UseMonsterData : MonsterData
     public float currentHp;
 
 
-
-
-
-
-
 }
 

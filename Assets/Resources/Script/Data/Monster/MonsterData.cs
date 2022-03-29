@@ -35,9 +35,14 @@ public class MonsterData : StaticData
     public float maxHp;
 
     /// <summary>
-    /// 감지 범위
+    /// 몬스터 시야각
     /// </summary>
-    public float detectionRange;
+    public float viewingAngle;
+
+    /// <summary>
+    /// 몬스터 시야거리
+    /// </summary>
+    public float viewDistance;
 
     /// <summary>
     /// 공격 범위

@@ -12,6 +12,12 @@ public class LoadingSceneAdjust : MonoBehaviour
     Image loadingProgress;      // 로딩바
 
     [SerializeField]
+    Image loadingBackProgress;  // 로딩 배경 이미지
+
+    [SerializeField]
+    Image worldImg;             // 배경 이미지
+
+    [SerializeField]
     Text loadingText;           // 로딩 진행 텍스트
 
     private void Start()
@@ -57,13 +63,40 @@ public class LoadingSceneAdjust : MonoBehaviour
 
                 if (loadingProgress.fillAmount > 0.99f)     // 로딩이 완료되었다면, 씬 전환
                 {
-                    op.allowSceneActivation = true;
-                    StartCoroutine(StageManager.Instance.StageSetting());
+                    StartCoroutine(FadeIn());
+
                     yield break;
                 }
             }
             yield return null;
         }
         yield return null;
+
+
+        IEnumerator FadeIn()
+        {
+            float duration = 1.5f;
+            float time = 0;
+
+            while (time < duration)
+            {
+                time += Time.deltaTime;
+
+                worldImg.color = Color.Lerp(worldImg.color, new Color(0 / 255f, 0 / 255f, 0 / 255f), Time.deltaTime * 3f);
+                loadingBackProgress.color = Color.Lerp(loadingBackProgress.color, new Color(0 / 255f, 0 / 255f, 0 / 255f), Time.deltaTime * 3f);
+                loadingProgress.color = Color.Lerp(loadingProgress.color, new Color(0 / 255f, 0 / 255f, 0 / 255f), Time.deltaTime * 3f);
+                loadingText.color = Color.Lerp(loadingText.color, new Color(0 / 255f, 0 / 255f, 0 / 255f), Time.deltaTime * 3f);
+                yield return null;
+            }
+
+            op.allowSceneActivation = true;
+
+            // 비동기 작업이 완료된 후 -> 플레이어 스폰 진행
+            op.completed += (AsyncOperation p) => StageManager.Instance.PlayerSpawn();
+
+            yield break;
+        }
     }
+
+    
 }

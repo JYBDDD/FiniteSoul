@@ -10,16 +10,16 @@ public class MoveableObject : MonoBehaviour
 {
     public StaticData mainData;
 
-    // 캐릭터 상태
+    // 캐릭터,몬스터 상태
     public Define.State State = Define.State.Idle;
 
-    // 캐릭터 콜라이더
+    // 캐릭터,몬스터 콜라이더
     protected Collider coll;
 
-    // 캐릭터 물리
+    // 캐릭터,몬스터 물리
     protected Rigidbody rigid;
 
-    // 캐릭터 애니메이터
+    // 캐릭터,몬스터 애니메이터
     protected Animator anim;
 
     /// <summary>
@@ -31,18 +31,5 @@ public class MoveableObject : MonoBehaviour
         coll ??= GetComponent<Collider>();
         rigid ??= GetComponent<Rigidbody>();
         anim ??= GetComponent<Animator>();
-
-        SetStat();
-    }
-
-    /// <summary>
-    /// 스텟 변경시 변경된 스탯을 재설정 해주는 메소드
-    /// </summary>
-    public virtual void SetStat()
-    {
-        
-
-
-
     }
 }
