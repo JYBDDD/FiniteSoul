@@ -1,12 +1,10 @@
 [
   {
     "index": "1001",
-    "name": "FirstVillage",
-    "monsterIndex": "1001"
+    "name": "FirstVillage"
   },
   {
     "index": "1002",
-    "name": "LastVillage",
-    "monsterIndex": "1002"
+    "name": "LastVillage"
   }
 ]

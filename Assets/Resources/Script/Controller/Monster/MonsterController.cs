@@ -15,7 +15,7 @@ public class MonsterController : MoveableObject
     /// </summary>
     protected virtual void Awake()
     {
-        Initialize();
+        InsertComponent();
     }
 
     /// <summary>

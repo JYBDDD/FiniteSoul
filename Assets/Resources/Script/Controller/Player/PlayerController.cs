@@ -46,7 +46,7 @@ public class PlayerController : MoveableObject
     /// </summary>
     protected virtual void Awake()
     {
-        Initialize();
+        InsertComponent();
 
         InputManager.Instance.KeyAction += Move;
         InputManager.Instance.KeyAction += Jump;

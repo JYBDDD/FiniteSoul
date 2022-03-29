@@ -95,7 +95,9 @@ public class ResoureUtil : MonoBehaviour
         GrowthStatData[] arrGrowthData;
         ParsingJsonData("GrowthStat");
 
-        // 몬스터 데이터 삽입 추가 TODO
+        // 몬스터 데이터
+        UseMonsterData[] arrMonsterData;
+        ParsingJsonData("Monster");
 
         // 스테이지 데이터
         StageData[] arrStageData;
@@ -129,13 +131,22 @@ public class ResoureUtil : MonoBehaviour
                     GameManager.Instance.FullData.growthsData.Add(arrGrowthData[i]);
                 }
             }
-            else if (name == "Stage" && GameManager.Instance.FullData.stagesData.Count <= 0)
+            else if (name == "Stage" && GameManager.Instance.FullData.stagesData.Count <= 0)        // 한번만 호출되도록 설정 (StageData 데이터 로드)
             {
                 arrStageData = JsonConvert.DeserializeObject<StageData[]>(jsonData);
 
                 for (int i = 0; i < arrStageData.Length; ++i)
                 {
                     GameManager.Instance.FullData.stagesData.Add(arrStageData[i]);
+                }
+            }
+            else if (name == "Monster" && GameManager.Instance.FullData.monstersData.Count <= 0)        // 한번만 호출되도록 설정 (MonsterData 데이터 로드)
+            {
+                arrMonsterData = JsonConvert.DeserializeObject<UseMonsterData[]>(jsonData);
+
+                for (int i = 0; i < arrMonsterData.Length; ++i)
+                {
+                    GameManager.Instance.FullData.monstersData.Add(arrMonsterData[i]);
                 }
             }
 
