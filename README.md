@@ -90,7 +90,7 @@
 5. 씬전환시 데이터 설정 및 추가 설정, 몬스터 데이터 설정, InGameManager 설정
 	-> FadeIn() 기능 추가
 	-> FadeIn() 이후 해당 씬에 플레이어 생성 및 데이터 설정
-	-> 몬스터데이터 추가, InGameManager 작성
+	-> 몬스터데이터 추가, InGameManager 작성 , 몬스터 스폰위치(ScriptableObject)
 	
 22.03.28 ~ 
 
@@ -102,7 +102,6 @@
 
 	4.4. 만들 것
 		-> StageManager.MonsterSpawn() 에 ScriptableObject로 몬스터 생성위치들을 담아서 생성할 예정임
-			-> 1001 씬가서 생성할 위치 적당히 찾아서 ScriptableObject 에 값 넣어주기
 		-> 몬스터 컨트롤러 작성중
 			-> 몬스터 공통 애니메이션 작성중
 			- 참고 https://ansohxxn.github.io/unity%20lesson%203/ch7-3/
