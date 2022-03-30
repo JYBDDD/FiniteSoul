@@ -13,8 +13,11 @@ MonoBehaviour:
   m_Name: MonsterSpawn
   m_EditorClassIdentifier: 
   stageIndex: 1001
-  monsterIndex: e9030000e9030000
+  monsterIndex: e9030000e9030000e9030000e9030000ea030000ea030000
   locations:
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
+  - {x: 56, y: 3, z: 61}
+  - {x: 67, y: 3, z: 51}
+  - {x: 75, y: 3, z: 60}
+  - {x: 66, y: 3, z: 75}
+  - {x: 83, y: 2, z: 88}
+  - {x: 75, y: 2, z: 93}
