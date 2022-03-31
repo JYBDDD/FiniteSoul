@@ -6,6 +6,7 @@ using UnityEngine;
 /// <summary>
 /// 모든 움직이는 객체의 부모 클래스
 /// </summary>
+[RequireComponent(typeof(Rigidbody))]   // Rigidbody 를 안넣는 경우 방지
 public class MoveableObject : MonoBehaviour,RecyclePooling
 {
     public StaticData mainData;
@@ -27,16 +28,16 @@ public class MoveableObject : MonoBehaviour,RecyclePooling
     /// <summary>
     /// 해당 캐릭터에 맞는 값으로 초기화
     /// </summary>
-    public virtual void Initialize(MoveableObject thisObject)
+    public virtual void Initialize(StaticData staticData)
     {
-        mainData = thisObject.mainData;
+        mainData = staticData;
 
         // AttackController 참조 박을 것임 TODO
 
     }
 
     /// <summary>
-    /// 필요한 컴포넌트 값 추가 (모든 자식이 사용)
+    /// 필요한 컴포넌트 값 추가 (모든 자식이 사용) / 각각 필요한 기능은 override 해서 사용
     /// </summary>
     public virtual void InsertComponent()
     {

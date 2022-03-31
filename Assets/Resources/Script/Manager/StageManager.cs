@@ -43,7 +43,7 @@ public class StageManager : Singleton<StageManager>
                     // 몬스터 데이터 삽입
                     monsterC.monsterData = monsterDatas[i];
                     // 몬스터 초기화
-                    monsterC.Initialize(monsterC);
+                    monsterC.Initialize(monsterDatas[i]);
                     // 몬스터 스텟 설정
                     monsterC.SetStat();
                     // 몬스터 레이어,태그 설정
@@ -76,7 +76,7 @@ public class StageManager : Singleton<StageManager>
         // 플레이어 데이터 삽입
         playerC.playerData = loadFile;
         // 플레이어 초기화
-        playerC.Initialize(playerC);
+        playerC.Initialize(playerC.playerData);
         // 플레이어 스텟 설정
         playerC.SetStat();
         // 플레이어 레이어,태그 설정

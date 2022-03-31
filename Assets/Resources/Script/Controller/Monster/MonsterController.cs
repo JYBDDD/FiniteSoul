@@ -2,13 +2,17 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
+[RequireComponent(typeof(NavMeshAgent))]    // NavMeshAgent를 안넣는 경우 방지
 public class MonsterController : MoveableObject
 {
     /// <summary>
     /// 해당 몬스터가 사용하는 데이터
     /// </summary>
     public UseMonsterData monsterData;
+
+    protected NavMeshAgent agent;
 
     /// <summary>
     /// 몬스터들만 사용하는 Awake()
@@ -61,6 +65,12 @@ public class MonsterController : MoveableObject
         monsterData.currentHp = monsterData.maxHp;
     }
 
+    public override void InsertComponent()
+    {
+        base.InsertComponent();
+        agent ??= GetComponent<NavMeshAgent>();
+    }
+
     protected virtual void IdleState()
     {
 
@@ -99,7 +109,7 @@ public class MonsterController : MoveableObject
     protected void MonsterViewAngle(float viewAngle,float viewDistance)
     {
         // 몬스터가 아니라면 리턴시킨다
-        if (monsterData.type != Define.CharacterType.Monster)
+        if (monsterData.characterType != Define.CharacterType.Monster)
             return;
 
         Vector3 leftBoundary = BoundaryAngle(-viewAngle * 0.5f);

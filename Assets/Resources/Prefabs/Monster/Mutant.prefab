@@ -1183,7 +1183,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8348907846131776121}
   - component: {fileID: 644183658354190774}
-  - component: {fileID: 8117044142000109035}
   - component: {fileID: 8117044142000109034}
   - component: {fileID: 6555259412786306218}
   m_Layer: 0
@@ -1228,22 +1227,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!54 &8117044142000109035
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8689299515185275075}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!65 &8117044142000109034
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1271,11 +1254,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainData:
     index: 0
-    type: 0
+    characterType: 0
   State: 0
   monsterData:
     index: 0
-    type: 0
+    characterType: 0
     name: 
     atkType: 0
     atk: 0

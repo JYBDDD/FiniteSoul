@@ -39,7 +39,7 @@ public class UsePlayerData : PlayerData
         index = usePlayerData.index;
         level = playerVolatilityData.level;
         name = usePlayerData.name;
-        type = usePlayerData.type;
+        characterType = usePlayerData.characterType;
         atkType = usePlayerData.atkType;
         maxStamina = usePlayerData.maxStamina;
         maxMana = usePlayerData.maxMana;
