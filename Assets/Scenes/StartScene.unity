@@ -776,7 +776,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4b36e9eb7cd655408420b85b1aef370, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MonsterSpawnsDoc: {fileID: 11400000, guid: 6ae6a8ad5d3febf4fa3214a99ee688ce, type: 2}
+  MonsterSpawnsDoc:
+    stageItem: {fileID: 11400000, guid: 6ae6a8ad5d3febf4fa3214a99ee688ce, type: 2}
 --- !u!4 &833825227
 Transform:
   m_ObjectHideFlags: 0

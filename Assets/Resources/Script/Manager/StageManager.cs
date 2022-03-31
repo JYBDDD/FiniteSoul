@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,22 +14,29 @@ public class StageManager : Singleton<StageManager>
     /// 생성할 몬스터, 생성할 위치, 스테이지인덱스 값을 가지는 ScriptableObject 
     /// </summary>
     [SerializeField]
-    ScriptableObject MonsterSpawnsDoc;
+    ScriptablePickUp MonsterSpawnsDoc;
 
     /// <summary>
     /// 몬스터 생성
     /// </summary>
     public void MonsterSpawn()
     {
-        // 만약 현재 BuildScene 과 stageIndex값이 동일하다면 실행
-        if(MonsterSpawnsDoc)
+        // 만약 현재 BuildScene 과 stageIndex값이 다르다면 리턴
+        if (MonsterSpawnsDoc.stageItem.stageIndex == int.Parse(SceneManager.GetActiveScene().ToString()))
         {
-            // ScriptableObject 에서 값을 추출할수 있는지 찾아봐야할것 TODO
+            return;
         }
 
-
-        // 몬스터 생성위치를 ScriptableObject 로 만들어 넣어주도록 하자 (짜피 실행중 값 안바꿀거니까)  TODO
         var monsterDatas = GameManager.Instance.FullData.monstersData;
+        for(int i = 0; i < MonsterSpawnsDoc.stageItem.monsterIndex.Length; ++i)
+        {
+            // monsterDatas 의 몬스터 인덱스와 스크립터블 오브젝트의 몬스터 인덱스 값이 동일하다면 생성
+            if(monsterDatas[i].index == MonsterSpawnsDoc.stageItem.monsterIndex[i])
+            {
+                // monsterDatas 의 값은 현재 두개만 들어있고,
+                // 스크립터블 오브젝트 몬스터 인덱스값은 현재 6개가 들어 있음,       (참고바람)  TODO
+            }
+        }
     }
 
     /// <summary>
@@ -66,3 +74,13 @@ public class StageManager : Singleton<StageManager>
         stageData = GameManager.Instance.FullData.stagesData.Where(_ => _.index == sceneIndex).SingleOrDefault();
     }
 }
+
+/// <summary>
+/// ScriptableObject를 임시로 들고있을 클래스
+/// </summary>
+[Serializable]
+public class ScriptablePickUp
+{
+    public NewScriptableObject stageItem;
+}
+
