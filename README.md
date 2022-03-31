@@ -94,12 +94,14 @@
 	-> 씬 비동기 로드 완료후, 몬스터 생성/플레이어 생성
 	-> 몬스터/플레이어 생성시, 위치값 지정, 데이터 삽입,스텟 설정, 레이어/태그 설정, InGameManager 등록
 	-> 풀링 매니저 추가, 해당 풀링은 RecyclePooling 인터페이스를 가지고 있는 오브젝트만 사용할수 있도록 
+	-> MoveableObject 클래스에 RequireComponent 를 사용하여 Rigidbody를 안넣는 경우 방지, MonsterController 도 NavMeshAgent 를 안넣는 경우 
 	
 22.03.28 ~ 22.03.30
 
-6. 몬스터 애니메이션 작성
+6. 몬스터 애니메이션 작성, NavMesh 필요 기능 추가
 	-> 몬스터 애니메이션은 Mutant만 작성후, Warrok의 애니메이션은 Animator override Controller 로 작성하여 애니메이터 작성을 최소화 하였음
 	-> 몬스터 시야 관련 메소드 작성, 시야각/시야 거리에 따라 몬스터가 플레이어를 인식할수 있도록 설정
+	-> 
 	
 	/참고사항/★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 	// Base 컴포넌트를 상속받는 child 컴포넌트가 있을때
@@ -120,15 +122,13 @@
 
 1. 할 것    TODO
 
-	-> MoveableObject.Initialize() 부분에 mainData가 정상적으로 들어가지 않는 것으로 확인됨  TODO
-	-> StageManager 플레이어스폰, 몬스터 스폰 에서 사용중
 
 	4.4. 만들 것
 		-> 몬스터 컨트롤러 작성중
-			-> 몬스터 공통 애니메이션 작성중
-				-> 몬스터 시야각 https://ansohxxn.github.io/unity%20lesson%203/ch7-3/
-	
 			-> NavMeshAgent 를 이용하여 몬스터 AI 구현 할것
+				-> navigation 작업만 해놓음
+			-> 몬스터 공통 애니메이션 작성중
+
 			- 참고 https://solution94.tistory.com/19
 			- 참고 https://ansohxxn.github.io/unity%20lesson%201/chapter11-16/
 			
