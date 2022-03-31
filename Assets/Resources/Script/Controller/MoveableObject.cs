@@ -6,7 +6,7 @@ using UnityEngine;
 /// <summary>
 /// 모든 움직이는 객체의 부모 클래스
 /// </summary>
-public class MoveableObject : MonoBehaviour
+public class MoveableObject : MonoBehaviour,RecyclePooling
 {
     public StaticData mainData;
 
@@ -30,6 +30,7 @@ public class MoveableObject : MonoBehaviour
     public virtual void Initialize(MoveableObject thisObject)
     {
         mainData = thisObject.mainData;
+
         // AttackController 참조 박을 것임 TODO
 
     }

@@ -8,7 +8,7 @@ public class MonsterController : MoveableObject
     /// <summary>
     /// 해당 몬스터가 사용하는 데이터
     /// </summary>
-    UseMonsterData monsterData;
+    public UseMonsterData monsterData;
 
     /// <summary>
     /// 몬스터들만 사용하는 Awake()
@@ -23,6 +23,12 @@ public class MonsterController : MoveableObject
     /// </summary>
     public virtual void Update()
     {
+        // 몬스터의 데이터(시야각, 시야 거리)가 존재한다면 실행
+        if (monsterData?.viewingAngle != null && monsterData?.viewDistance != null)
+        {
+            MonsterViewAngle(monsterData.viewingAngle, monsterData.viewDistance);
+        }
+
 
         switch (State)
         {
@@ -47,54 +53,99 @@ public class MonsterController : MoveableObject
         }
     }
 
-    private void IdleState()
+    /// <summary>
+    /// 몬스터 스텟 설정
+    /// </summary>
+    public void SetStat()
     {
-        // 일정 간격을 주고 anim. 의 파라미터 RandA 값을 Random으로 조정한다
-        //    Idle -> RandA 가 1
-        //    TurnRight90 -> RandA 가 - 1
+        monsterData.currentHp = monsterData.maxHp;
+    }
+
+    protected virtual void IdleState()
+    {
 
     }
 
-    private void WalkState()
-    {
-        
-    }
-
-    private void RunningState()
-    {
-        // 타깃이 일정 사정거리
-
-    }
-
-    private void AttackState()
+    protected virtual void WalkState()
     {
         
     }
 
-    private void HurtState()
+    protected virtual void RunningState()
     {
-        // Hurt는 뒤로 밀리는것으로 처리할 예정
-        // Idle상태 유지중에서 밀리는것으로 TODO
+
     }
 
-    private void DieState()
+    protected virtual void AttackState()
     {
         
     }
 
-    /*Mutant 애니메이터 셋팅 TODO
+    protected virtual void HurtState()
+    {
+        
+    }
 
-    RandA 가 양수일 경우 -> Attack1
-    RandA 가 음수일 경우 -> Attack2
+    protected virtual void DieState()
+    {
+        
+    }
 
-    Mutant 의 공격은 파라미터 불값으로 체크하지 않고
-    공격 사정거리안에 플레이어가 접촉하였을경우 실행하는것으로..
+    /// <summary>
+    /// 몬스터의 시야각, 시야 거리
+    /// </summary>
+    /// <param name="viewAngle">시야 각도</param>
+    /// <param name="viewDistance">시야 거리</param>
+    protected void MonsterViewAngle(float viewAngle,float viewDistance)
+    {
+        // 몬스터가 아니라면 리턴시킨다
+        if (monsterData.type != Define.CharacterType.Monster)
+            return;
 
-    몬스터에게 시야각 -> viewingAngle
-              시야거리 -> viewingDistance 
+        Vector3 leftBoundary = BoundaryAngle(-viewAngle * 0.5f);
+        Vector3 rightBoundary = BoundaryAngle(viewAngle * 0.5f);
 
-    설정을 해서 시야에 닿았을 경우 Run 애니메이션 출력후 쫒아가는것으로 설정할 것
-    */
+        Debug.DrawRay(transform.position + transform.up, leftBoundary, Color.red);
+        Debug.DrawRay(transform.position + transform.up, rightBoundary, Color.red);
 
- 
+        // 타겟을 구한다
+        Collider[] targets = Physics.OverlapSphere(transform.position, viewDistance, LayerMask.NameToLayer("Player"));
+
+        // 타겟이 범위에 들어오지 않았다면 리턴
+        if (targets.Length == 0)
+            return;
+
+        for(int i =0; i < targets.Length; ++i)
+        {
+            // 타겟의 위치
+            Vector3 targetPos = targets[i].transform.position;
+            // 거리 (타겟과의 거리)
+            Vector3 direction = (targetPos - transform.position).normalized;
+            // 각도 (타겟과의 각도)
+            float angle = Vector3.Angle(direction, transform.forward);
+
+            if(angle < viewAngle * 0.5f)
+            {
+                RaycastHit hit;
+                if(Physics.Raycast(transform.position + Vector3.up, direction,out hit,viewDistance))
+                {
+                    // 타깃의 레이어가 Player 일경우 실행
+                    if(hit.transform.gameObject.layer == LayerMask.NameToLayer("Player"))
+                    {
+                        // 플레이어를  향해 달려간다 TODO
+                    }
+                }
+            }
+        }
+
+        // 경계 각도
+        Vector3 BoundaryAngle(float _angle)
+        {
+            _angle += transform.eulerAngles.y;
+            return new Vector3(Mathf.Sin(_angle * Mathf.Deg2Rad), 0f, Mathf.Cos(_angle * Mathf.Deg2Rad));
+        }
+    }
+
+
+    
 }

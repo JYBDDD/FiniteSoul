@@ -28,7 +28,7 @@ public class InGameManager : Singleton<InGameManager>
     /// 리스트에 해당 몬스터 객체 추가
     /// </summary>
     /// <param name="addObject"></param>
-    public void AddInGameMonsterList(MoveableObject addObject)
+    public void MonsterRegist(MoveableObject addObject)
     {
         Monsters.Add(addObject);
     }
@@ -37,7 +37,7 @@ public class InGameManager : Singleton<InGameManager>
     /// 리스트에 해당 몬스터 객체 삭제
     /// </summary>
     /// <param name="removeObject"></param>
-    public void ReMoveInGameMonsterList(MoveableObject removeObject)
+    public void MonsterRegistRemove(MoveableObject removeObject)
     {
         Monsters.Remove(removeObject);
     }

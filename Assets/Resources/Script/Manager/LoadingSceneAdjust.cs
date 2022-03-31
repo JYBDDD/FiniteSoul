@@ -91,8 +91,14 @@ public class LoadingSceneAdjust : MonoBehaviour
 
             op.allowSceneActivation = true;
 
-            // 비동기 작업이 완료된 후 -> 플레이어 스폰 진행
-            op.completed += (AsyncOperation p) => StageManager.Instance.PlayerSpawn();
+            // 비동기 작업이 완료된 후 실행
+            op.completed += (AsyncOperation p) => 
+            {
+                // 플레이어 스폰
+                StageManager.Instance.PlayerSpawn();
+                // 몬스터 스폰
+                StageManager.Instance.MonsterSpawn();
+            };
 
             yield break;
         }

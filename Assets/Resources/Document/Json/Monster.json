@@ -2,6 +2,7 @@
   {
     "index": "1001",
     "name": "Mutant",
+    "characterType": "Monster",
     "atkType": "Normal",
     "moveSpeed": "3",
     "viewingAngle": "130",
@@ -18,6 +19,7 @@
   {
     "index": "1002",
     "name": "Warrok",
+    "characterType": "Monster",
     "atkType": "Normal",
     "moveSpeed": "4",
     "viewingAngle": "160",

@@ -22,20 +22,39 @@ public class StageManager : Singleton<StageManager>
     public void MonsterSpawn()
     {
         // 만약 현재 BuildScene 과 stageIndex값이 다르다면 리턴
-        if (MonsterSpawnsDoc.stageItem.stageIndex == int.Parse(SceneManager.GetActiveScene().ToString()))
+        if (MonsterSpawnsDoc.stageItem.stageIndex != stageData.index)
         {
             return;
         }
 
         var monsterDatas = GameManager.Instance.FullData.monstersData;
-        for(int i = 0; i < MonsterSpawnsDoc.stageItem.monsterIndex.Length; ++i)
+        for(int i = 0; i < monsterDatas.Count; ++i)
         {
             // monsterDatas 의 몬스터 인덱스와 스크립터블 오브젝트의 몬스터 인덱스 값이 동일하다면 생성
-            if(monsterDatas[i].index == MonsterSpawnsDoc.stageItem.monsterIndex[i])
+            for(int j = 0; j < MonsterSpawnsDoc.stageItem.monsterIndex.Length; ++j )
             {
-                // monsterDatas 의 값은 현재 두개만 들어있고,
-                // 스크립터블 오브젝트 몬스터 인덱스값은 현재 6개가 들어 있음,       (참고바람)  TODO
+                if (monsterDatas[i].index == MonsterSpawnsDoc.stageItem.monsterIndex[j])
+                {
+                    // 몬스터 생성
+                    GameObject monsterObj = ObjectPoolManager.Instance.GetPool<MoveableObject>(monsterDatas[i].ResourcePath,monsterDatas[i].name,Define.CharacterType.Monster);
+                    // 몬스터 위치값 지정
+                    monsterObj.transform.position = MonsterSpawnsDoc.stageItem.locations[j];
+                    MonsterController monsterC = monsterObj.GetComponent<MonsterController>();
+                    // 몬스터 데이터 삽입
+                    monsterC.monsterData = monsterDatas[i];
+                    // 몬스터 초기화
+                    monsterC.Initialize(monsterC);
+                    // 몬스터 스텟 설정
+                    monsterC.SetStat();
+                    // 몬스터 레이어,태그 설정
+                    monsterC.gameObject.layer = LayerMask.NameToLayer("Monster");
+                    monsterC.tag = "Monster";
+                    // InGameManager Monsters 리스트에 몬스터 등록
+                    InGameManager.Instance.MonsterRegist(monsterC);
+
+                }
             }
+
         }
     }
 
@@ -44,23 +63,27 @@ public class StageManager : Singleton<StageManager>
     /// </summary>
     public void PlayerSpawn()       
     {
+        // SaveData의 index (캐릭터 인덱스) 에 따라 캐릭터 생성 (일단은 팔라딘으로 설정함 -> SaveData 인덱스가 팔라딘값으로 되어있음)
         // 시작씬에서 캐릭터를 선택하였다면 선택한 캐릭터 인덱스를 SaveData로 저장한다음 불러오는것이 좋을듯 TODO
-        // SaveData의 index (캐릭터 인덱스) 에 따라 캐릭터 생성 TODO  (일단은 팔라딘으로 설정함)
         var loadFile = ResoureUtil.LoadSaveFile();
         GameObject player = ResoureUtil.InsertPrefabs(loadFile.resourcePath);
         var volData = loadFile.playerVolatility;
 
-        // 해당 플레이어를 0,0,0 위치에서 생성
+        // 해당 플레이어를 0,0,0 위치 or 저장된 위치에서 생성
         player.transform.position = new Vector3(volData.posX, volData.posY, volData.posZ);
 
-        // 위에 TODO 수정후 Archer 일경우도 수정 ㄱㄱ TODO
-        Paladin paladin = player.GetComponent<Paladin>();
-        paladin.playerData = loadFile;
-        paladin.Initialize(paladin);
-        paladin.SetStat();
-
+        PlayerController playerC = player.GetComponent<PlayerController>();
+        // 플레이어 데이터 삽입
+        playerC.playerData = loadFile;
+        // 플레이어 초기화
+        playerC.Initialize(playerC);
+        // 플레이어 스텟 설정
+        playerC.SetStat();
+        // 플레이어 레이어,태그 설정
+        playerC.gameObject.layer = LayerMask.NameToLayer("Player");
+        playerC.tag = "Player";
         // InGameManager  Player 에 플레이어 등록
-        InGameManager.Instance.PlayerRegist(paladin);
+        InGameManager.Instance.PlayerRegist(playerC);
 
         // 만약 워프를 탔다면 이동후 저장 TODO
     }
