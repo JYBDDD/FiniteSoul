@@ -14,7 +14,7 @@ public class StageManager : Singleton<StageManager>
     /// 생성할 몬스터, 생성할 위치, 스테이지인덱스 값을 가지는 ScriptableObject 
     /// </summary>
     [SerializeField]
-    ScriptablePickUp MonsterSpawnsDoc;
+    public ScriptablePickUp MonsterSpawnsDoc;
 
     /// <summary>
     /// 몬스터 생성
@@ -44,6 +44,7 @@ public class StageManager : Singleton<StageManager>
                     monsterC.monsterData = monsterDatas[i];
                     // 몬스터 초기화
                     monsterC.Initialize(monsterDatas[i]);
+                    monsterC.monsterStartPos = MonsterSpawnsDoc.stageItem.locations[j];
                     // 몬스터 스텟 설정
                     monsterC.SetStat();
                     // 몬스터 레이어,태그 설정
