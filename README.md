@@ -124,7 +124,7 @@
 
 	4.3 새로운 FSM(유한 상태 머신) 만드는중...
 		-> 참고 - https://github.com/thefuntastic/Unity3d-Finite-State-Machine
-		-> Util 쪽에 StateMachine 스크립트 있음 TODO
+		-> Util 쪽에 StateMachine 스크립트 있음 ,  PlayerController 쪽에 안되는 부분 적어놓음 (Idle쪽이랑, Update쪽)  TODO
 	
 	4.4. 만들 것
 		-> 몬스터 컨트롤러 작성중
