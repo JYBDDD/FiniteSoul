@@ -15,8 +15,6 @@ public class CreatureBase : MonsterController
     protected override void IdleState()
     {
         base.IdleState();
-
-
     }
 
     protected override void WalkState()

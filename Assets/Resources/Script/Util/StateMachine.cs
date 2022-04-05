@@ -5,36 +5,78 @@ using UnityEngine;
 
 namespace ResourceUtil.StateMachine
 {
+
     /// <summary>
     /// 상태 머신
     /// </summary>
     /// <typeparam name="TState">상태 값</typeparam>
-    /// <typeparam name="TDriver">추가 이벤트</typeparam>
-    public class StateMachine<TState,TDriver>
+    public class StateMachine<TState>
     {
-        public event Action<TState> Changed;
+        // 업데이트를 사용중일시, true로 변경되는 Bool타입
+        private bool hasEnterUpdate = false;
+        // 업데이트시 값을 전달시키는 대리자
+        public Action updateAction;
 
-        /*public TState State
+        /// <summary>
+        /// 상태(기본값 Idle)
+        /// </summary>
+        public Define.State State = Define.State.Idle;
+
+        /// <summary>
+        /// 해당 상태머신의 상태값 변경 (한번만 호출)
+        /// </summary>
+        /// <param name="tState">변경하고자 하는 상태</param>
+        /// <param name="action">변경하고자 하는 상태에서 실행시킬 메소드</param>
+        /// <param name="enterUpdate">true 체크시 Update로 전환</param>
+        public void ChangeState(Define.State tState,Action action,bool enterUpdate = false)
         {
-            get 
-            {
-
-            }
-        }*/
-
-        public void ChangeState(TState tState)
-        {
-
+            State = tState;
+            hasEnterUpdate = enterUpdate;
+            GetMethod(action);
         }
+
+        /// <summary>
+        /// 한번만 호출해야하는 메소드 호출시 사용
+        /// </summary>
+        /// <param name="action"></param>
+        /// <returns></returns>
+        private Action GetMethod(Action action)
+        {
+            // ChangeState 메소드 실행시 enterUpdate의 Bool 값에 의해 변경되는 곳
+            if(hasEnterUpdate == true)
+            {
+                updateAction = action;
+            }
+            if(hasEnterUpdate == false)
+            {
+                updateAction = null;
+            }
+
+            return action;
+        }
+
+        private Action UpdateMethod(Action updateAction)
+        {
+            return updateAction;
+        }
+
+        public void PassOverUpdate()
+        {
+            // 해당 업데이트용 대리자가 Null 이 아닐경우 실행
+            if (updateAction != null)
+            {
+                UpdateMethod(updateAction);
+                //Debug.Log(updateAction.Method);
+            }
+        }
+
+
     }
 
-    public interface IStateMachine<TDriver>
-    {
-        TDriver Driver { get; }
-    }
 
 
-    // internal : 어셈블리 내의 상속 클래스에서만 접근 가능
+
+    /*// internal : 어셈블리 내의 상속 클래스에서만 접근 가능
     /// <summary>
     /// 스테이트 정리,설정
     /// </summary>
@@ -68,7 +110,7 @@ namespace ResourceUtil.StateMachine
         public StateOrganize(StateMachine<TState,TDriver> fsm,TState state,Func<TState> stateProvider)
         {
             this.fsm = fsm;
-            this.state = state;
+            this.state = state; 
             stateProviderCallback = stateProvider;
         }
     }
@@ -81,27 +123,13 @@ namespace ResourceUtil.StateMachine
         /// <summary>
         /// 사용중인 스테이트머신을 들고있는 리스트
         /// </summary>
-        private List<IStateMachine<StateDriverRunner>> stateMachineList = new List<IStateMachine<StateDriverRunner>>();
+        private List<StateDriverRunner> stateMachineList = new List<StateDriverRunner>();
 
-        // stateMachineList에 add 시켜줄 Initialize 만드는중인데.. TState를 못찾음  TODO
-        //public StateMachine<TState> 
-
-
-
-        public void Update()
+        public void StateMachineInit(GameObject thisObject)
         {
-            // 해당 리스트에 들어온 스테이트를 돌려줄것임, Update에 넣어야 한다면 TODO
+            
         }
 
-        public void FixedUpdate()
-        {
-            // 해당 리스트에 들어온 스테이트를 돌려줄것임, FixedUpdate에 넣어야 한다면 TODO
-        }
-
-        public void LateUpdate()
-        {
-            // 해당 리스트에 들어온 스테이트를 돌려줄것임, LateUpdate에 넣어야 한다면 TODO
-        }
 
 
         /// <summary>
@@ -126,11 +154,19 @@ namespace ResourceUtil.StateMachine
     {
         public void Update()
         {
-            
+            // 해당 리스트에 들어온 스테이트를 돌려줄것임, Update에 넣어야 한다면 TODO
         }
-    }
 
+        public void FixedUpdate()
+        {
+            // 해당 리스트에 들어온 스테이트를 돌려줄것임, FixedUpdate에 넣어야 한다면 TODO
+        }
 
+        public void LateUpdate()
+        {
+            // 해당 리스트에 들어온 스테이트를 돌려줄것임, LateUpdate에 넣어야 한다면 TODO
+        }
+    }*/
 
 }
 

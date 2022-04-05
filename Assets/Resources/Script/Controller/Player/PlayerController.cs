@@ -50,6 +50,8 @@ public class PlayerController : MoveableObject
 
         InputManager.Instance.KeyAction += Move;
         InputManager.Instance.KeyAction += Jump;
+
+        FSM.ChangeState(FSM.State, IdleState, true);
     }
 
     /// <summary>
@@ -57,7 +59,6 @@ public class PlayerController : MoveableObject
     /// </summary>
     public virtual void Update()
     {
-        Debug.Log(State);
         PlayerLookingMouse();
 
         if (!Input.GetKey(KeyCode.LeftShift))
@@ -65,7 +66,10 @@ public class PlayerController : MoveableObject
             anim.SetBool("RunBool", false);
         }
 
-        switch (State)
+        FSM.PassOverUpdate();           // 해당 액션 대리자로 가져온값은 들어가졌는데, 값이 처음 Idle상태로 전환이후 변경이 불가함 TODO
+        Debug.Log(FSM.updateAction.Method);
+
+        /*switch (FSM.State)
         {
             case Define.State.Idle:
                 IdleState();
@@ -80,7 +84,7 @@ public class PlayerController : MoveableObject
                 RunningState();
                 break;
             case Define.State.Attack:
-                if (playerData.atkType == Define.AtkType.Normal)    
+                if (playerData.atkType == Define.AtkType.Normal)
                 {
                     // 근접 공격이라면
                     NormalAttackState();
@@ -102,7 +106,7 @@ public class PlayerController : MoveableObject
             case Define.State.Die:
                 DieState();
                 break;
-        }
+        }*/
     }
 
     /*/// <summary>
@@ -119,32 +123,35 @@ public class PlayerController : MoveableObject
 
     protected virtual void IdleState()
     {
+        Debug.Log("실행중..");     // StateMachine 의 값은 대리자로 잘들어오고 실행되는데 해당 메소드의 기능이 작동하지 않는것으로 보임;;  TODO
+
+
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))         // Walk
         {
-            State = Define.State.Walk;
+            FSM.ChangeState(Define.State.Walk, WalkState, true);
             return;
         }
         if (Input.GetKey(KeyCode.Space))     // Evasion
         {
             anim.SetBool("Evasion", true);
-            State = Define.State.Evasion;
+            FSM.ChangeState(Define.State.Evasion, EvasionState, true);
             return;
         }
         if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.LeftShift))      // Running
         {
-            State = Define.State.Running;
+            FSM.ChangeState(Define.State.Running, RunningState, true);
             return;
         }
         if (Input.GetKey(KeyCode.Mouse0))    // Attack
         {
             anim.SetBool("Attack", true);
-            State = Define.State.Attack;
+            FSM.ChangeState(Define.State.Attack, NormalAttackState, true);
             return;
         }
 
         anim.SetFloat("MoveX", Mathf.Lerp(anim.GetFloat("MoveX"), 0, Time.deltaTime * 2f));
         anim.SetFloat("MoveZ", Mathf.Lerp(anim.GetFloat("MoveZ"), 0, Time.deltaTime * 2f));
-        State = Define.State.Idle;
+        FSM.State = Define.State.Idle;
     }
 
     protected virtual void WalkState()
@@ -160,28 +167,28 @@ public class PlayerController : MoveableObject
         if(Input.GetKey(KeyCode.Space))     // Evasion;
         {
             anim.SetBool("Evasion", true);
-            State = Define.State.Evasion;
+            FSM.ChangeState(Define.State.Evasion, EvasionState, true);
             return;
         }
         if (!Input.anyKey)  // Idle
         {
-            State = Define.State.Idle;
+            FSM.ChangeState(Define.State.Idle, IdleState, true);
             return;
         }
         if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.LeftShift))      // Running
         {
-            State = Define.State.Running;
+            FSM.ChangeState(Define.State.Running, RunningState, true);
             return;
         }
         if (Input.GetKey(KeyCode.Mouse0))    // Attack
         {
             anim.SetBool("Attack", true);
-            State = Define.State.Attack;
+            FSM.ChangeState(Define.State.Attack, NormalAttackState, true);
             return;
         }
 
 
-        State = Define.State.Walk;
+        FSM.State = Define.State.Walk;
     }
 
     protected virtual void EvasionState()
@@ -190,12 +197,12 @@ public class PlayerController : MoveableObject
 
         if(!anim.GetBool("Evasion"))
         {
-            State = Define.State.Idle;
+            FSM.ChangeState(Define.State.Idle, IdleState, true);
             return;
         }
 
         anim.SetBool("Evasion", true);
-        State = Define.State.Evasion;
+        FSM.State = Define.State.Evasion;
     }
 
     protected virtual void RunningState()
@@ -204,32 +211,32 @@ public class PlayerController : MoveableObject
 
         if(!Input.GetKey(KeyCode.LeftShift))
         {
-            State = Define.State.Idle;
+            FSM.ChangeState(Define.State.Idle, IdleState, true);
             anim.SetBool("RunBool", false);
             return;
         }
         if (Input.GetKey(KeyCode.Mouse0))    // Attack
         {
             anim.SetBool("Attack", true);
-            State = Define.State.Attack;
+            FSM.ChangeState(Define.State.Attack, NormalAttackState, true);
             return;
         }
 
         anim.SetBool("RunBool", true);
         anim.SetFloat("MoveZ", Mathf.Lerp(anim.GetFloat("MoveZ"), 2, Time.deltaTime * 4f));
-        State = Define.State.Running;
+        FSM.State = Define.State.Running;
     }
 
     protected virtual void NormalAttackState()
     {
         if(!anim.GetBool("Attack"))
         {
-            State = Define.State.Idle;
+            FSM.ChangeState(Define.State.Idle, IdleState, true);
             return;
         }
 
         anim.SetBool("Attack", true);
-        State = Define.State.Attack;
+        FSM.State = Define.State.Attack;
     }
 
     /// ------------------------------------------------------------  현재 FSM  NormalAttack 까지 구현 , 밑에 부분은 미구현 상태 TODO
