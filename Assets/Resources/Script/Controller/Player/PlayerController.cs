@@ -66,47 +66,8 @@ public class PlayerController : MoveableObject
             anim.SetBool("RunBool", false);
         }
 
-        FSM.PassOverUpdate();           // 해당 액션 대리자로 가져온값은 들어가졌는데, 값이 처음 Idle상태로 전환이후 변경이 불가함 TODO
-        Debug.Log(FSM.updateAction.Method);
-
-        /*switch (FSM.State)
-        {
-            case Define.State.Idle:
-                IdleState();
-                break;
-            case Define.State.Walk:
-                WalkState();
-                break;
-            case Define.State.Evasion:
-                EvasionState();
-                break;
-            case Define.State.Running:
-                RunningState();
-                break;
-            case Define.State.Attack:
-                if (playerData.atkType == Define.AtkType.Normal)
-                {
-                    // 근접 공격이라면
-                    NormalAttackState();
-
-                }
-                else
-                {
-                    // 원거리 공격이라면
-                    ProjectileAttackState();
-
-                }
-                break;
-            case Define.State.Jump:
-                JumpState();
-                break;
-            case Define.State.Hurt:
-                HurtState();
-                break;
-            case Define.State.Die:
-                DieState();
-                break;
-        }*/
+        // 상태머신에서 Update시켜야하는 값이라면 실행, 아니라면 실행중지
+        FSM.UpdateMethod();
     }
 
     /*/// <summary>
@@ -123,9 +84,6 @@ public class PlayerController : MoveableObject
 
     protected virtual void IdleState()
     {
-        Debug.Log("실행중..");     // StateMachine 의 값은 대리자로 잘들어오고 실행되는데 해당 메소드의 기능이 작동하지 않는것으로 보임;;  TODO
-
-
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))         // Walk
         {
             FSM.ChangeState(Define.State.Walk, WalkState, true);

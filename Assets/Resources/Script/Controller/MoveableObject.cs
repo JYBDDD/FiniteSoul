@@ -15,9 +15,6 @@ public class MoveableObject : MonoBehaviour,RecyclePooling
     // 캐릭터, 몬스터 상태 머신
     public StateMachine<Define.State> FSM = new StateMachine<Define.State>();
 
-    // 캐릭터,몬스터 상태
-    public Define.State State = Define.State.Idle;      // 상태머신을 따로 빼서 사용할것이라면 해당 상태를 지워야 할것 TODO
-
     // 캐릭터,몬스터 콜라이더
     protected Collider coll;
 

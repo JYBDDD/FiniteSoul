@@ -30,6 +30,8 @@ public class MonsterController : MoveableObject
     protected virtual void Awake()
     {
         InsertComponent();
+
+        FSM.ChangeState(FSM.State, IdleState, false);
     }
 
     /// <summary>
@@ -43,28 +45,8 @@ public class MonsterController : MoveableObject
             MonsterViewAngle(monsterData.viewingAngle, monsterData.viewDistance);
         }
 
-
-        switch (State)
-        {
-            case Define.State.Idle:
-                IdleState();
-                break;
-            case Define.State.Walk:
-                WalkState();
-                break;
-            case Define.State.Running:
-                RunningState();
-                break;
-            case Define.State.Attack:
-                AttackState();
-                break;
-            case Define.State.Hurt:
-                HurtState();
-                break;
-            case Define.State.Die:
-                DieState();
-                break;
-        }
+        // 상태머신에서 Update시켜야하는 값이라면 실행, 아니라면 실행중지
+        FSM.UpdateMethod();
     }
 
     /// <summary>
@@ -84,7 +66,6 @@ public class MonsterController : MoveableObject
 
     protected virtual void IdleState()
     {
-        // 한번만 실행시키도록 설정 TODO
         StartCoroutine(ChangeRandA());
 
         // RandA값을 무작위로 변경시켜주는 코루틴
@@ -96,6 +77,7 @@ public class MonsterController : MoveableObject
             while(time < duration)
             {
                 time += Time.deltaTime;
+                Debug.Log("여기들어옴1");
 
                 yield return null;
             }
@@ -106,6 +88,7 @@ public class MonsterController : MoveableObject
                 // Animator Parameter / RandA 값 (0f ~ -1f)사이 값으로 변경
                 anim.SetFloat("RandA", UnityEngine.Random.Range(0f, -1f));
                 walkStateMultiple += duration;
+                Debug.Log("여기들어옴2");
 
                 yield return null;
             }
@@ -113,7 +96,8 @@ public class MonsterController : MoveableObject
             // 해당 배수가 (변경 간격 * 2)로 나누었을 때, 나머지가 0이라면 Walk 상태로 변경
             if(walkStateMultiple % (duration * 2) == 0)
             {
-                State = Define.State.Walk;
+                FSM.ChangeState(Define.State.Walk, WalkState, true);
+                Debug.Log("여기들어옴3");
                 yield break;
             }
 
@@ -121,24 +105,35 @@ public class MonsterController : MoveableObject
         }
     }
 
+    // 여기 WalkState 부분 코루틴으로 바꿔서 실행시켜야 될것같음 -> ChangeState 은 섞어서 쓸수가 없음 TODO
     protected virtual void WalkState()
     {
-        // 짜는 도중 TODO
-        /*int layer = NavMesh.GetAreaFromName("Walkable");
+        int layer = NavMesh.GetAreaFromName("Walkable");
 
         // 랜덤 목적지 설정
         Vector3 arrivalLocation = RandDestinationSet(transform.position, 5f, layer);
 
-        
+        // 목적지 설정
+        agent.SetDestination(arrivalLocation);
+
+        // agent 가 이동중이고, 목적지에 도착했다면 실행
+        if(agent.velocity.sqrMagnitude >= 0.2f * 0.2f && agent.remainingDistance <= 0.5f)
+        {
+            FSM.ChangeState(Define.State.Idle, IdleState, false);
+            return;
+        }
+
         Vector3 RandDestinationSet(Vector3 originPos, float dist, int mask)
         {
+            FSM.ChangeState(Define.State.Walk, WalkState, false);
+
             // 처음 몬스터가 생성된 위치에서 일정 값 떨어진곳으로 경로 계산
             Vector3 randDirection = UnityEngine.Random.insideUnitSphere * dist;
             randDirection += originPos;
 
             NavMesh.SamplePosition(randDirection, out NavMeshHit navHit, dist, mask);
             return navHit.position;
-        }*/
+        }
     }
 
     protected virtual void RunningState()
@@ -146,7 +141,7 @@ public class MonsterController : MoveableObject
         // 쫒는 타겟이 존재하지 않는다면, 상태 Idle 변경
         if(target == null)
         {
-            State = Define.State.Idle;
+            FSM.ChangeState(Define.State.Idle, IdleState, false);
         }
     }
 
@@ -209,7 +204,7 @@ public class MonsterController : MoveableObject
                         // 타겟 설정
                         target = hit.transform.gameObject;
                         // 상태 변경
-                        State = Define.State.Running;
+                        FSM.ChangeState(Define.State.Running, RunningState, true);
                     }
                 }
             }
