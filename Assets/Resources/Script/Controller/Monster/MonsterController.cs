@@ -235,13 +235,10 @@ public class MonsterController : MoveableObject
         Debug.DrawRay(transform.position + transform.up, rightBoundary, Color.red);
 
         // 타겟을 구한다
-        Collider[] targets = Physics.OverlapSphere(transform.position, viewDistance, LayerMask.NameToLayer("Player"));
+        Collider[] targets = Physics.OverlapSphere(transform.position, viewDistance, 1 << LayerMask.NameToLayer("Player"));
 
-        // 타겟이 범위에 들어오지 않았다면 리턴
-        if (targets.Length == 0)
-            return;
 
-        for(int i =0; i < targets.Length; ++i)
+        for (int i =0; i < targets.Length; ++i)
         {
             // 타겟의 위치
             Vector3 targetPos = targets[i].transform.position;
@@ -250,7 +247,9 @@ public class MonsterController : MoveableObject
             // 각도 (타겟과의 각도)
             float angle = Vector3.Angle(direction, transform.forward);
 
-            if(angle < viewAngle * 0.5f)
+            Debug.Log("첫째 관문 들어옴");
+
+            if (angle < viewAngle * 0.5f)
             {
                 RaycastHit hit;
                 if(Physics.Raycast(transform.position + Vector3.up, direction,out hit,viewDistance))
