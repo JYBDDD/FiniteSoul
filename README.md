@@ -98,7 +98,8 @@
 	
 22.03.28 ~ 22.03.30
 
-6. 몬스터 애니메이션 작성, NavMesh 필요 기능 추가
+6. 몬스터 애니메이션 작성, NavMesh 필요 기능 추가 , 상태머신 수정
+	-> 상태머신 및 상태를 최상위 부모가 들고있고 대리자로 상태머신(FSM)에 넘겨주는 방식으로 애니메이션을 변경하도록 설정하였음
 	-> 몬스터 애니메이션은 Mutant만 작성후, Warrok의 애니메이션은 Animator override Controller 로 작성하여 애니메이터 작성을 최소화 하였음
 	-> 몬스터 시야 관련 메소드 작성, 시야각/시야 거리에 따라 몬스터가 플레이어를 인식할수 있도록 설정
 	-> 
@@ -115,24 +116,19 @@
 	// CreatureBase컴포넌트를 들고 있는 오브젝트가 MonsterController를 가지고 있는 것으로 인식됨
 	// (StageManager -> MonsterSpawn() 부분)
 	
-22.03.31 ~
+22.04.04 ~ 
 
 ---------------------------------------------------------------------------------------------------------------------
 수정해야할 사항
 
 1. 할 것    TODO
 
-	4.3 새로운 FSM(유한 상태 머신) 만드는중...
-		-> 참고 - https://github.com/thefuntastic/Unity3d-Finite-State-Machine
-		-> Util 쪽에 StateMachine 스크립트 있음 ,  PlayerController 쪽에 안되는 부분 적어놓음 (Idle쪽이랑, Update쪽)  TODO
-	
 	4.4. 만들 것
 		-> 몬스터 컨트롤러 작성중
-			-> NavMeshAgent 를 이용하여 몬스터 AI 구현 할것
-				-> navigation 작업만 해놓음
-			-> 몬스터 공통 애니메이션 작성중
+			-> NavMeshAgent 를 이용하여 몬스터 AI 구현중
+				-> 몬스터 Idle상태일때 부터 어디코드에서 실행이 중지되는지 확인하기
+				
 
-			- 참고 https://solution94.tistory.com/19
 			- 참고 https://ansohxxn.github.io/unity%20lesson%201/chapter11-16/
 			
 			
