@@ -107,8 +107,8 @@ NavMeshSettings:
     serializedVersion: 2
     agentTypeID: 0
     agentRadius: 0.5
-    agentHeight: 2
-    agentSlope: 50
+    agentHeight: 1.4
+    agentSlope: 51.3
     agentClimb: 0.4
     ledgeDropHeight: 0
     maxJumpAcrossDistance: 0
@@ -4608,7 +4608,7 @@ Transform:
   m_GameObject: {fileID: 916540469}
   m_LocalRotation: {x: 0.5, y: 0.5, z: -0.5, w: 0.5}
   m_LocalPosition: {x: -40.2, y: 42.9, z: -46.4}
-  m_LocalScale: {x: 15, y: 1, z: 10}
+  m_LocalScale: {x: 15, y: 5, z: 10}
   m_Children: []
   m_Father: {fileID: 362979560}
   m_RootOrder: 3
@@ -6421,7 +6421,7 @@ Transform:
   m_GameObject: {fileID: 1213284943}
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
   m_LocalPosition: {x: 22.366077, y: 42.888737, z: -89.41287}
-  m_LocalScale: {x: 15, y: 1, z: 10}
+  m_LocalScale: {x: 15, y: 5, z: 10}
   m_Children: []
   m_Father: {fileID: 362979560}
   m_RootOrder: 0
@@ -6517,7 +6517,7 @@ Transform:
   m_GameObject: {fileID: 1217695702}
   m_LocalRotation: {x: 0.5, y: 0.5, z: -0.5, w: 0.5}
   m_LocalPosition: {x: 69.8, y: 42.9, z: -46.4}
-  m_LocalScale: {x: 15, y: 1, z: 10}
+  m_LocalScale: {x: 15, y: 5, z: 10}
   m_Children: []
   m_Father: {fileID: 362979560}
   m_RootOrder: 1
@@ -7727,7 +7727,7 @@ Transform:
   m_GameObject: {fileID: 1460952808}
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
   m_LocalPosition: {x: 22.366077, y: 42.9, z: 28.3}
-  m_LocalScale: {x: 15, y: 1, z: 10}
+  m_LocalScale: {x: 15, y: 5, z: 10}
   m_Children: []
   m_Father: {fileID: 362979560}
   m_RootOrder: 2
@@ -8734,7 +8734,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4556984811349870, guid: b71e387166e4ce648849bbd6b762b736, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 6.8487377
+      value: 7.28
       objectReference: {fileID: 0}
     - target: {fileID: 4556984811349870, guid: b71e387166e4ce648849bbd6b762b736, type: 3}
       propertyPath: m_LocalPosition.z
@@ -9785,7 +9785,7 @@ TerrainCollider:
   m_Material: {fileID: 0}
   m_Enabled: 1
   m_TerrainData: {fileID: 15600000, guid: af624605127bce5459c3f5aef69c6e44, type: 2}
-  m_EnableTreeColliders: 1
+  m_EnableTreeColliders: 0
 --- !u!218 &1890421370
 Terrain:
   m_ObjectHideFlags: 0
@@ -9810,7 +9810,7 @@ Terrain:
   m_DrawInstanced: 0
   m_DrawTreesAndFoliage: 1
   m_ReflectionProbeUsage: 1
-  m_MaterialTemplate: {fileID: 10652, guid: 0000000000000000f000000000000000, type: 0}
+  m_MaterialTemplate: {fileID: 10650, guid: 0000000000000000f000000000000000, type: 0}
   m_BakeLightProbesForTrees: 1
   m_PreserveTreePrototypeLayers: 0
   m_DeringLightProbesForTrees: 1

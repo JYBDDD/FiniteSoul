@@ -47,6 +47,8 @@ public class MonsterController : MoveableObject
 
         // 상태머신에서 Update시켜야하는 값이라면 실행, 아니라면 실행중지
         FSM.UpdateMethod();
+
+        State = FSM.State;
     }
 
     /// <summary>
@@ -66,6 +68,7 @@ public class MonsterController : MoveableObject
 
     protected virtual void IdleState()
     {
+        float rand = UnityEngine.Random.Range(0f, -1f);
         StartCoroutine(ChangeRandA());
 
         // RandA값을 무작위로 변경시켜주는 코루틴
@@ -77,77 +80,131 @@ public class MonsterController : MoveableObject
             while(time < duration)
             {
                 time += Time.deltaTime;
-                Debug.Log("여기들어옴1");
+
+                // 애니메이터 이동 블랜드 파라미터값 설정
+
+                if(anim.GetFloat("MoveZ") >= -0.1f && anim.GetFloat("MoveZ") <= 0.1f)
+                {
+                    anim.SetFloat("MoveZ", 0);
+                }
+                else 
+                {
+                    anim.SetFloat("MoveZ", Mathf.Lerp(anim.GetFloat("MoveZ"), 0, Time.deltaTime * 3f));
+                }
+
+                anim.SetFloat("RandA", Mathf.Lerp(anim.GetFloat("RandA"), rand, Time.deltaTime * 2f));
 
                 yield return null;
             }
 
             // duration 이 경과했다면 실행
-            if(time >= duration)
+            if (time >= duration)
             {
                 // Animator Parameter / RandA 값 (0f ~ -1f)사이 값으로 변경
-                anim.SetFloat("RandA", UnityEngine.Random.Range(0f, -1f));
-                walkStateMultiple += duration;
-                Debug.Log("여기들어옴2");
+                walkStateMultiple += Mathf.RoundToInt(duration);
+                time = 0;
 
                 yield return null;
             }
 
             // 해당 배수가 (변경 간격 * 2)로 나누었을 때, 나머지가 0이라면 Walk 상태로 변경
-            if(walkStateMultiple % (duration * 2) == 0)
+            if (Mathf.RoundToInt(walkStateMultiple) % (duration * 2) == 0)
             {
-                FSM.ChangeState(Define.State.Walk, WalkState, true);
-                Debug.Log("여기들어옴3");        /////////////////////////////////////////   요고 안들어옴, 위에는 들어옴 TODO
+                FSM.ChangeState(Define.State.Walk, WalkState, false);
                 yield break;
             }
 
+            StartCoroutine(ChangeRandA());
             yield return null;
         }
     }
 
-    // 여기 WalkState 부분 코루틴으로 바꿔서 실행시켜야 될것같음 -> ChangeState 은 섞어서 쓸수가 없음 TODO
     protected virtual void WalkState()
     {
-        int layer = NavMesh.GetAreaFromName("Walkable");
+        StartCoroutine(WalkPathSet());
 
-        // 랜덤 목적지 설정
-        Vector3 arrivalLocation = RandDestinationSet(transform.position, 5f, layer);
-
-        // 목적지 설정
-        agent.SetDestination(arrivalLocation);
-
-        // agent 가 이동중이고, 목적지에 도착했다면 실행
-        if(agent.velocity.sqrMagnitude >= 0.2f * 0.2f && agent.remainingDistance <= 0.5f)
+        IEnumerator WalkPathSet()
         {
-            FSM.ChangeState(Define.State.Idle, IdleState, false);
-            return;
+            // 랜덤 목적지 설정
+            Vector3 arrivalLocation = RandDestinationSet(monsterStartPos, 5f);
+
+            // 목적지 설정
+            bool TruePath = agent.SetDestination(arrivalLocation);
+            if(!TruePath)
+            {
+                yield break;
+            }
+
+            while(TruePath)
+            {
+                // 애니메이터 이동 블랜드 파라미터값 설정
+                anim.SetFloat("MoveZ", Mathf.Lerp(anim.GetFloat("MoveZ"), 1, Time.deltaTime * 2f));
+                anim.SetFloat("RandA", Mathf.Lerp(anim.GetFloat("RandA"), 0, Time.deltaTime * 2f));
+
+                // agent 가 이동중이고, 목적지에 도착했다면 실행
+                if (agent.velocity.sqrMagnitude >= 0.2f * 0.2f && agent.remainingDistance <= 1f)
+                {
+                    FSM.ChangeState(Define.State.Idle, IdleState, false);
+                    yield break;
+                }
+                yield return null;
+            }
         }
 
-        Vector3 RandDestinationSet(Vector3 originPos, float dist, int mask)
+        // 랜덤 목적지 생성 내부 메소드
+        Vector3 RandDestinationSet(Vector3 originPos, float dist)
         {
-            FSM.ChangeState(Define.State.Walk, WalkState, false);
-
             // 처음 몬스터가 생성된 위치에서 일정 값 떨어진곳으로 경로 계산
             Vector3 randDirection = UnityEngine.Random.insideUnitSphere * dist;
             randDirection += originPos;
 
-            NavMesh.SamplePosition(randDirection, out NavMeshHit navHit, dist, mask);
-            return navHit.position;
+            NavMeshPath path = new NavMeshPath();
+            bool TruePath = NavMesh.CalculatePath(transform.position, randDirection,NavMesh.AllAreas, path);
+
+            // 올바른 경로가 반환되지 않았다면 Idle 상태로 전환
+            if(TruePath == false)
+            {
+                FSM.ChangeState(Define.State.Idle, IdleState, false);
+                return transform.position;
+            }
+            return randDirection;
         }
     }
 
     protected virtual void RunningState()
     {
-        // 쫒는 타겟이 존재하지 않는다면, 상태 Idle 변경
-        if(target == null)
+        StartCoroutine(LockTarget());
+
+        IEnumerator LockTarget()
         {
-            FSM.ChangeState(Define.State.Idle, IdleState, false);
+
+
+
+            while(true)
+            {
+
+                // 애니메이터 이동 블랜드 파라미터값 설정
+                anim.SetFloat("MoveZ", Mathf.Lerp(anim.GetFloat("MoveZ"), 2, Time.deltaTime * 2f));
+                anim.SetFloat("RandA", Mathf.Lerp(anim.GetFloat("RandA"), 0, Time.deltaTime * 2f));
+
+                // 쫒는 타겟이 존재하지 않는다면, 상태 Idle 변경
+                if (target == null)
+                {
+                    FSM.ChangeState(Define.State.Idle, IdleState, false);
+                }
+
+                // 플레이어 목표 설정, 이동
+                agent.SetDestination(target.transform.position);
+
+
+                yield return null;
+            }
         }
     }
 
     protected virtual void AttackState()
     {
-        
+        anim.SetBool("Attack", true);
     }
 
     protected virtual void HurtState()
@@ -201,6 +258,7 @@ public class MonsterController : MoveableObject
                     // 타깃의 레이어가 Player 일경우 실행
                     if(hit.transform.gameObject.layer == LayerMask.NameToLayer("Player"))
                     {
+                        Debug.Log("플레이어 찾음");
                         // 타겟 설정
                         target = hit.transform.gameObject;
                         // 상태 변경
@@ -218,6 +276,13 @@ public class MonsterController : MoveableObject
         }
     }
 
+    #region 몬스터 애니메이션 Event에 직접 들어가는 메소드
 
-    
+    public void MonsterAttackEnd()
+    {
+        anim.SetBool("Attack", false);
+    }
+
+    #endregion
+
 }
