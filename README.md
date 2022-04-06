@@ -126,8 +126,8 @@
 	4.4. 만들 것
 		-> 몬스터 컨트롤러 작성중
 			-> NavMeshAgent 를 이용하여 몬스터 AI 구현중
-				-> 몬스터 Idle상태일때 부터 어디코드에서 실행이 중지되는지 확인하기
-				
+				-> 몬스터 RunningState 상태, 몬스터가 플레이어를 발견했을시 변경되도록 설정 TODO
+				-> MonsterViewAngle() 메소드가 실행이 안되는것으로 추정
 
 			- 참고 https://ansohxxn.github.io/unity%20lesson%201/chapter11-16/
 			
