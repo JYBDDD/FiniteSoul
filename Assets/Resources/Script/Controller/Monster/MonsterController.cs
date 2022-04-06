@@ -97,7 +97,7 @@ public class MonsterController : MoveableObject
             if(walkStateMultiple % (duration * 2) == 0)
             {
                 FSM.ChangeState(Define.State.Walk, WalkState, true);
-                Debug.Log("여기들어옴3");
+                Debug.Log("여기들어옴3");        /////////////////////////////////////////   요고 안들어옴, 위에는 들어옴 TODO
                 yield break;
             }
 
