@@ -35,6 +35,11 @@ public class MonsterData : StaticData
     public float maxHp;
 
     /// <summary>
+    /// 몬스터 이동속도
+    /// </summary>
+    public float moveSpeed;
+
+    /// <summary>
     /// 몬스터 시야각
     /// </summary>
     public float viewingAngle;

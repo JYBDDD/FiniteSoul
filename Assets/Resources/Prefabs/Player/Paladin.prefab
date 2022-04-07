@@ -1428,11 +1428,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainData:
     index: 0
-    type: 0
+    characterType: 0
   State: 0
   playerData:
     index: 0
-    type: 0
+    characterType: 0
     name: 
     atkType: 0
     maxHp: 0
@@ -1452,7 +1452,7 @@ MonoBehaviour:
     currentRune: 0
     growthStat:
       index: 0
-      type: 0
+      characterType: 0
       maxHp: 0
       extraHp: 0
       maxRune: 0

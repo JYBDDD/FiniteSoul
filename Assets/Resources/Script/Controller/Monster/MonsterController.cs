@@ -40,7 +40,7 @@ public class MonsterController : MoveableObject
     public virtual void Update()
     {
         // 몬스터의 데이터(시야각, 시야 거리)가 존재한다면 실행
-        if (monsterData?.viewingAngle != null && monsterData?.viewDistance != null)
+        if (monsterData != null)
         {
             MonsterViewAngle(monsterData.viewingAngle, monsterData.viewDistance);
         }
@@ -57,6 +57,15 @@ public class MonsterController : MoveableObject
     public void SetStat()
     {
         monsterData.currentHp = monsterData.maxHp;
+
+        // NavMeshAgent 이동속도 = 몬스터데이터 이동속도 지정
+        agent.speed = monsterData.moveSpeed;
+
+        // 몬스터 파라미터값 초기값으로 재설정
+        anim.SetFloat("MoveZ", 0);
+        anim.SetFloat("RandA", 0);
+        anim.SetBool("Attack", false);
+        anim.SetBool("Die", false);
     }
 
     public override void InsertComponent()
@@ -69,30 +78,30 @@ public class MonsterController : MoveableObject
     protected virtual void IdleState()
     {
         float rand = UnityEngine.Random.Range(0f, -1f);
+        float randDuration = UnityEngine.Random.Range(2, 6);
         StartCoroutine(ChangeRandA());
 
         // RandA값을 무작위로 변경시켜주는 코루틴
         IEnumerator ChangeRandA()
         {
-            float duration = 4f;    // 변경 간격
+            float duration = randDuration;    // 변경 간격
             float time = 0;
 
             while(time < duration)
             {
                 time += Time.deltaTime;
 
-                // 애니메이터 이동 블랜드 파라미터값 설정
-
-                if(anim.GetFloat("MoveZ") >= -0.1f && anim.GetFloat("MoveZ") <= 0.1f)
+                // 타겟을 찾았다면 RunningState() 로 전환
+                if(target != null)
                 {
-                    anim.SetFloat("MoveZ", 0);
-                }
-                else 
-                {
-                    anim.SetFloat("MoveZ", Mathf.Lerp(anim.GetFloat("MoveZ"), 0, Time.deltaTime * 3f));
+                    FSM.ChangeState(Define.State.Running, RunningState, false);
+                    yield break;
                 }
 
+                anim.SetFloat("MoveZ", Mathf.Lerp(anim.GetFloat("MoveZ"), 0, Time.deltaTime));
                 anim.SetFloat("RandA", Mathf.Lerp(anim.GetFloat("RandA"), rand, Time.deltaTime * 2f));
+
+
 
                 yield return null;
             }
@@ -100,15 +109,14 @@ public class MonsterController : MoveableObject
             // duration 이 경과했다면 실행
             if (time >= duration)
             {
-                // Animator Parameter / RandA 값 (0f ~ -1f)사이 값으로 변경
                 walkStateMultiple += Mathf.RoundToInt(duration);
                 time = 0;
 
                 yield return null;
             }
 
-            // 해당 배수가 (변경 간격 * 2)로 나누었을 때, 나머지가 0이라면 Walk 상태로 변경
-            if (Mathf.RoundToInt(walkStateMultiple) % (duration * 2) == 0)
+            // 값이 10을 초과했을시 상태 전환
+            if (Mathf.RoundToInt(walkStateMultiple) > 10)
             {
                 FSM.ChangeState(Define.State.Walk, WalkState, false);
                 yield break;
@@ -121,6 +129,7 @@ public class MonsterController : MoveableObject
 
     protected virtual void WalkState()
     {
+
         StartCoroutine(WalkPathSet());
 
         IEnumerator WalkPathSet()
@@ -130,16 +139,26 @@ public class MonsterController : MoveableObject
 
             // 목적지 설정
             bool TruePath = agent.SetDestination(arrivalLocation);
+
+            // 목적지 값이 false라면 실행
             if(!TruePath)
             {
+                FSM.ChangeState(Define.State.Idle, IdleState, false);
                 yield break;
             }
 
-            while(TruePath)
+            while(FSM.State == Define.State.Walk)
             {
                 // 애니메이터 이동 블랜드 파라미터값 설정
-                anim.SetFloat("MoveZ", Mathf.Lerp(anim.GetFloat("MoveZ"), 1, Time.deltaTime * 2f));
+                anim.SetFloat("MoveZ", Mathf.Lerp(anim.GetFloat("MoveZ"), 1, Time.deltaTime * 3f));
                 anim.SetFloat("RandA", Mathf.Lerp(anim.GetFloat("RandA"), 0, Time.deltaTime * 2f));
+
+                // 타겟이 존재한다면 Running으로 상태 전환
+                if (target != null)
+                {
+                    FSM.ChangeState(Define.State.Running, RunningState, false);
+                    yield break;
+                }
 
                 // agent 가 이동중이고, 목적지에 도착했다면 실행
                 if (agent.velocity.sqrMagnitude >= 0.2f * 0.2f && agent.remainingDistance <= 1f)
@@ -147,6 +166,7 @@ public class MonsterController : MoveableObject
                     FSM.ChangeState(Define.State.Idle, IdleState, false);
                     yield break;
                 }
+
                 yield return null;
             }
         }
@@ -173,28 +193,45 @@ public class MonsterController : MoveableObject
 
     protected virtual void RunningState()
     {
+        // 이동속도 증가
+        agent.speed = (monsterData.moveSpeed * 2f);
+
         StartCoroutine(LockTarget());
 
         IEnumerator LockTarget()
         {
-
-
-
             while(true)
             {
+                // 몬스터가 타겟을 바라보도록 설정
+                transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(target.transform.position), Time.deltaTime);
+
+                // 플레이어와 몬스터의 거리
+                float distance = Vector3.Distance(target.transform.position, transform.position);
+
+                // 플레이어가 공격범위 안으로 들어올경우 AttackState() 로 변경시킨다
+                if (distance <= monsterData.atkRange)
+                {
+
+                    // 스피드 본래값으로 재설정
+                    agent.speed = monsterData.moveSpeed;
+
+                    // 공격값 랜덤으로 재설정
+                    anim.SetFloat("RandA", UnityEngine.Random.Range(0f, -1f));
+
+                    // 공격상태로 변경
+                    FSM.ChangeState(Define.State.Attack, AttackState, false);
+                    yield break;
+                }
 
                 // 애니메이터 이동 블랜드 파라미터값 설정
                 anim.SetFloat("MoveZ", Mathf.Lerp(anim.GetFloat("MoveZ"), 2, Time.deltaTime * 2f));
                 anim.SetFloat("RandA", Mathf.Lerp(anim.GetFloat("RandA"), 0, Time.deltaTime * 2f));
 
-                // 쫒는 타겟이 존재하지 않는다면, 상태 Idle 변경
-                if (target == null)
-                {
-                    FSM.ChangeState(Define.State.Idle, IdleState, false);
-                }
-
                 // 플레이어 목표 설정, 이동
-                agent.SetDestination(target.transform.position);
+                if(FSM.State != Define.State.Attack)
+                {
+                    agent.SetDestination(target.transform.position);
+                }
 
 
                 yield return null;
@@ -204,17 +241,46 @@ public class MonsterController : MoveableObject
 
     protected virtual void AttackState()
     {
-        anim.SetBool("Attack", true);
+        StartCoroutine(StateChange());
+
+        IEnumerator StateChange()
+        {
+            anim.SetBool("Attack", true);
+
+            // 공격상태일때 실행
+            while(true)
+            {
+                // 공격상태가 해제되었을때, RandA값(2개 공격 애니메이션) 재설정
+                if (!anim.GetBool("Attack"))
+                {
+                    anim.SetFloat("RandA", 0);
+                    FSM.ChangeState(Define.State.Running, RunningState, false);
+                    yield break;
+                }
+
+                // 타겟을 바라보도록 설정
+                transform.LookAt(target.transform);
+
+                // 몬스터의 체력이 0이 되었을때 실행
+                if (monsterData.currentHp <= 0)
+                {
+                    FSM.ChangeState(Define.State.Die, DieState, false);
+                    yield break;
+                }
+
+                yield return null;
+            }
+        }
     }
 
     protected virtual void HurtState()
     {
-        
+        // ->피격 이펙트 출력시키는것으로 할것임  TODO
     }
 
     protected virtual void DieState()
     {
-        
+        anim.SetBool("Die", true);
     }
 
     /// <summary>
@@ -224,19 +290,16 @@ public class MonsterController : MoveableObject
     /// <param name="viewDistance">시야 거리</param>
     protected void MonsterViewAngle(float viewAngle,float viewDistance)
     {
+        // 타겟이 존재한다면 리턴
+        if (target != null)
+            return;
+
         // 몬스터가 아니라면 리턴시킨다
         if (monsterData.characterType != Define.CharacterType.Monster)
             return;
 
-        Vector3 leftBoundary = BoundaryAngle(-viewAngle * 0.5f);
-        Vector3 rightBoundary = BoundaryAngle(viewAngle * 0.5f);
-
-        Debug.DrawRay(transform.position + transform.up, leftBoundary, Color.red);
-        Debug.DrawRay(transform.position + transform.up, rightBoundary, Color.red);
-
-        // 타겟을 구한다
+        // 몬스터 주변에 있는 타겟을 구한다
         Collider[] targets = Physics.OverlapSphere(transform.position, viewDistance, 1 << LayerMask.NameToLayer("Player"));
-
 
         for (int i =0; i < targets.Length; ++i)
         {
@@ -247,31 +310,20 @@ public class MonsterController : MoveableObject
             // 각도 (타겟과의 각도)
             float angle = Vector3.Angle(direction, transform.forward);
 
-            Debug.Log("첫째 관문 들어옴");
-
+            // 플레이어의 시야 각도안으로 들어왓을시 실행
             if (angle < viewAngle * 0.5f)
             {
                 RaycastHit hit;
-                if(Physics.Raycast(transform.position + Vector3.up, direction,out hit,viewDistance))
+                if (Physics.Raycast(transform.position + Vector3.up, direction, out hit, viewDistance))
                 {
                     // 타깃의 레이어가 Player 일경우 실행
                     if(hit.transform.gameObject.layer == LayerMask.NameToLayer("Player"))
                     {
-                        Debug.Log("플레이어 찾음");
                         // 타겟 설정
                         target = hit.transform.gameObject;
-                        // 상태 변경
-                        FSM.ChangeState(Define.State.Running, RunningState, true);
                     }
                 }
             }
-        }
-
-        // 경계 각도
-        Vector3 BoundaryAngle(float angle)
-        {
-            angle += transform.eulerAngles.y;
-            return new Vector3(Mathf.Sin(angle * Mathf.Deg2Rad), 0f, Mathf.Cos(angle * Mathf.Deg2Rad));
         }
     }
 

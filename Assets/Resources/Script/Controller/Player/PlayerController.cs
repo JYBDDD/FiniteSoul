@@ -151,8 +151,6 @@ public class PlayerController : MoveableObject
 
     protected virtual void EvasionState()
     {
-        // 해당 애니메이션이 실행중일때 일시적으로 이동속도 * 2  TODO
-
         if(!anim.GetBool("Evasion"))
         {
             FSM.ChangeState(Define.State.Idle, IdleState, true);
@@ -165,8 +163,6 @@ public class PlayerController : MoveableObject
 
     protected virtual void RunningState()
     {
-        // 해당 애니메이션이 실행중일때 이동속도 * 2  TODO
-
         if(!Input.GetKey(KeyCode.LeftShift))
         {
             FSM.ChangeState(Define.State.Idle, IdleState, true);
