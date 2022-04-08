@@ -17,6 +17,9 @@ public class PlayerController : MoveableObject
     float moveX = 0;
     float moveZ = 0;
 
+    // 플레이어가 땅에 닿아있는지 체크
+    bool IsGround = false;
+
     /// <summary>
     /// 스텟 변경시 변경된 스탯을 재설정 해주는 메소드
     /// </summary>
@@ -61,11 +64,6 @@ public class PlayerController : MoveableObject
     {
         PlayerLookingMouse();
 
-        if (!Input.GetKey(KeyCode.LeftShift))
-        {
-            anim.SetBool("RunBool", false);
-        }
-
         // 상태머신에서 Update시켜야하는 값이라면 실행, 아니라면 실행중지
         FSM.UpdateMethod();
     }
@@ -95,34 +93,46 @@ public class PlayerController : MoveableObject
             FSM.ChangeState(Define.State.Evasion, EvasionState, true);
             return;
         }
-        if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.LeftShift))      // Running
+        if (Input.GetKey(KeyCode.W) | Input.GetKey(KeyCode.A) | Input.GetKey(KeyCode.S) | Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.LeftShift))      // Running
         {
             FSM.ChangeState(Define.State.Running, RunningState, true);
             return;
         }
         if (Input.GetKey(KeyCode.Mouse0))    // Attack
         {
-            anim.SetBool("Attack", true);
-            FSM.ChangeState(Define.State.Attack, NormalAttackState, true);
+            FSM.ChangeState(Define.State.Attack, NormalAttackState);
             return;
         }
 
-        anim.SetFloat("MoveX", Mathf.Lerp(anim.GetFloat("MoveX"), 0, Time.deltaTime * 2f));
-        anim.SetFloat("MoveZ", Mathf.Lerp(anim.GetFloat("MoveZ"), 0, Time.deltaTime * 2f));
+        anim.SetFloat("MoveX", Mathf.Lerp(anim.GetFloat("MoveX"), 0, Time.deltaTime * 4f));
+        anim.SetFloat("MoveZ", Mathf.Lerp(anim.GetFloat("MoveZ"), 0, Time.deltaTime * 4f));
         FSM.State = Define.State.Idle;
     }
 
     protected virtual void WalkState()
     {
+        // 좌, 우측키를 누르지 않았을 시, MoveX 값 0으로 재설정
+        if(!Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
+        {
+            anim.SetFloat("MoveX", Mathf.Lerp(anim.GetFloat("MoveX"), 0, Time.deltaTime * 4f));
+        }
         if (Input.GetKey(KeyCode.W))         // 전진키
         {
             anim.SetFloat("MoveZ", Mathf.Lerp(anim.GetFloat("MoveZ"), 1, Time.deltaTime * 4f));
         }
-        if(Input.GetKey(KeyCode.S))                                     // 후진키
+        if (Input.GetKey(KeyCode.A))         // 좌측 전진키
+        {
+            anim.SetFloat("MoveX", Mathf.Lerp(anim.GetFloat("MoveX"), -1, Time.deltaTime * 4f));
+        }
+        if (Input.GetKey(KeyCode.D))         // 우측 전진키
+        {
+            anim.SetFloat("MoveX", Mathf.Lerp(anim.GetFloat("MoveX"), 1, Time.deltaTime * 4f));
+        }
+        if (Input.GetKey(KeyCode.S))                                     // 후진키
         {
             anim.SetFloat("MoveZ", Mathf.Lerp(anim.GetFloat("MoveZ"), -1, Time.deltaTime * 4f));
         }
-        if(Input.GetKey(KeyCode.Space))     // Evasion;
+        if(Input.GetKey(KeyCode.Space))     // Evasion
         {
             anim.SetBool("Evasion", true);
             FSM.ChangeState(Define.State.Evasion, EvasionState, true);
@@ -133,18 +143,16 @@ public class PlayerController : MoveableObject
             FSM.ChangeState(Define.State.Idle, IdleState, true);
             return;
         }
-        if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.LeftShift))      // Running
+        if (Input.GetKey(KeyCode.W) | Input.GetKey(KeyCode.A) | Input.GetKey(KeyCode.S) | Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.LeftShift))      // Running
         {
             FSM.ChangeState(Define.State.Running, RunningState, true);
             return;
         }
         if (Input.GetKey(KeyCode.Mouse0))    // Attack
         {
-            anim.SetBool("Attack", true);
-            FSM.ChangeState(Define.State.Attack, NormalAttackState, true);
+            FSM.ChangeState(Define.State.Attack, NormalAttackState);
             return;
         }
-
 
         FSM.State = Define.State.Walk;
     }
@@ -163,33 +171,108 @@ public class PlayerController : MoveableObject
 
     protected virtual void RunningState()
     {
-        if(!Input.GetKey(KeyCode.LeftShift))
+        if (Input.GetKey(KeyCode.Space))     // Evasion
+        {
+            anim.SetBool("Evasion", true);
+            FSM.ChangeState(Define.State.Evasion, EvasionState, true);
+            return;
+        }
+        if (!Input.GetKey(KeyCode.LeftShift))
         {
             FSM.ChangeState(Define.State.Idle, IdleState, true);
-            anim.SetBool("RunBool", false);
             return;
         }
         if (Input.GetKey(KeyCode.Mouse0))    // Attack
         {
-            anim.SetBool("Attack", true);
-            FSM.ChangeState(Define.State.Attack, NormalAttackState, true);
+            FSM.ChangeState(Define.State.Attack, NormalAttackState);
             return;
         }
 
-        anim.SetBool("RunBool", true);
-        anim.SetFloat("MoveZ", Mathf.Lerp(anim.GetFloat("MoveZ"), 2, Time.deltaTime * 4f));
+        // 좌,우키를 입력하지 않을시 MoveX의 값을 0으로 돌린다
+        if (!Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
+        {
+            anim.SetFloat("MoveX", Mathf.Lerp(anim.GetFloat("MoveX"), 0, Time.deltaTime * 4f));
+        }
+        // ForwardRun
+        if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.LeftShift))
+        {
+            anim.SetFloat("MoveZ", Mathf.Lerp(anim.GetFloat("MoveZ"), 2, Time.deltaTime * 4f));
+        }
+        // LeftRun
+        if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.LeftShift))
+        {
+            anim.SetFloat("MoveX", Mathf.Lerp(anim.GetFloat("MoveX"), -2, Time.deltaTime * 4f));
+        }
+        // BackRun
+        if (Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.LeftShift))
+        {
+            anim.SetFloat("MoveZ", Mathf.Lerp(anim.GetFloat("MoveZ"), -2, Time.deltaTime * 4f));
+        }
+        // RightRun
+        if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.LeftShift))
+        {
+            anim.SetFloat("MoveX", Mathf.Lerp(anim.GetFloat("MoveX"), 2, Time.deltaTime * 4f));
+        }
+
         FSM.State = Define.State.Running;
     }
 
     protected virtual void NormalAttackState()
     {
-        if(!anim.GetBool("Attack"))
+        //  Attack 애니메이션을 실행시키는 트리거 호출
+        anim.SetTrigger("AttackTrigger");
+
+        StartCoroutine(ChainAttack());
+
+        IEnumerator ChainAttack()
         {
-            FSM.ChangeState(Define.State.Idle, IdleState, true);
-            return;
+            // Attack1 이 재생중인 상태에서 마우스 클릭시 Attack2 재생, Attack2 가 재생중인 상태에서 재생시 Attack3 재생
+            while (true)
+            {
+                if (Input.GetKey(KeyCode.W) | Input.GetKey(KeyCode.A) | Input.GetKey(KeyCode.S) | Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.LeftShift))         // 뛰기
+                {
+                    FSM.ChangeState(Define.State.Running, RunningState, true);
+                    yield break;
+                }
+                if (Input.GetKey(KeyCode.W) | Input.GetKey(KeyCode.S))         // 이동
+                {
+                    FSM.ChangeState(Define.State.Walk, WalkState, true);
+                    yield break;
+                }
+
+                if (AttackAnimationing("Attack2") == 0)
+                {
+                    anim.SetTrigger("AttackTrigger");
+                }
+                else if (AttackAnimationing("Attack1") == 0)
+                {
+                    anim.SetTrigger("AttackTrigger");
+                }
+
+                yield return null;
+            }
         }
 
-        anim.SetBool("Attack", true);
+        // Attack 애니메이션이 실행중이라면 0, 아니라면 1
+        int AttackAnimationing(string animationName)
+        {
+            if (anim.GetCurrentAnimatorStateInfo(0).IsName(animationName))
+            {
+                if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime < 0.9f && Input.GetKey(KeyCode.Mouse0))
+                {
+                    return 0;
+                }
+                if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.9f)
+                {
+                    anim.SetTrigger("NotAttackTrigger");
+                    FSM.ChangeState(Define.State.Idle, IdleState, true);
+                    return 2;
+                }
+            }
+
+            return 1;
+        }
+
         FSM.State = Define.State.Attack;
     }
 
@@ -198,11 +281,6 @@ public class PlayerController : MoveableObject
     protected virtual void ProjectileAttackState()
     {
 
-    }
-
-    protected virtual void JumpState()
-    {
-        
     }
 
     protected virtual void HurtState()
@@ -237,9 +315,13 @@ public class PlayerController : MoveableObject
 
     private void Jump()
     {
-        if(Input.GetKeyDown(KeyCode.C))
+        // 땅에 닿았을때 실행가능
+        if(Input.GetKeyDown(KeyCode.C) && IsGround)
         {
+            IsGround = false;
             rigid.AddForce(Vector3.up * playerData.jumpForce,ForceMode.Impulse);
+            // 점프 애니메이션 재생
+            anim.SetTrigger("JumpTrigger");
         }
     }
 
@@ -268,21 +350,25 @@ public class PlayerController : MoveableObject
         }
     }
 
-        #region 애니메이션에 들어가는 메서드
-        /// <summary>
-        /// 회피 애니메이션에 들어가는 메서드
-        /// </summary>
-        private void AnimEvasionEnd()
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(!IsGround)
+        {
+            if (collision.gameObject.CompareTag("Ground"))
+            {
+                IsGround = true;
+            }
+        }
+
+    }
+
+    #region 애니메이션에 들어가는 메서드
+    /// <summary>
+    /// 회피 애니메이션에 들어가는 메서드
+    /// </summary>
+    private void AnimEvasionEnd()
     {
         anim.SetBool("Evasion", false);
-    }
-    /// <summary>
-    /// 공격 애니메이션에 들어가는 메서드
-    /// </summary>
-    /// <returns></returns>
-    private void AnimAttackEnd()
-    {
-        anim.SetBool("Attack", false);
     }
     #endregion
 }

@@ -34,9 +34,20 @@ public static class Define
         Evasion,
         Running,
         Attack,
-        Jump,
         Hurt,
         Die,
 
+    }
+
+    public class HitPath
+    {
+        /// <summary>
+        /// Mutant Hit 애니메이션 Path   (Resources.LoadAll 전용)
+        /// </summary>
+        public const string mutantPath = "Art/Anim/Animation/Monster/Mutant/Hit";
+        /// <summary>
+        /// Warrok Hit 애니메이션 Path   (Resources.LoadAll 전용)
+        /// </summary>
+        public const string warrokPath = "Art/Anim/Animation/Monster/Warrok/Hit";
     }
 }

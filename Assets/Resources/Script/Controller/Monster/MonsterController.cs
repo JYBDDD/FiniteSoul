@@ -22,7 +22,7 @@ public class MonsterController : MoveableObject
     public Vector3 monsterStartPos = Vector3.zero;
 
     // 몬스터의 타겟
-    GameObject target = null;
+    protected GameObject target = null;
 
     /// <summary>
     /// 몬스터들만 사용하는 Awake()
@@ -94,7 +94,7 @@ public class MonsterController : MoveableObject
                 // 타겟을 찾았다면 RunningState() 로 전환
                 if(target != null)
                 {
-                    FSM.ChangeState(Define.State.Running, RunningState, false);
+                    FSM.ChangeState(Define.State.Running, RunningState);
                     yield break;
                 }
 
@@ -118,7 +118,7 @@ public class MonsterController : MoveableObject
             // 값이 10을 초과했을시 상태 전환
             if (Mathf.RoundToInt(walkStateMultiple) > 10)
             {
-                FSM.ChangeState(Define.State.Walk, WalkState, false);
+                FSM.ChangeState(Define.State.Walk, WalkState);
                 yield break;
             }
 
@@ -143,7 +143,7 @@ public class MonsterController : MoveableObject
             // 목적지 값이 false라면 실행
             if(!TruePath)
             {
-                FSM.ChangeState(Define.State.Idle, IdleState, false);
+                FSM.ChangeState(Define.State.Idle, IdleState);
                 yield break;
             }
 
@@ -156,14 +156,14 @@ public class MonsterController : MoveableObject
                 // 타겟이 존재한다면 Running으로 상태 전환
                 if (target != null)
                 {
-                    FSM.ChangeState(Define.State.Running, RunningState, false);
+                    FSM.ChangeState(Define.State.Running, RunningState);
                     yield break;
                 }
 
                 // agent 가 이동중이고, 목적지에 도착했다면 실행
                 if (agent.velocity.sqrMagnitude >= 0.2f * 0.2f && agent.remainingDistance <= 1f)
                 {
-                    FSM.ChangeState(Define.State.Idle, IdleState, false);
+                    FSM.ChangeState(Define.State.Idle, IdleState);
                     yield break;
                 }
 
@@ -184,7 +184,7 @@ public class MonsterController : MoveableObject
             // 올바른 경로가 반환되지 않았다면 Idle 상태로 전환
             if(TruePath == false)
             {
-                FSM.ChangeState(Define.State.Idle, IdleState, false);
+                FSM.ChangeState(Define.State.Idle, IdleState);
                 return transform.position;
             }
             return randDirection;
@@ -219,7 +219,7 @@ public class MonsterController : MoveableObject
                     anim.SetFloat("RandA", UnityEngine.Random.Range(0f, -1f));
 
                     // 공격상태로 변경
-                    FSM.ChangeState(Define.State.Attack, AttackState, false);
+                    FSM.ChangeState(Define.State.Attack, AttackState);
                     yield break;
                 }
 
@@ -254,7 +254,7 @@ public class MonsterController : MoveableObject
                 if (!anim.GetBool("Attack"))
                 {
                     anim.SetFloat("RandA", 0);
-                    FSM.ChangeState(Define.State.Running, RunningState, false);
+                    FSM.ChangeState(Define.State.Running, RunningState);
                     yield break;
                 }
 
@@ -264,7 +264,7 @@ public class MonsterController : MoveableObject
                 // 몬스터의 체력이 0이 되었을때 실행
                 if (monsterData.currentHp <= 0)
                 {
-                    FSM.ChangeState(Define.State.Die, DieState, false);
+                    FSM.ChangeState(Define.State.Die, DieState);
                     yield break;
                 }
 
@@ -273,9 +273,9 @@ public class MonsterController : MoveableObject
         }
     }
 
-    protected virtual void HurtState()
+    public virtual void HurtState()
     {
-        // ->피격 이펙트 출력시키는것으로 할것임  TODO
+        // Hit 애니메이션은 각각의 상속받은 자식에서 적용중
     }
 
     protected virtual void DieState()
