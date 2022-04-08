@@ -136,9 +136,7 @@
 
 	4.5 여러가지
 		
-		1. 플레이어 MoveX 값 잡아야되는거 TODO 로 적어놓음
-	
-		2. AttackController 생성
+		1. AttackController 생성
 		-> 어느부분에 위치시킬것인지 미정..
 		-> 공격하는 객체의 능력치를 받아 , 닿은 객체의 능력치 차감
 		-> 플레이어가 Evasion 애니메이션이 재생중일때 데미지를 받지않도록 할것 (이거는 AttackController 에서 플레이어 FSM.State 상태가 
