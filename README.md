@@ -134,6 +134,7 @@
 	-> AttackController 를 추가하여 해당 컨트롤러에서 데미지 연산
 		-> AttackController 는 각각 공격 콜라이더의 오브젝트에 AddComponent 시켜 OnTriggerEnter 로 진행
 	-> 데미지 연산후 해당 객체의 HurtState 상태로 전환
+	-> 플레이어는 피격후 Hurt애니메이션 종료전까지 움직일 수 없음 (MoveableObject 의 NotToMove 로 설정중)
 	
 22.04.11 ~
 
@@ -146,6 +147,7 @@
 		
 		1. AttackController 생성
 		-> 몬스터 HitState 에 피격 이펙트는 넣었는데 3연피격 확인해보기
+			-> CreatureBase TODO 부분 고치기
 		https://gall.dcinside.com/mgallery/board/view/?id=game_dev&no=68610
 		https://blog.naver.com/PostView.naver?blogId=bsh9277&logNo=222283948395&categoryNo=17&parentCategoryNo=0
 	
