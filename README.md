@@ -144,12 +144,7 @@
 1. 할 것    TODO
 
 	4.5 여러가지
-		
-		1. AttackController 생성
-		-> 몬스터 HitState 에 피격 이펙트는 넣었는데 3연피격 확인해보기
-			-> CreatureBase TODO 부분 고치기
-		https://gall.dcinside.com/mgallery/board/view/?id=game_dev&no=68610
-		https://blog.naver.com/PostView.naver?blogId=bsh9277&logNo=222283948395&categoryNo=17&parentCategoryNo=0
+		- > 움직이지 않고 있는 상태에서 공격시 하반신 움직이도록 만들기
 	
 	4.6 UI
 		
