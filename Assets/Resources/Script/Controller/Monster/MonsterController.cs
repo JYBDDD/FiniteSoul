@@ -24,6 +24,9 @@ public class MonsterController : MoveableObject
     // 몬스터의 타겟
     protected GameObject target = null;
 
+    [SerializeField]
+    private List<Collider> atkCollider = new List<Collider>();
+
     /// <summary>
     /// 몬스터들만 사용하는 Awake()
     /// </summary>
@@ -73,6 +76,20 @@ public class MonsterController : MoveableObject
         base.InsertComponent();
         agent ??= GetComponent<NavMeshAgent>();
         target = null;  // 타겟 비우기
+
+        
+
+    }
+
+    public override void AttackColliderSet()
+    {
+        base.AttackColliderSet();
+        // 해당 콜라이더를 가지고 있는 오브젝트에 AttackController 스크립트를 추가
+        for (int i = 0; i < atkCollider.Count; ++i)
+        {
+            AttackController attackController = atkCollider[i].gameObject.AddComponent<AttackController>();
+            attackController.staticData = monsterData;
+        }
     }
 
     protected virtual void IdleState()
@@ -246,9 +263,10 @@ public class MonsterController : MoveableObject
         IEnumerator StateChange()
         {
             anim.SetBool("Attack", true);
+            agent.SetDestination(transform.position);
 
             // 공격상태일때 실행
-            while(true)
+            while (true)
             {
                 // 공격상태가 해제되었을때, RandA값(2개 공격 애니메이션) 재설정
                 if (!anim.GetBool("Attack"))
@@ -273,9 +291,12 @@ public class MonsterController : MoveableObject
         }
     }
 
+    /// <summary>
+    /// Hurt 애니메이션은 각각의 상속받은 자식에서 적용중
+    /// </summary>
     public virtual void HurtState()
     {
-        // Hit 애니메이션은 각각의 상속받은 자식에서 적용중
+        // 현재 CreatureBase 한곳에서만 사용중
     }
 
     protected virtual void DieState()

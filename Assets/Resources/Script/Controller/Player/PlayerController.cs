@@ -20,6 +20,10 @@ public class PlayerController : MoveableObject
     // 플레이어가 땅에 닿아있는지 체크
     bool IsGround = false;
 
+    // 플레이어 무기의 콜라이더 (Attack 애니메이션 재생시, 해당 애니메이션에서 자체적으로 On/Off 전환)
+    [SerializeField]
+    private Collider[] playerAtkColl;
+
     /// <summary>
     /// 스텟 변경시 변경된 스탯을 재설정 해주는 메소드
     /// </summary>
@@ -44,6 +48,24 @@ public class PlayerController : MoveableObject
         // 휘발성데이터가 추가해야되는 상황이라면 값을 여기서 다시 재설정 TODO
     }
 
+    public override void InsertComponent()
+    {
+        base.InsertComponent();
+
+        
+    }
+
+    public override void AttackColliderSet()
+    {
+        base.AttackColliderSet();
+        // 해당 콜라이더를 가지고 있는 오브젝트에 AttackController 스크립트를 추가
+        for (int i = 0; i < playerAtkColl.Length; ++i)
+        {
+            AttackController attackController = playerAtkColl[i].gameObject.AddComponent<AttackController>();
+            attackController.staticData = playerData;
+        }
+    }
+
     /// <summary>
     /// 플레이어들만 사용하는 Awake()
     /// </summary>
@@ -66,6 +88,9 @@ public class PlayerController : MoveableObject
 
         // 상태머신에서 Update시켜야하는 값이라면 실행, 아니라면 실행중지
         FSM.UpdateMethod();
+
+        //Debug.Log(playerData.currentHp);
+        Debug.Log(NotToMove);
     }
 
     /*/// <summary>
@@ -283,9 +308,12 @@ public class PlayerController : MoveableObject
 
     }
 
-    protected virtual void HurtState()
+    public virtual void HurtState()
     {
-        
+        anim.SetTrigger("HitTrigger");
+        FSM.ChangeState(Define.State.Idle, IdleState, true);
+        // 잠시 이동 불가 -> 해당 구문은 애니메이션 이벤트로 삽입
+
     }
 
     protected virtual void DieState()
@@ -369,6 +397,21 @@ public class PlayerController : MoveableObject
     private void AnimEvasionEnd()
     {
         anim.SetBool("Evasion", false);
+    }
+
+    /// <summary>
+    /// 플레이어가 움직일수 없도록 설정
+    /// </summary>
+    private void AnimHitDontMove()
+    {
+        NotToMove = false;
+    }
+    /// <summary>
+    /// 플레이어가 움직일수 있도록 설정
+    /// </summary>
+    private void AnimHitCanMove()
+    {
+        NotToMove = true;
     }
     #endregion
 }

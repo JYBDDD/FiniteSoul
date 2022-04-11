@@ -40,6 +40,12 @@ public class CreatureBase : MonsterController
         // Hit 애니메이션을 실행시키는 트리거 호출
         anim.SetTrigger("HitTrigger");
 
+        // 움직일 수 있는 상태라면 도착지점을 현재 자신의 위치로 변경
+        if(NotToMove == true)
+        {
+            agent.SetDestination(transform.position);
+        }
+
         StartCoroutine(ChainHit());
 
         IEnumerator ChainHit()

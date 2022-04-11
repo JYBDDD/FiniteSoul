@@ -22,7 +22,7 @@ public class InputManager : Singleton<InputManager>
 
     private void KeyActionUpdate()
     {
-        if(Input.anyKey)
+        if(Input.anyKey && InGameManager.Instance.Player?.NotToMove == true)
         {
             KeyAction?.Invoke();
         }

@@ -45,6 +45,7 @@ public class StageManager : Singleton<StageManager>
                     // 몬스터 초기화
                     monsterC.Initialize(monsterDatas[i]);
                     monsterC.monsterStartPos = MonsterSpawnsDoc.stageItem.locations[j];
+                    monsterC.AttackColliderSet();
                     // 몬스터 스텟 설정
                     monsterC.SetStat();
                     // 몬스터 레이어,태그 설정
@@ -78,6 +79,7 @@ public class StageManager : Singleton<StageManager>
         playerC.playerData = loadFile;
         // 플레이어 초기화
         playerC.Initialize(playerC.playerData);
+        playerC.AttackColliderSet();
         // 플레이어 스텟 설정
         playerC.SetStat();
         // 플레이어 레이어,태그 설정

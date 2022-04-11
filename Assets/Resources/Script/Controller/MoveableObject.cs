@@ -27,7 +27,11 @@ public class MoveableObject : MonoBehaviour,RecyclePooling
     // 캐릭터,몬스터 애니메이터
     protected Animator anim;
 
-    // AttackController 참조 받을 것임 TODO
+    // AttackController 참조
+    protected AttackController Ac = new AttackController();
+
+    // 움직일 수 있는지 체크
+    public bool NotToMove = true;
 
     /// <summary>
     /// 해당 캐릭터에 맞는 값으로 초기화
@@ -35,7 +39,6 @@ public class MoveableObject : MonoBehaviour,RecyclePooling
     public virtual void Initialize(StaticData staticData)
     {
         mainData = staticData;
-        // AttackController 참조 박을 것임 TODO
     }
 
     /// <summary>
@@ -47,5 +50,13 @@ public class MoveableObject : MonoBehaviour,RecyclePooling
         coll ??= GetComponent<Collider>();
         rigid ??= GetComponent<Rigidbody>();
         anim ??= GetComponent<Animator>();
+    }
+
+    /// <summary>
+    /// 공격자의 Collider 셋팅
+    /// </summary>
+    public virtual void AttackColliderSet()
+    {
+
     }
 }
