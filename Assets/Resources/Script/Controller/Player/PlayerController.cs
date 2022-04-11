@@ -90,7 +90,6 @@ public class PlayerController : MoveableObject
         FSM.UpdateMethod();
 
         //Debug.Log(playerData.currentHp);
-        Debug.Log(NotToMove);
     }
 
     /*/// <summary>
