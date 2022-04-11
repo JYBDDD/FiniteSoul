@@ -289,6 +289,7 @@ public class PlayerController : MoveableObject
                 if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.9f)
                 {
                     anim.SetTrigger("NotAttackTrigger");
+                    anim.ResetTrigger("AttackTrigger");
                     FSM.ChangeState(Define.State.Idle, IdleState, true);
                     return 2;
                 }
@@ -310,6 +311,7 @@ public class PlayerController : MoveableObject
     public virtual void HurtState()
     {
         anim.SetTrigger("HitTrigger");
+        anim.ResetTrigger("AttackTrigger");
         FSM.ChangeState(Define.State.Idle, IdleState, true);
         // 잠시 이동 불가 -> 해당 구문은 애니메이션 이벤트로 삽입
 

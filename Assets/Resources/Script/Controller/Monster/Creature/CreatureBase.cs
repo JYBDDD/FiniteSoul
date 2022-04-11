@@ -7,8 +7,11 @@ using UnityEngine;
 /// </summary>
 public class CreatureBase : MonsterController
 {
-    int hitCount = 0;
-    int originCount = 1;
+    int hitCall = 0;
+    int originCall = 1;
+
+    // 시작 HitCount
+    int startCount = 1;
 
     public override void Update()
     {
@@ -39,12 +42,11 @@ public class CreatureBase : MonsterController
     public override void HurtState()
     {
         // 재호출 감지 카운트
-        hitCount++;
+        hitCall++;
 
-        anim.SetBool("NotHit", false);          // HitTrigger 를 Hit{번호}로 교체함   확인 할것    TODO
 
-        // Hit 애니메이션을 실행시키는 트리거 호출
-        anim.SetTrigger($"Hit{hitCount}");
+        anim.SetInteger("HitCount",startCount);
+
 
         // 움직일 수 있는 상태라면 도착지점을 현재 자신의 위치로 변경
         if (NotToMove == true)
@@ -59,17 +61,20 @@ public class CreatureBase : MonsterController
             // Hit1 이 재생중인 상태에서 피격시 Hit2 재생, Hit2 가 재생중인 상태에서 재생시 Hit3 재생
             while (true)
             {
+                if(EndAnim("Hit3"))
+                {
+                    EndCall();
+                }
                 if (HitAnimationing("Hit2") == 0)
                 {
                     // Hit3 애니메이션으로 넘긴다
                     target ??= InGameManager.Instance.Player.gameObject;
-                    anim.SetTrigger($"Hit{hitCount}");
                 }
-                else if (HitAnimationing("Hit1") == 0)
+                if (HitAnimationing("Hit1") == 0)
                 {
                     // Hit2 애니메이션으로 넘긴다
                     target ??= InGameManager.Instance.Player.gameObject;
-                    anim.SetTrigger($"Hit{hitCount}");
+                    anim.SetTrigger("NotHitTrigger");
                 }
 
                 yield return null;
@@ -82,9 +87,10 @@ public class CreatureBase : MonsterController
             if (anim.GetCurrentAnimatorStateInfo(0).IsName(animationName))
             {
                 // 애니메이션이 끝나지 않은상태에서 재호출시 실행
-                if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime < 0.8f && hitCount > originCount)
+                if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime < 0.8f && hitCall > originCall)
                 {
-                    originCount = hitCount;
+                    originCall = hitCall;
+                    anim.SetInteger("HitCount", ++startCount);
                     return 0;
                 }
                 if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.8f)
@@ -92,14 +98,35 @@ public class CreatureBase : MonsterController
                     // 시간안에 피격당하지 않았을시, 블랜드 트리로 다시 넘긴다
                     target ??= InGameManager.Instance.Player.gameObject;
                     FSM.ChangeState(Define.State.Running, RunningState);
-                    anim.SetBool("NotHit",true);
-                    hitCount = 0;
-                    originCount = 1;
+                    EndCall();
                     return 2;
                 }
             }
 
             return 1;
+        }
+
+        // 마지막 애니메이션이 실행중일때 호출
+        bool EndAnim(string animName)
+        {
+            if(anim.GetCurrentAnimatorStateInfo(0).IsName(animName))
+            {
+                if(anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.3f)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        // 종료시 호출
+        void EndCall()
+        {
+            anim.SetInteger("HitCount", 0);
+            anim.SetTrigger("NotHitTrigger");
+            hitCall = 0;
+            originCall = 1;
+            startCount = 1;
         }
     }
 

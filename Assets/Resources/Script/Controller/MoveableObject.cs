@@ -28,7 +28,7 @@ public class MoveableObject : MonoBehaviour,RecyclePooling
     protected Animator anim;
 
     // AttackController 참조
-    protected AttackController Ac = new AttackController();
+    protected AttackController Ac;
 
     // 움직일 수 있는지 체크
     public bool NotToMove = true;
