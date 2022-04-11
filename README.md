@@ -128,6 +128,14 @@
 	// Is Kinematic : 물리법칙에 영향을 받지않도록함 -> 체크되어있다면
 	
 22.04.04 ~ 22.04.07
+	
+7. 데미지 처리, 피격 애니메이션 전환
+	-> Trigger 상태인 Collider를 공격시 자동으로 켜지고 꺼지도록 애니메이션에 삽입함
+	-> AttackController 를 추가하여 해당 컨트롤러에서 데미지 연산
+		-> AttackController 는 각각 공격 콜라이더의 오브젝트에 AddComponent 시켜 OnTriggerEnter 로 진행
+	-> 데미지 연산후 해당 객체의 HurtState 상태로 전환
+	
+22.04.11 ~
 
 ---------------------------------------------------------------------------------------------------------------------
 수정해야할 사항
@@ -137,11 +145,9 @@
 	4.5 여러가지
 		
 		1. AttackController 생성
-		-> 어느부분에 위치시킬것인지 미정..
-		-> 공격하는 객체의 능력치를 받아 , 닿은 객체의 능력치 차감
-		-> 플레이어가 Evasion 애니메이션이 재생중일때 데미지를 받지않도록 할것 (이거는 AttackController 에서 플레이어 FSM.State 상태가 
-											Evasion 일때 데미지 받지 안도록 하면 될듯)
 		-> 몬스터 HitState 에 피격 이펙트는 넣었는데 3연피격 확인해보기
+		https://gall.dcinside.com/mgallery/board/view/?id=game_dev&no=68610
+		https://blog.naver.com/PostView.naver?blogId=bsh9277&logNo=222283948395&categoryNo=17&parentCategoryNo=0
 	
 	4.6 UI
 		
