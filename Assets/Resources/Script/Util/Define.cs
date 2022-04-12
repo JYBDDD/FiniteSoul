@@ -78,6 +78,8 @@ public static class Define
             /// µÎ¼Õ
             /// </summary>
             Two,
+
+            None,
         }
     }
 

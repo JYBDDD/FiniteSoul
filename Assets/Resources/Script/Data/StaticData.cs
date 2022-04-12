@@ -17,5 +17,5 @@ public class StaticData
     /// <summary>
     /// 플레이어인지 몬스터인지 구분해주는 타입
     /// </summary>
-    public Define.CharacterType characterType;
+    public Define.CharacterType characterType = Define.CharacterType.None;
 }

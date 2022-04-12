@@ -29,20 +29,22 @@ public class UIManager : Singleton<UIManager>
 
     private void Update()
     {
-        Debug.Log($" 본래 값은 Inactive 이여야 함{UIOriginState}");
-        SwitchWindowOption();
+        //Debug.Log($" 본래 값은 Inactive 이여야 함{UIOriginState}");
+        SwitchWindowOption(UIDrawState,UIOriginState,canvasGroup);
     }
 
     /// <summary>
     /// 윈도우 비/활성 상태전환을 실행할 메소드
     /// </summary>
-    /// <param name="cGroup">cGroup 이 Null 이라면 UIManager의 canvasGroup이 설정되도록 함</param>
-    protected virtual void SwitchWindowOption(CanvasGroup cGroup = null)
+    /// <param name="uiDraw">변경시 상태도 같이 전환되는 UIDraw 상태</param>
+    /// <param name="originDraw">uiDraw와 값이 다를시 변경되도록 사용되는 상태</param>
+    /// <param name="cGroup">On/Off를 실행할 캔버스 그룹</param>
+    public void SwitchWindowOption(Define.UIDraw uiDraw,Define.UIDraw originDraw,CanvasGroup cGroup)
     {
         // 총괄 UI 상태값이 변경되었다면 실행
-        if (UIDrawState != UIOriginState)
+        if (uiDraw != originDraw)
         {
-            switch (UIDrawState)
+            switch (uiDraw)
             {
                 case Define.UIDraw.Activation:
                     UIWindowActive(cGroup);
@@ -58,7 +60,7 @@ public class UIManager : Singleton<UIManager>
                     break;
             }
 
-            UIOriginState = UIDrawState;
+            originDraw = uiDraw;
         }
         
     }
@@ -66,21 +68,15 @@ public class UIManager : Singleton<UIManager>
     /// <summary>
     /// 총괄 UI Window 즉시 활성화
     /// </summary>
-    /// <param name="cGroup">cGroup 이 Null 이라면 UIManager의 canvasGroup이 설정되도록 함</param>
-    protected void UIWindowActive(CanvasGroup cGroup = null)
+    private void UIWindowActive(CanvasGroup cGroup)
     {
-        if(cGroup == null)
-        {
-            cGroup = canvasGroup;
-        }
-        canvasGroup.alpha = 1;
+        cGroup.alpha = 1;
     }
 
     /// <summary>
     /// 총괄 UI Window 천천히 활성화
     /// </summary>
-    /// <param name="cGroup">cGroup 이 Null 이라면 UIManager의 canvasGroup이 설정되도록 함</param>
-    protected void UIWindowSlowlyActive(CanvasGroup cGroup = null)
+    private void UIWindowSlowlyActive(CanvasGroup cGroup)
     {
         if (cGroup == null)
         {
@@ -114,8 +110,7 @@ public class UIManager : Singleton<UIManager>
     /// <summary>
     /// 총괄 UI Window 즉시 비활성화
     /// </summary>
-    /// <param name="cGroup">cGroup 이 Null 이라면 UIManager의 canvasGroup이 설정되도록 함</param>
-    protected void UIWindowInActive(CanvasGroup cGroup = null)
+    private void UIWindowInActive(CanvasGroup cGroup)
     {
         if (cGroup == null)
         {
@@ -127,8 +122,7 @@ public class UIManager : Singleton<UIManager>
     /// <summary>
     /// 총괄 UI Window 천천히 비활성화
     /// </summary>
-    /// <param name="cGroup">cGroup 이 Null 이라면 UIManager의 canvasGroup이 설정되도록 함</param>
-    protected void UIWindowSlowlyInActive(CanvasGroup cGroup = null)
+    private void UIWindowSlowlyInActive(CanvasGroup cGroup)
     {
         if (cGroup == null)
         {
@@ -158,14 +152,4 @@ public class UIManager : Singleton<UIManager>
             yield return null;
         }
     }
-
-    /// <summary>
-    /// 초기 스텟 설정
-    /// </summary>
-    public virtual void InitStatSetting()
-    {
-
-    }
-
-    
 }

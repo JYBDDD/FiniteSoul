@@ -6,7 +6,7 @@ using UnityEngine.UI;
 /// <summary>
 /// 스텟 UI 클래스
 /// </summary>
-public class StatUI : UIManager
+public class StatUI : MonoBehaviour
 {
     [SerializeField]
     Image hp;                   // 체력 이미지
@@ -26,11 +26,12 @@ public class StatUI : UIManager
     // 변경후 데이터
     public UsePlayerData playerData;
     // 변경전 데이터
-    public UsePlayerData originData;
+    private UsePlayerData originData;
 
     private void Update()
     {
-        if(playerData != originData)
+        // 플레이어 데이터가 존재하고, 플레이어의 데이터가 변경되었다면 실행
+        if (playerData != originData && InGameManager.Instance.Player != null)
         {
             StatUpdate();
         }
@@ -41,6 +42,13 @@ public class StatUI : UIManager
     /// </summary>
     private void StatUpdate()
     {
+        // 플레이어 데이터의 인덱스가 정상값이 아니라면 값을 삽입
+        if(playerData.index <= 999)
+        {
+            originData = playerData;
+            playerData = InGameManager.Instance.Player.playerData;
+        }
+
         // 현재 스텟 변경
         CurrentStatChange();
 
@@ -52,20 +60,6 @@ public class StatUI : UIManager
         }
 
         originData = playerData;
-    }
-
-    public override void InitStatSetting()
-    {
-        base.InitStatSetting();
-
-        playerData = InGameManager.Instance.Player.playerData;
-        originData = playerData;
-
-        // 현재 스텟 변경
-        CurrentStatChange();
-
-        // 스텟 부모 크기 설정
-        CurrentRectChange();
     }
 
     /// <summary>

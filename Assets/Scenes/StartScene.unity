@@ -2373,49 +2373,6 @@ MonoBehaviour:
       currentHp: 0
       raiseAtk: 0
       raiseDef: 0
-  originData:
-    index: 0
-    characterType: 0
-    name: 
-    atkType: 0
-    maxHp: 0
-    atk: 0
-    def: 0
-    maxStamina: 0
-    maxRune: 0
-    maxMana: 0
-    moveSpeed: 0
-    jumpForce: 0
-    growthRef: 0
-    resourcePath: 
-    level: 0
-    currentHp: 0
-    currentMana: 0
-    currentStamina: 0
-    currentRune: 0
-    growthStat:
-      index: 0
-      characterType: 0
-      maxHp: 0
-      extraHp: 0
-      maxRune: 0
-      growthRune: 0
-      atk: 0
-      extraAtk: 0
-      def: 0
-      extraDef: 0
-    playerVolatility:
-      index: 0
-      level: 0
-      stageIndex: 0
-      posX: 0
-      posY: 0
-      posZ: 0
-      rune: 0
-      raiseHp: 0
-      currentHp: 0
-      raiseAtk: 0
-      raiseDef: 0
 --- !u!1 &1296878943
 GameObject:
   m_ObjectHideFlags: 0

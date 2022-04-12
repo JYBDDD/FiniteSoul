@@ -126,7 +126,7 @@ public class ResoureUtil : MonoBehaviour
                     GameManager.Instance.FullData.playersData.Add(arrPlayerData[i]);
                 }
             }
-            else if (name == "GrowthStat" && GameManager.Instance.FullData.growthsData.Count <= 0)       // 한번만 호출되도록 설정 (GrowthStat 데이터 로드)
+            if (name == "GrowthStat" && GameManager.Instance.FullData.growthsData.Count <= 0)       // 한번만 호출되도록 설정 (GrowthStat 데이터 로드)
             {
                 arrGrowthData = JsonConvert.DeserializeObject<GrowthStatData[]>(jsonData);
 
@@ -135,7 +135,7 @@ public class ResoureUtil : MonoBehaviour
                     GameManager.Instance.FullData.growthsData.Add(arrGrowthData[i]);
                 }
             }
-            else if (name == "Stage" && GameManager.Instance.FullData.stagesData.Count <= 0)        // 한번만 호출되도록 설정 (StageData 데이터 로드)
+            if (name == "Stage" && GameManager.Instance.FullData.stagesData.Count <= 0)        // 한번만 호출되도록 설정 (StageData 데이터 로드)
             {
                 arrStageData = JsonConvert.DeserializeObject<StageData[]>(jsonData);
 
@@ -144,7 +144,7 @@ public class ResoureUtil : MonoBehaviour
                     GameManager.Instance.FullData.stagesData.Add(arrStageData[i]);
                 }
             }
-            else if (name == "Monster" && GameManager.Instance.FullData.monstersData.Count <= 0)        // 한번만 호출되도록 설정 (MonsterData 데이터 로드)
+            if (name == "Monster" && GameManager.Instance.FullData.monstersData.Count <= 0)        // 한번만 호출되도록 설정 (MonsterData 데이터 로드)
             {
                 arrMonsterData = JsonConvert.DeserializeObject<UseMonsterData[]>(jsonData);
 
@@ -153,7 +153,7 @@ public class ResoureUtil : MonoBehaviour
                     GameManager.Instance.FullData.monstersData.Add(arrMonsterData[i]);
                 }
             }
-            else if (name == "Item" && GameManager.Instance.FullData.itemsData.Count <= 0)        // 한번만 호출되도록 설정 (ItemData 데이터 로드)
+            if (name == "Item" && GameManager.Instance.FullData.itemsData.Count <= 0)        // 한번만 호출되도록 설정 (ItemData 데이터 로드)
             {
                 arrItemData = JsonConvert.DeserializeObject<ItemData[]>(jsonData);
 

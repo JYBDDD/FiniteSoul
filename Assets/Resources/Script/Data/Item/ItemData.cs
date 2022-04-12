@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 아이템 데이터
+/// </summary>
 [Serializable]
 public class ItemData : StaticData
 {
