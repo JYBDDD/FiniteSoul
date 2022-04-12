@@ -13,5 +13,6 @@ public class FullDataCollection
     public List<GrowthStatData> growthsData = new List<GrowthStatData>();
     public List<UseMonsterData> monstersData = new List<UseMonsterData>();
     public List<StageData> stagesData = new List<StageData>();
+    public List<ItemData> itemsData = new List<ItemData>();
 }
 

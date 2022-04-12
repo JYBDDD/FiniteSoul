@@ -8,9 +8,9 @@ using UnityEngine;
 public class InGameManager : Singleton<InGameManager>
 {
     // 플레이어
-    public MoveableObject Player = null;
+    public PlayerController Player = null;
     // 몬스터 리스트
-    public List<MoveableObject> Monsters = new List<MoveableObject>();
+    public List<MonsterController> Monsters = new List<MonsterController>();
 
 
 
@@ -28,7 +28,7 @@ public class InGameManager : Singleton<InGameManager>
     /// 리스트에 해당 몬스터 객체 추가
     /// </summary>
     /// <param name="addObject"></param>
-    public void MonsterRegist(MoveableObject addObject)
+    public void MonsterRegist(MonsterController addObject)
     {
         Monsters.Add(addObject);
     }
@@ -37,7 +37,7 @@ public class InGameManager : Singleton<InGameManager>
     /// 리스트에 해당 몬스터 객체 삭제
     /// </summary>
     /// <param name="removeObject"></param>
-    public void MonsterRegistRemove(MoveableObject removeObject)
+    public void MonsterRegistRemove(MonsterController removeObject)
     {
         Monsters.Remove(removeObject);
     }
@@ -45,13 +45,13 @@ public class InGameManager : Singleton<InGameManager>
     /// <summary>
     /// 플레이어 인게임매니저 등록
     /// </summary>
-    public void PlayerRegist(MoveableObject player)
+    public void PlayerRegist(PlayerController player)
     {
         this.Player = player;
     }
 
     /// <summary>
-    /// 인게임에 등록된, 플레이어, 몬스터리스트를 클리어
+    /// 인게임에 등록된, 플레이어, 몬스터 리스트를 클리어
     /// </summary>
     public void ClearInGame()
     {

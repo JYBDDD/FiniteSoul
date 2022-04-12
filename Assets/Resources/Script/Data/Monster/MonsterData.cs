@@ -60,11 +60,6 @@ public class MonsterData : StaticData
     public float dropRune;
 
     /// <summary>
-    /// 드랍하는 아이템
-    /// </summary>
-    public int dropItem;
-
-    /// <summary>
     /// 아이템 드랍 확률
     /// </summary>
     public float dropItemPer;

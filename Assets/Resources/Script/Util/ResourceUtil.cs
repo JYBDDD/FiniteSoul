@@ -103,6 +103,10 @@ public class ResoureUtil : MonoBehaviour
         StageData[] arrStageData;
         ParsingJsonData("Stage");
 
+        // 아이템 데이터
+        ItemData[] arrItemData;
+        ParsingJsonData("Item");
+
         void ParsingJsonData(string name)
         {
             string path = Path.Combine(Application.dataPath, $"Resources/Document/Json");
@@ -149,7 +153,15 @@ public class ResoureUtil : MonoBehaviour
                     GameManager.Instance.FullData.monstersData.Add(arrMonsterData[i]);
                 }
             }
+            else if (name == "Item" && GameManager.Instance.FullData.itemsData.Count <= 0)        // 한번만 호출되도록 설정 (ItemData 데이터 로드)
+            {
+                arrItemData = JsonConvert.DeserializeObject<ItemData[]>(jsonData);
 
+                for (int i = 0; i < arrItemData.Length; ++i)
+                {
+                    GameManager.Instance.FullData.itemsData.Add(arrItemData[i]);
+                }
+            }
 
 
 

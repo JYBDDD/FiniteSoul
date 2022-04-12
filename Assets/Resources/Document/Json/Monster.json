@@ -7,12 +7,11 @@
     "moveSpeed":  "3",
     "viewingAngle": "130",
     "viewDistance": "10",
-    "atkRange": "2",
+    "atkRange": "1.2",
     "maxHp": "230",
     "atk": "40",
     "def": "3",
     "dropRune": "200",
-    "dropItem": "1001",
     "dropItemPer": "20",
     "resourcePath": "Prefabs/Monster/Mutant"
   },
@@ -24,12 +23,11 @@
     "moveSpeed": "3.5",
     "viewingAngle": "160",
     "viewDistance": "13",
-    "atkRange": "2.5",
+    "atkRange": "1.5",
     "maxHp": "310",
     "atk": "55",
     "def": "5",
     "dropRune": "350",
-    "dropItem": "1002",
     "dropItemPer": "15",
     "resourcePath": "Prefabs/Monster/Warrok"
   }

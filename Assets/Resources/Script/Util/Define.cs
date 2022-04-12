@@ -39,6 +39,74 @@ public static class Define
 
     }
 
+    
+
+    public class ItemMixEnum
+    {
+        /// <summary>
+        /// 아이템 타입
+        /// </summary>
+        public enum ItemType
+        {
+            /// <summary>
+            /// 장비
+            /// </summary>
+            Equipment,
+
+            /// <summary>
+            /// 소비
+            /// </summary>
+            Consumption,
+
+            /// <summary>
+            /// 기타
+            /// </summary>
+            Etc,
+        }
+
+        /// <summary>
+        /// 아이템 착용 타입 (한손, 두손)
+        /// </summary>
+        public enum ItemHandedType
+        {
+            /// <summary>
+            /// 한손
+            /// </summary>
+            One,
+
+            /// <summary>
+            /// 두손
+            /// </summary>
+            Two,
+        }
+    }
+
+    /// <summary>
+    /// UI 활성/비활성 상태
+    /// </summary>
+    public enum UIDraw
+    {
+        /// <summary>
+        /// 즉시 활성
+        /// </summary>
+        Activation,
+
+        /// <summary>
+        /// 서서히 활성
+        /// </summary>
+        SlowlyActivation,
+
+        /// <summary>
+        /// 즉시 비활성
+        /// </summary>
+        Inactive,
+
+        /// <summary>
+        /// 서서히 비활성
+        /// </summary>
+        SlowlyInactive,
+    }
+
     public class HitPath
     {
         /// <summary>

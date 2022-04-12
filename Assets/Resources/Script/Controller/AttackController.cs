@@ -20,11 +20,14 @@ public class AttackController : MonoBehaviour
             if(other.gameObject.CompareTag("Monster"))
             {
                 var monsterC = other.gameObject.GetComponent<MonsterController>();
-                var playerData = GameManager.Instance.FullData.playersData.Where(_ => _.index == staticData.index).SingleOrDefault();
+                var playerData = InGameManager.Instance.Player.playerData;
                 // 몬스터 현재 체력 - (플레이어 공격력 - 몬스터 방어력)
                 monsterC.monsterData.currentHp = monsterC.monsterData.currentHp - (playerData.atk - monsterC.monsterData.def);
                 // 몬스터 상태 Hurt로 변경
                 monsterC.FSM.ChangeState(Define.State.Hurt, monsterC.HurtState);
+
+                // TargetMonsterUI 의 타깃 컨트롤러에 타겟값 설정
+                TargetMonsterUI.targetMonsterC = monsterC;
             }
         }
 
@@ -33,8 +36,9 @@ public class AttackController : MonoBehaviour
         {
             if(other.gameObject.CompareTag("Player"))
             {
-                var monsterData = GameManager.Instance.FullData.monstersData.Where(_ => _.index == staticData.index).SingleOrDefault();
-                var playerC = other.gameObject.GetComponent<PlayerController>();
+                var monsterC = InGameManager.Instance.Monsters.Where(_ => _.monsterData.index == staticData.index).SingleOrDefault();
+                var monsterData = monsterC.monsterData;
+                var playerC = InGameManager.Instance.Player;
 
                 // 플레이어가 회피 상태라면 데미지를 받지 않음
                 if (playerC.FSM.State == Define.State.Evasion)

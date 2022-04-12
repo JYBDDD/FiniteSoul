@@ -22,6 +22,9 @@ public class LoadingSceneAdjust : MonoBehaviour
 
     private void Start()
     {
+        // UIManager 드로잉 비활성화
+        UIManager.UIDrawState = Define.UIDraw.Inactive;
+
         StartCoroutine(LoadScene());
     }
 
@@ -98,6 +101,8 @@ public class LoadingSceneAdjust : MonoBehaviour
                 StageManager.Instance.PlayerSpawn();
                 // 몬스터 스폰
                 StageManager.Instance.MonsterSpawn();
+                // UIManager 드로잉 서서히 활성화
+                UIManager.UIDrawState = Define.UIDraw.SlowlyActivation;
             };
 
             yield break;

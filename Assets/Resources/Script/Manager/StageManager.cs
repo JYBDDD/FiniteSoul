@@ -53,7 +53,8 @@ public class StageManager : Singleton<StageManager>
                     monsterC.tag = "Monster";
                     // InGameManager Monsters 리스트에 몬스터 등록
                     InGameManager.Instance.MonsterRegist(monsterC);
-
+                    // UI Stat 초기값 설정
+                    UIManager.Instance.InitStatSetting();
                 }
             }
 

@@ -1,0 +1,98 @@
+[
+  {
+    "index": "1001",
+    "characterType": "None",
+    "name": "Sword",
+    "jobIndex": "1001",
+    "itemType": "Equipment",
+    "handed": "One",
+    "maxHandCount": "1",
+    "dropPer": "5",
+    "salePrice": "2500",
+    "resourcePath": "Art/Textures/UI/Item/Sword"
+  },
+  {
+    "index": "1002",
+    "characterType": "None",
+    "name": "Shield",
+    "jobIndex": "1001",
+    "itemType": "Equipment",
+    "handed": "One",
+    "maxHandCount": "1",
+    "dropPer": "5",
+    "salePrice": "1500",
+    "resourcePath": "Art/Textures/UI/Item/Shield"
+  },
+  {
+    "index": "1003",
+    "characterType": "None",
+    "name": "Bow",
+    "jobIndex": "1002",
+    "itemType": "Equipment",
+    "handed": "Two",
+    "maxHandCount": "1",
+    "dropPer": "5",
+    "salePrice": "3000",
+    "resourcePath": "Art/Textures/UI/Item/Bow"
+  },
+  {
+    "index": "1004",
+    "characterType": "None",
+    "name": "HpPotion",
+    "jobIndex": "1000",
+    "itemType": "Consumption",
+    "handed": "None",
+    "maxHandCount": "99",
+    "dropPer": "20",
+    "salePrice": "100",
+    "resourcePath": "Art/Textures/UI/Item/HpPotion"
+  },
+  {
+    "index": "1005",
+    "characterType": "None",
+    "name": "ManaPotion",
+    "jobIndex": "1000",
+    "itemType": "Consumption",
+    "handed": "None",
+    "maxHandCount": "99",
+    "dropPer": "20",
+    "salePrice": "100",
+    "resourcePath": "Art/Textures/UI/Item/ManaPotion"
+  },
+  {
+    "index": "1006",
+    "characterType": "None",
+    "name": "Jewel",
+    "jobIndex": "1000",
+    "itemType": "Etc",
+    "handed": "None",
+    "maxHandCount": "99",
+    "dropPer": "15",
+    "salePrice": "300",
+    "resourcePath": "Art/Textures/UI/Item/Jewel"
+  },
+  {
+    "index": "1007",
+    "characterType": "None",
+    "name": "Key",
+    "jobIndex": "1000",
+    "itemType": "Etc",
+    "handed": "None",
+    "maxHandCount": "99",
+    "dropPer": "30",
+    "salePrice": "100",
+    "resourcePath": "Art/Textures/UI/Item/Key"
+  },
+  {
+    "index": "1008",
+    "characterType": "None",
+    "name": "Mushroom",
+    "jobIndex": "1000",
+    "itemType": "Etc",
+    "handed": "None",
+    "maxHandCount": "99",
+    "dropPer": "60",
+    "salePrice": "50",
+    "resourcePath": "Art/Textures/UI/Item/Mushroom"
+  }
+]
