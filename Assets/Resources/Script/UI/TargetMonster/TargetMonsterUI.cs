@@ -9,10 +9,14 @@ using UnityEngine.UI;
 /// </summary>
 public class TargetMonsterUI : UIManager
 {
+    Define.UIDraw TargetUIState = Define.UIDraw.Inactive;
+
     /// <summary>
     /// 타겟 몬스터 (AttackController 에서 플레이어에게 데미지를 입은 대상이 있을시 삽입)
     /// </summary>
     public static MonsterController targetMonsterC;
+
+    private float monsterOriginHp;
 
     [SerializeField]
     TextMeshProUGUI monsterName;    // 타깃 몬스터 이름
@@ -20,11 +24,52 @@ public class TargetMonsterUI : UIManager
     [SerializeField]
     Image monsterHp;                // 타깃 몬스터 체력
 
+    CanvasGroup targetCanvasGroup;
+
+    private void Start()
+    {
+        targetCanvasGroup = GetComponent<CanvasGroup>();
+    }
 
     private void Update()
     {
-        // TargetMonsterC 의 currentHp의 값이 변동이 있을 경우 실행  TODO
-        TargetDataSetting();
+        SwitchWindowOption(targetCanvasGroup);
+
+        // TargetMonsterC 의 currentHp의 값이 변동이 있을 경우 실행
+        if(targetMonsterC != null && targetMonsterC.monsterData.currentHp != monsterOriginHp)
+        {
+            TargetDataSetting();
+            monsterOriginHp = targetMonsterC.monsterData.currentHp;
+        }
+    }
+
+    protected override void SwitchWindowOption(CanvasGroup cGroup = null)
+    {
+        if (cGroup == null)
+            return;
+
+        if (TargetUIState != UIOriginState)
+        {
+            switch (TargetUIState)
+            {
+                case Define.UIDraw.Activation:
+                    UIWindowActive(cGroup);
+                    break;
+                case Define.UIDraw.SlowlyActivation:
+                    UIWindowSlowlyActive(cGroup);
+                    break;
+                case Define.UIDraw.Inactive:
+                    UIWindowInActive(cGroup);
+                    break;
+                case Define.UIDraw.SlowlyInactive:
+                    UIWindowSlowlyInActive(cGroup);
+                    break;
+            }
+
+            UIOriginState = TargetUIState;
+        }
+
+
     }
 
     // targetMonsterC 의 타깃이 생겼을 경우, TargetMonsterUI.alpha 값 즉시 1로 증가

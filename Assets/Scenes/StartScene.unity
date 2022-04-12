@@ -1188,7 +1188,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &638266510
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2597,6 +2597,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1376101923}
   - component: {fileID: 1376101924}
+  - component: {fileID: 1376101925}
   m_Layer: 5
   m_Name: TargetMonster
   m_TagString: Untagged
@@ -2638,6 +2639,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   monsterName: {fileID: 2136835929}
   monsterHp: {fileID: 3137830}
+--- !u!225 &1376101925
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1376101922}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1425540648
 GameObject:
   m_ObjectHideFlags: 0

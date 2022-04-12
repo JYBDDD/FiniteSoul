@@ -15,7 +15,7 @@ public class UIManager : Singleton<UIManager>
     /// <summary>
     /// 바뀌기 전 UI의 상태
     /// </summary>
-    private Define.UIDraw UIOriginState = Define.UIDraw.Activation;
+    protected Define.UIDraw UIOriginState = Define.UIDraw.Activation;
 
     /// <summary>
     /// 최상위에 위치한 캔버스 그룹
@@ -29,50 +29,64 @@ public class UIManager : Singleton<UIManager>
 
     private void Update()
     {
-        // 총괄 UI 상태값이 변경되었다면 실행
-        if (UIDrawState != UIOriginState)
-        {
-            SwitchWindowOption();
-        }
+        Debug.Log($" 본래 값은 Inactive 이여야 함{UIOriginState}");
+        SwitchWindowOption();
     }
 
     /// <summary>
     /// 윈도우 비/활성 상태전환을 실행할 메소드
     /// </summary>
-    private void SwitchWindowOption()
+    /// <param name="cGroup">cGroup 이 Null 이라면 UIManager의 canvasGroup이 설정되도록 함</param>
+    protected virtual void SwitchWindowOption(CanvasGroup cGroup = null)
     {
-        switch (UIDrawState)
+        // 총괄 UI 상태값이 변경되었다면 실행
+        if (UIDrawState != UIOriginState)
         {
-            case Define.UIDraw.Activation:
-                UIWindowActive();
-                break;
-            case Define.UIDraw.SlowlyActivation:
-                UIWindowSlowlyActive();
-                break;
-            case Define.UIDraw.Inactive:
-                UIWindowInActive();
-                break;
-            case Define.UIDraw.SlowlyInactive:
-                UIWindowSlowlyInActive();
-                break;
-        }
+            switch (UIDrawState)
+            {
+                case Define.UIDraw.Activation:
+                    UIWindowActive(cGroup);
+                    break;
+                case Define.UIDraw.SlowlyActivation:
+                    UIWindowSlowlyActive(cGroup);
+                    break;
+                case Define.UIDraw.Inactive:
+                    UIWindowInActive(cGroup);
+                    break;
+                case Define.UIDraw.SlowlyInactive:
+                    UIWindowSlowlyInActive(cGroup);
+                    break;
+            }
 
-        UIOriginState = UIDrawState;
+            UIOriginState = UIDrawState;
+        }
+        
     }
 
     /// <summary>
     /// 총괄 UI Window 즉시 활성화
     /// </summary>
-    private void UIWindowActive()
+    /// <param name="cGroup">cGroup 이 Null 이라면 UIManager의 canvasGroup이 설정되도록 함</param>
+    protected void UIWindowActive(CanvasGroup cGroup = null)
     {
+        if(cGroup == null)
+        {
+            cGroup = canvasGroup;
+        }
         canvasGroup.alpha = 1;
     }
 
     /// <summary>
     /// 총괄 UI Window 천천히 활성화
     /// </summary>
-    private void UIWindowSlowlyActive()
+    /// <param name="cGroup">cGroup 이 Null 이라면 UIManager의 canvasGroup이 설정되도록 함</param>
+    protected void UIWindowSlowlyActive(CanvasGroup cGroup = null)
     {
+        if (cGroup == null)
+        {
+            cGroup = canvasGroup;
+        }
+
         StartCoroutine(SlowlyActive());
 
         IEnumerator SlowlyActive()
@@ -84,13 +98,13 @@ public class UIManager : Singleton<UIManager>
             {
                 time += Time.deltaTime;
 
-                canvasGroup.alpha = Mathf.Lerp(0, 1, time / duraction);
+                cGroup.alpha = Mathf.Lerp(0, 1, time / duraction);
                 yield return null;
             }
 
             if(time >= duraction)
             {
-                canvasGroup.alpha = 1;
+                cGroup.alpha = 1;
                 yield break;
             }
             yield return null;
@@ -100,16 +114,27 @@ public class UIManager : Singleton<UIManager>
     /// <summary>
     /// 총괄 UI Window 즉시 비활성화
     /// </summary>
-    private void UIWindowInActive()
+    /// <param name="cGroup">cGroup 이 Null 이라면 UIManager의 canvasGroup이 설정되도록 함</param>
+    protected void UIWindowInActive(CanvasGroup cGroup = null)
     {
-        canvasGroup.alpha = 0;
+        if (cGroup == null)
+        {
+            cGroup = canvasGroup;
+        }
+        cGroup.alpha = 0;
     }
 
     /// <summary>
     /// 총괄 UI Window 천천히 비활성화
     /// </summary>
-    private void UIWindowSlowlyInActive()
+    /// <param name="cGroup">cGroup 이 Null 이라면 UIManager의 canvasGroup이 설정되도록 함</param>
+    protected void UIWindowSlowlyInActive(CanvasGroup cGroup = null)
     {
+        if (cGroup == null)
+        {
+            cGroup = canvasGroup;
+        }
+
         StartCoroutine(SlowlyInActive());
 
         IEnumerator SlowlyInActive()
@@ -121,13 +146,13 @@ public class UIManager : Singleton<UIManager>
             {
                 time += Time.deltaTime;
 
-                canvasGroup.alpha = Mathf.Lerp(1, 0, time / duraction);
+                cGroup.alpha = Mathf.Lerp(1, 0, time / duraction);
                 yield return null;
             }
 
             if (time >= duraction)
             {
-                canvasGroup.alpha = 0;
+                cGroup.alpha = 0;
                 yield break;
             }
             yield return null;
