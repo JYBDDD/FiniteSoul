@@ -264,11 +264,16 @@ public class PlayerController : MoveableObject
                     yield break;
                 }
 
+                // 마지막 Attack3 라면 공격트리거를 리셋
+                if(EndAttackAnimationing())
+                {
+                    anim.ResetTrigger("AttackTrigger");
+                }
                 if (AttackAnimationing("Attack2") == 0)
                 {
                     anim.SetTrigger("AttackTrigger");
                 }
-                else if (AttackAnimationing("Attack1") == 0)
+                if (AttackAnimationing("Attack1") == 0)
                 {
                     anim.SetTrigger("AttackTrigger");
                 }
@@ -296,6 +301,20 @@ public class PlayerController : MoveableObject
             }
 
             return 1;
+        }
+
+        bool EndAttackAnimationing(string animName = "Attack3")
+        {
+            if(anim.GetCurrentAnimatorStateInfo(0).IsName(animName))
+            {
+                if(anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.8f)
+                {
+                    FSM.ChangeState(Define.State.Idle, IdleState, true);
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         FSM.State = Define.State.Attack;
