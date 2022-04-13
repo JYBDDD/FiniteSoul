@@ -28,34 +28,38 @@ public class StageManager : Singleton<StageManager>
         }
 
         var monsterDatas = GameManager.Instance.FullData.monstersData;
-        for(int i = 0; i < monsterDatas.Count; ++i)
+        // 생성할 몬스터 인덱스 길이(총 생성할 몬스터 수) 만큼 실행
+        for (int j = 0; j < MonsterSpawnsDoc.stageItem.monsterIndex.Length; ++j)
         {
-            // monsterDatas 의 몬스터 인덱스와 스크립터블 오브젝트의 몬스터 인덱스 값이 동일하다면 생성
-            for(int j = 0; j < MonsterSpawnsDoc.stageItem.monsterIndex.Length; ++j )
-            {
-                if (monsterDatas[i].index == MonsterSpawnsDoc.stageItem.monsterIndex[j])
-                {
-                    // 몬스터 생성
-                    GameObject monsterObj = ObjectPoolManager.Instance.GetPool<MoveableObject>(monsterDatas[i].ResourcePath,monsterDatas[i].name,Define.CharacterType.Monster);
-                    // 몬스터 위치값 지정
-                    monsterObj.transform.position = MonsterSpawnsDoc.stageItem.locations[j];
-                    MonsterController monsterC = monsterObj.GetComponent<MonsterController>();
-                    // 몬스터 데이터 삽입
-                    monsterC.monsterData = monsterDatas[i];
-                    // 몬스터 초기화
-                    monsterC.Initialize(monsterDatas[i]);
-                    monsterC.monsterStartPos = MonsterSpawnsDoc.stageItem.locations[j];
-                    monsterC.AttackColliderSet();
-                    // 몬스터 스텟 설정
-                    monsterC.SetStat();
-                    // 몬스터 레이어,태그 설정
-                    monsterC.gameObject.layer = LayerMask.NameToLayer("Monster");
-                    monsterC.tag = "Monster";
-                    // InGameManager Monsters 리스트에 몬스터 등록
-                    InGameManager.Instance.MonsterRegist(monsterC);
-                }
-            }
+            // 해당 데이터 참조가 되서 값이 복사되는것으로 보임 TODO  TODO  TODO  TODO  TODO  TODO  TODO  TODO  TODO  TODO  TODO  TODO  TODO  TODO  TODO  TODO
+            // 값이 FullData 인덱스가 같은 몬스터에게 들어감 -> 값을 수정할경우 FullData.monster리스트의 인덱스가 같은 모든 몬스터의 데이터가 변경됨
+            // 추가로 FullData.monster리스트의 값도 인게임상에서 변경했을경우 같이 변경됨
+            // FullData.monster리스트와 연결이 안되도록 값만 가져와야 될것으로 보임
+            var monsterData = monsterDatas.FirstOrDefault(_ => _.index == MonsterSpawnsDoc.stageItem.monsterIndex[j]);
 
+            // monsterData 값이 Null 이 아니라면 실행
+            if (monsterData != null)
+            {
+                // 몬스터 생성
+                GameObject monsterObj = ObjectPoolManager.Instance.GetPool<MoveableObject>(monsterData.ResourcePath, monsterData.name, Define.CharacterType.Monster);
+                // 몬스터 위치값 지정
+                monsterObj.transform.position = MonsterSpawnsDoc.stageItem.locations[j];
+                MonsterController monsterC = monsterObj.GetComponent<MonsterController>();
+                // InGameManager Monsters 리스트에 몬스터 등록
+                InGameManager.Instance.MonsterRegist(monsterC);
+                // 몬스터 데이터 삽입
+                monsterC.monsterData = monsterData; 
+                // 몬스터 초기화
+                monsterC.Initialize(monsterData);
+                monsterC.monsterStartPos = MonsterSpawnsDoc.stageItem.locations[j];
+                monsterC.AttackColliderSet();
+                // 몬스터 스텟 설정
+                monsterC.SetStat();
+                // 몬스터 레이어,태그 설정
+                monsterC.gameObject.layer = LayerMask.NameToLayer("Monster");
+                monsterC.tag = "Monster";
+
+            }
         }
     }
 

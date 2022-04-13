@@ -1133,8 +1133,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8660277060418119832}
   - component: {fileID: 216914911187991383}
+  - component: {fileID: 6387883026514432608}
   - component: {fileID: 8887770085030930187}
-  - component: {fileID: 5839707318780005963}
   - component: {fileID: 5492839822348252163}
   - component: {fileID: 5521165287862076232}
   m_Layer: 0
@@ -1179,6 +1179,42 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &6387883026514432608
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8314960712537469474}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc74c85c52c926a4fbcc41627d87f7be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainData:
+    index: 0
+    characterType: 3
+  NotToMove: 1
+  monsterData:
+    index: 0
+    characterType: 3
+    name: 
+    atkType: 0
+    atk: 0
+    def: 0
+    maxHp: 0
+    moveSpeed: 0
+    viewingAngle: 0
+    viewDistance: 0
+    atkRange: 0
+    dropRune: 0
+    dropItemPer: 0
+    ResourcePath: 
+    currentHp: 0
+  monsterStartPos: {x: 0, y: 0, z: 0}
+  atkCollider:
+  - {fileID: 860815803850183404}
+  - {fileID: 860815803850183405}
 --- !u!65 &8887770085030930187
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1192,44 +1228,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1.493195, z: 0.7208175}
   m_Center: {x: 0, y: 0.7620032, z: 0.13959125}
---- !u!114 &5839707318780005963
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8314960712537469474}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe61ea2c2a9dc834eaf04f8c5f7ff977, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mainData:
-    index: 0
-    characterType: 0
-  State: 0
-  NotToMove: 1
-  monsterData:
-    index: 0
-    characterType: 0
-    name: 
-    atkType: 0
-    atk: 0
-    def: 0
-    maxHp: 0
-    moveSpeed: 0
-    viewingAngle: 0
-    viewDistance: 0
-    atkRange: 0
-    dropRune: 0
-    dropItem: 0
-    dropItemPer: 0
-    ResourcePath: 
-    currentHp: 0
-  monsterStartPos: {x: 0, y: 0, z: 0}
-  atkCollider:
-  - {fileID: 860815803850183404}
-  - {fileID: 860815803850183405}
 --- !u!195 &5492839822348252163
 NavMeshAgent:
   m_ObjectHideFlags: 0

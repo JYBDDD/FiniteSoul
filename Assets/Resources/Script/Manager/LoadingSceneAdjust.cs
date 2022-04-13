@@ -24,6 +24,8 @@ public class LoadingSceneAdjust : MonoBehaviour
     {
         // UIManager 드로잉 비활성화
         UIManager.UIDrawState = Define.UIDraw.Inactive;
+        // 인게임 리스트 클리어
+        InGameManager.Instance.ClearInGame();
 
         StartCoroutine(LoadScene());
     }

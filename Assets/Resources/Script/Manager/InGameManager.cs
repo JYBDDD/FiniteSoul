@@ -14,16 +14,6 @@ public class InGameManager : Singleton<InGameManager>
 
 
 
-    public void Update()
-    {
-        
-    }
-
-
-
-
-
-
     /// <summary>
     /// 리스트에 해당 몬스터 객체 추가
     /// </summary>
@@ -56,7 +46,7 @@ public class InGameManager : Singleton<InGameManager>
     public void ClearInGame()
     {
         Player = null;
-        Monsters.Clear();
+        Monsters?.Clear();
     }
 
 }

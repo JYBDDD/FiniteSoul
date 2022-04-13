@@ -29,17 +29,16 @@ public class UIManager : Singleton<UIManager>
 
     private void Update()
     {
-        //Debug.Log($" 본래 값은 Inactive 이여야 함{UIOriginState}");
-        SwitchWindowOption(UIDrawState,UIOriginState,canvasGroup);
+        SwitchWindowOption(ref UIDrawState,ref UIOriginState, canvasGroup);
     }
 
     /// <summary>
     /// 윈도우 비/활성 상태전환을 실행할 메소드
     /// </summary>
-    /// <param name="uiDraw">변경시 상태도 같이 전환되는 UIDraw 상태</param>
-    /// <param name="originDraw">uiDraw와 값이 다를시 변경되도록 사용되는 상태</param>
+    /// <param name="uiDraw">변경시 상태도 같이 전환되는 UIDraw 상태 (외부의 넣은 변수값도 영향을 받도록 값을 참조함 Ref)</param>
+    /// <param name="originDraw">uiDraw와 값이 다를시 변경되도록 사용되는 상태 (외부의 넣은 변수값도 영향을 받도록 값을 참조함 Ref)</param>
     /// <param name="cGroup">On/Off를 실행할 캔버스 그룹</param>
-    public void SwitchWindowOption(Define.UIDraw uiDraw,Define.UIDraw originDraw,CanvasGroup cGroup)
+    public void SwitchWindowOption(ref Define.UIDraw uiDraw,ref Define.UIDraw originDraw,CanvasGroup cGroup)
     {
         // 총괄 UI 상태값이 변경되었다면 실행
         if (uiDraw != originDraw)
@@ -59,7 +58,6 @@ public class UIManager : Singleton<UIManager>
                     UIWindowSlowlyInActive(cGroup);
                     break;
             }
-
             originDraw = uiDraw;
         }
         

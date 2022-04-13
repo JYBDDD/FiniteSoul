@@ -50,6 +50,8 @@ public class MonsterController : MoveableObject
 
         // 상태머신에서 Update시켜야하는 값이라면 실행, 아니라면 실행중지
         FSM.UpdateMethod();
+
+        Debug.Log($"FullData 몬스터 리스트 0번째 인덱스(Mutant) : {GameManager.Instance.FullData.monstersData[0].index}");
     }
 
     /// <summary>
