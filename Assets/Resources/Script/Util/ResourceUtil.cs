@@ -119,7 +119,10 @@ public class ResoureUtil : MonoBehaviour
 
             arrPlayerData = JsonConvert.DeserializeObject<UsePlayerData[]>(jsonData);
 
-            if (name == "Player" && GameManager.Instance.FullData.playersData.Count <= 0)        // 한번만 호출되도록 설정 (Player 데이터 로드)
+            // FullData 쪽을 값복사하게 구조체로 만들고 위의 변수가 할당이 완료된상태에서 
+            // new FullDataCollection(arrPlayerData, arrGrowthData, arrMonsterData, arrStageData, arrItemData);  이걸해서 값을 넣어줘야함   TODO
+
+            /*if (name == "Player" && GameManager.Instance.FullData.playersData.Count <= 0)        // 한번만 호출되도록 설정 (Player 데이터 로드)
             {
                 for (int i = 0; i < arrPlayerData.Length; ++i)
                 {
@@ -161,7 +164,7 @@ public class ResoureUtil : MonoBehaviour
                 {
                     GameManager.Instance.FullData.itemsData.Add(arrItemData[i]);
                 }
-            }
+            }*/
 
 
 
