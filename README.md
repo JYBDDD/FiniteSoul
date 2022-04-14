@@ -170,7 +170,7 @@
 			-> 인벤토리, 능력치 + 장비창 만들기
 			- 참고 https://www.google.co.kr/search?q=%EC%97%98%EB%93%A0%EB%A7%81+ui+%EC%8A%A4%ED%85%9F&tbm=isch&ved=2ahUKEwi0lPWAgJP3AhUHhpQKHecdAhgQ2-cCegQIABAA&oq=%EC%97%98%EB%93%A0%EB%A7%81+ui+%EC%8A%A4%ED%85%9F&gs_lcp=CgNpbWcQAzoHCCMQ7wMQJzoECAAQGFC8DVi6G2CJHGgDcAB4AYABgAGIAdoHkgEDMC44mAEAoAEBqgELZ3dzLXdpei1pbWfAAQE&sclient=img&ei=FslXYrSxJYeM0gTnu4jAAQ&bih=748&biw=1419#imgrc=Q6E7sPseeef76M
 			-> 능력치 + 장비창,  모닥불에 앉았을때만 On/Off가 가능하도록 설정할것임
-				-> 지금 스탯 장비창 캔버스 스크립트는 작성했고,   장비창 꾸미기 / Rune 사용해서 레벨업이 가능하도록 스크립트 짜기 TODO
+				-> 장비창 꾸미기 / Rune 사용해서 레벨업이 가능하도록 스크립트 짜기(StatusUI 스크립트 있음) TODO
 	
 				- 올릴수 있는 능력치
 				   - 최대 체력
