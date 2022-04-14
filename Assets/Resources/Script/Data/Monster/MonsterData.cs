@@ -67,5 +67,5 @@ public class MonsterData : StaticData
     /// <summary>
     /// 리소스 경로
     /// </summary>
-    public string ResourcePath;
+    public string resourcePath;
 }

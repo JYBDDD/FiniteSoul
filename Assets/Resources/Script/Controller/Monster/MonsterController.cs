@@ -18,6 +18,9 @@ public class MonsterController : MoveableObject
     // Idle -> Walk 로 상태변경을 할때 사용되는 변수
     float walkStateMultiple = 0;
 
+    // 몬스터의 체력이 0이 되었을시 호출되는 Bool타입 변수
+    bool deadMonster = false;
+
     // 몬스터의 생성 위치
     public Vector3 monsterStartPos = Vector3.zero;
 
@@ -42,6 +45,14 @@ public class MonsterController : MoveableObject
     /// </summary>
     public virtual void Update()
     {
+        // 몬스터의 현재체력이 0이하라면 상태를 Dead로 변경한다
+        if(monsterData.currentHp <= 0 && deadMonster == false)
+        {
+            deadMonster = true;
+            agent.SetDestination(transform.position);
+            FSM.ChangeState(Define.State.Die, DieState, false);
+        }
+
         // 몬스터의 데이터(시야각, 시야 거리)가 존재한다면 실행
         if (monsterData != null)
         {
@@ -50,8 +61,6 @@ public class MonsterController : MoveableObject
 
         // 상태머신에서 Update시켜야하는 값이라면 실행, 아니라면 실행중지
         FSM.UpdateMethod();
-
-        Debug.Log($"FullData 몬스터 리스트 0번째 인덱스(Mutant) : {GameManager.Instance.FullData.monstersData[0].index}");
     }
 
     /// <summary>
@@ -63,6 +72,8 @@ public class MonsterController : MoveableObject
 
         // NavMeshAgent 이동속도 = 몬스터데이터 이동속도 지정
         agent.speed = monsterData.moveSpeed;
+
+        deadMonster = false;
 
         // 몬스터 파라미터값 초기값으로 재설정
         anim.SetFloat("MoveZ", 0);

@@ -87,27 +87,25 @@ public class ResoureUtil : MonoBehaviour
     /// </summary>
     public static void InsertDataSetting()
     {
+        var fullData = GameManager.Instance.FullData;
+
         // 플레이어 데이터
-        UsePlayerData[] arrPlayerData;
-        ParsingJsonData("Player");
+        fullData.playersData = ParsingJsonData<UsePlayerData>("Player").ToList();
 
         // 성장 데이터
-        GrowthStatData[] arrGrowthData;
-        ParsingJsonData("GrowthStat");
+        fullData.growthsData = ParsingJsonData<GrowthStatData>("GrowthStat").ToList();
 
         // 몬스터 데이터
-        UseMonsterData[] arrMonsterData;
-        ParsingJsonData("Monster");
+        fullData.monstersData = ParsingJsonData<UseMonsterData>("Monster").ToList();
 
         // 스테이지 데이터
-        StageData[] arrStageData;
-        ParsingJsonData("Stage");
+        fullData.stagesData = ParsingJsonData<StageData>("Stage").ToList();
 
         // 아이템 데이터
-        ItemData[] arrItemData;
-        ParsingJsonData("Item");
+        fullData.itemsData = ParsingJsonData<UseItemData>("Item").ToList();
 
-        void ParsingJsonData(string name)
+
+        T[] ParsingJsonData<T>(string name)
         {
             string path = Path.Combine(Application.dataPath, $"Resources/Document/Json");
 
@@ -117,57 +115,7 @@ public class ResoureUtil : MonoBehaviour
             fileStream.Close();
             string jsonData = Encoding.UTF8.GetString(data);
 
-            arrPlayerData = JsonConvert.DeserializeObject<UsePlayerData[]>(jsonData);
-
-            // FullData 쪽을 값복사하게 구조체로 만들고 위의 변수가 할당이 완료된상태에서 
-            // new FullDataCollection(arrPlayerData, arrGrowthData, arrMonsterData, arrStageData, arrItemData);  이걸해서 값을 넣어줘야함   TODO
-
-            /*if (name == "Player" && GameManager.Instance.FullData.playersData.Count <= 0)        // 한번만 호출되도록 설정 (Player 데이터 로드)
-            {
-                for (int i = 0; i < arrPlayerData.Length; ++i)
-                {
-                    GameManager.Instance.FullData.playersData.Add(arrPlayerData[i]);
-                }
-            }
-            if (name == "GrowthStat" && GameManager.Instance.FullData.growthsData.Count <= 0)       // 한번만 호출되도록 설정 (GrowthStat 데이터 로드)
-            {
-                arrGrowthData = JsonConvert.DeserializeObject<GrowthStatData[]>(jsonData);
-
-                for (int i = 0; i < arrGrowthData.Length; ++i)
-                {
-                    GameManager.Instance.FullData.growthsData.Add(arrGrowthData[i]);
-                }
-            }
-            if (name == "Stage" && GameManager.Instance.FullData.stagesData.Count <= 0)        // 한번만 호출되도록 설정 (StageData 데이터 로드)
-            {
-                arrStageData = JsonConvert.DeserializeObject<StageData[]>(jsonData);
-
-                for (int i = 0; i < arrStageData.Length; ++i)
-                {
-                    GameManager.Instance.FullData.stagesData.Add(arrStageData[i]);
-                }
-            }
-            if (name == "Monster" && GameManager.Instance.FullData.monstersData.Count <= 0)        // 한번만 호출되도록 설정 (MonsterData 데이터 로드)
-            {
-                arrMonsterData = JsonConvert.DeserializeObject<UseMonsterData[]>(jsonData);
-
-                for (int i = 0; i < arrMonsterData.Length; ++i)
-                {
-                    GameManager.Instance.FullData.monstersData.Add(arrMonsterData[i]);
-                }
-            }
-            if (name == "Item" && GameManager.Instance.FullData.itemsData.Count <= 0)        // 한번만 호출되도록 설정 (ItemData 데이터 로드)
-            {
-                arrItemData = JsonConvert.DeserializeObject<ItemData[]>(jsonData);
-
-                for (int i = 0; i < arrItemData.Length; ++i)
-                {
-                    GameManager.Instance.FullData.itemsData.Add(arrItemData[i]);
-                }
-            }*/
-
-
-
+            return JsonConvert.DeserializeObject<T[]>(jsonData);
         }
     }
 

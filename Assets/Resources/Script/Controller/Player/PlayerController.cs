@@ -88,8 +88,6 @@ public class PlayerController : MoveableObject
 
         // 상태머신에서 Update시켜야하는 값이라면 실행, 아니라면 실행중지
         FSM.UpdateMethod();
-
-        //Debug.Log(playerData.currentHp);
     }
 
     /*/// <summary>
