@@ -40,7 +40,7 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
         }
 
         // 아니라면 하나를 재생성한다
-        GameObject returnObj = ResoureUtil.InsertPrefabs(resourcePath);
+        GameObject returnObj = ResourceUtil.InsertPrefabs(resourcePath);
 
         // type이 몬스터라면, 오브젝트의 부모를 몬스터로 설정한다
         if(type == Define.CharacterType.Monster)

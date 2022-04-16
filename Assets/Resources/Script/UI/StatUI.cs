@@ -30,8 +30,8 @@ public class StatUI : MonoBehaviour
 
     private void Update()
     {
-        // 플레이어 데이터가 존재하고, 플레이어의 데이터가 변경되었다면 실행
-        if (playerData != originData && InGameManager.Instance.Player != null)
+        // 플레이어 데이터가 존재한다면 실행
+        if (InGameManager.Instance.Player != null)
         {
             StatUpdate();
         }
@@ -43,23 +43,30 @@ public class StatUI : MonoBehaviour
     private void StatUpdate()
     {
         // 플레이어 데이터의 인덱스가 정상값이 아니라면 값을 삽입
-        if(playerData.index <= 999)
+        if (playerData.index <= 999)
         {
             originData = playerData;
             playerData = InGameManager.Instance.Player.playerData;
         }
 
-        // 현재 스텟 변경
-        CurrentStatChange();
-
-        // 레벨이 상승하였다면 실행
-        if(playerData.level != originData.level)
+        // 플레이어의 데이터가 변경되었다면 실행
+        if (playerData != originData | playerData.level != originData.level)
         {
-            // 스텟 부모 크기 설정
-            CurrentRectChange();
-        }
+            // 현재 스텟 변경
+            CurrentStatChange();
 
-        originData = playerData;
+            // 레벨이 상승하였다면 실행
+            if (playerData.level != originData.level)
+            {
+                // 스텟 부모 크기 설정
+                CurrentRectChange();
+            }
+            
+            originData = new UsePlayerData(playerData, InGameManager.Instance.Player.playerData.growthStat);
+
+            return;
+        }
+        
     }
 
     /// <summary>

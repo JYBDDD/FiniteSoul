@@ -66,8 +66,8 @@ public class StageManager : Singleton<StageManager>
     {
         // SaveData의 index (캐릭터 인덱스) 에 따라 캐릭터 생성 (일단은 팔라딘으로 설정함 -> SaveData 인덱스가 팔라딘값으로 되어있음)
         // 시작씬에서 캐릭터를 선택하였다면 선택한 캐릭터 인덱스를 SaveData로 저장한다음 불러오는것이 좋을듯 TODO
-        var loadFile = ResoureUtil.LoadSaveFile();
-        GameObject player = ResoureUtil.InsertPrefabs(loadFile.resourcePath);
+        var loadFile = ResourceUtil.LoadSaveFile();
+        GameObject player = ResourceUtil.InsertPrefabs(loadFile.resourcePath);
         var volData = loadFile.playerVolatility;
 
         // 해당 플레이어를 0,0,0 위치 or 저장된 위치에서 생성
@@ -84,8 +84,12 @@ public class StageManager : Singleton<StageManager>
         // 플레이어 레이어,태그 설정
         playerC.gameObject.layer = LayerMask.NameToLayer("Player");
         playerC.tag = "Player";
+        // 플레이어 상호작용기능 추가
+        playerC.gameObject.AddComponent<OrderInteraction>();
         // InGameManager  Player 에 플레이어 등록
         InGameManager.Instance.PlayerRegist(playerC);
+        // 스테이터스 설정
+        StatusUI.playerData = InGameManager.Instance.Player.playerData;
 
         // 만약 워프를 탔다면 이동후 저장 TODO
     }

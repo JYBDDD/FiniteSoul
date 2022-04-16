@@ -32,6 +32,12 @@ public class UsePlayerData : PlayerData
 
     public UsePlayerData() { }
 
+    /// <summary>
+    /// 초기 플레이어 데이터 추가하는 생성자
+    /// </summary>
+    /// <param name="growthStatData"></param>
+    /// <param name="usePlayerData"></param>
+    /// <param name="playerVolatilityData"></param>
     public UsePlayerData(GrowthStatData growthStatData,UsePlayerData usePlayerData,PlayerVolatilityData playerVolatilityData)
     {
         growthStat = growthStatData;
@@ -49,6 +55,28 @@ public class UsePlayerData : PlayerData
         resourcePath = usePlayerData.resourcePath;
 
         playerVolatility = playerVolatilityData;
+    }
+
+    /// <summary>
+    /// 스테이터스 수정 및 플레이어 스탯 설정시 사용하는 생성자
+    /// </summary>
+    /// <param name="usePlayerData"></param>
+    public UsePlayerData(UsePlayerData usePlayerData,GrowthStatData growthStatData)
+    {
+        if (usePlayerData == null)
+            return;
+
+        growthStat = growthStatData;
+
+        currentRune = usePlayerData.currentRune;
+        maxRune = usePlayerData.growthStat.maxRune * usePlayerData.level * usePlayerData.growthStat.growthRune;
+        maxHp = usePlayerData.maxHp;
+        currentHp = usePlayerData.currentHp;
+        currentMana = usePlayerData.currentMana;
+        currentStamina = usePlayerData.currentStamina;
+        level = usePlayerData.level;
+        atk = usePlayerData.atk;
+        def = usePlayerData.def;
     }
 
 }

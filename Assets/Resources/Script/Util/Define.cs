@@ -11,7 +11,6 @@ public static class Define
     {
         Player,
         Monster,
-        BossMonster,
         None,
     }
 
@@ -81,6 +80,25 @@ public static class Define
 
             None,
         }
+    }
+
+    /// <summary>
+    /// 상호작용 대상
+    /// </summary>
+    public enum InteractionTarget
+    {
+        /// <summary>
+        /// 모닥불 -> 데이터 저장 및 스테이터스 설정
+        /// </summary>
+        Save,
+        /// <summary>
+        /// 상점 -> 아이템 구매 및 판매
+        /// </summary>
+        Shop,
+        /// <summary>
+        /// 아무 상호작용도 하지않는 상태
+        /// </summary>
+        None,
     }
 
     /// <summary>

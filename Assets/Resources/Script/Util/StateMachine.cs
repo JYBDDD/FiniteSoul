@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ResourceUtil.StateMachine
+namespace Util.StateMachine
 {
 
     /// <summary>

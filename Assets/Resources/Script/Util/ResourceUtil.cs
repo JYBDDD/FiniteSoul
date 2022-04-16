@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-public class ResoureUtil : MonoBehaviour
+public class ResourceUtil : MonoBehaviour
 {
     /// <summary>
     /// 소수점 세자릿수까지만 출력하는 메서드(Vector3 용)
@@ -42,7 +42,7 @@ public class ResoureUtil : MonoBehaviour
         float qutY = float.Parse(qutYstring);
         float qutZ = float.Parse(qutZstring);
 
-        Quaternion quaternion = new Quaternion(qutX, qutY, qutZ,0);
+        Quaternion quaternion = new Quaternion(qutX, qutY, qutZ, 0);
         return quaternion;
     }
 
@@ -58,7 +58,7 @@ public class ResoureUtil : MonoBehaviour
         PlayerVolatilityData playerVolatilityData = JsonUtility.FromJson<PlayerVolatilityData>(path);
 
         // 스테이지 인덱스가 1000 이 아닐경우 이어하기 할 수있는 파일
-        if(playerVolatilityData.stageIndex != 1000)
+        if (playerVolatilityData.stageIndex != 1000)
         {
             return true;
         }
@@ -79,7 +79,7 @@ public class ResoureUtil : MonoBehaviour
         UsePlayerData playerData = GameManager.Instance.FullData.playersData.Where(_ => _.index == playerVolatilityData[0].index).SingleOrDefault();
         GrowthStatData growthStatData = GameManager.Instance.FullData.growthsData.Where(_ => _.index == playerData.growthRef).SingleOrDefault();
 
-        return new UsePlayerData(growthStatData,playerData,playerVolatilityData[0]);
+        return new UsePlayerData(growthStatData, playerData, playerVolatilityData[0]);
     }
 
     /// <summary>
@@ -139,13 +139,13 @@ public class ResoureUtil : MonoBehaviour
     /// <param name="currentHp"></param>
     /// <param name="raiseAtk"></param>
     /// <param name="raiseDef"></param>
-    public static void SaveData(int index, int level,int stageIndex, Vector3 pos, float rune, float raiseHp, float currentHp, float raiseAtk, float raiseDef)
+    public static void SaveData(UsePlayerData playerData, Vector3 pos, StageData stageData)
     {
         // 저장 파일 위치
         var path = Resources.Load("Document/SaveData/SaveData.json");
         // 저장할 플레이어 데이터 -> 저장 파일 위치 덮어쓰기
 
-        var json = JsonUtility.ToJson(new PlayerVolatilityData(index, level, stageIndex, pos, rune, raiseHp, currentHp, raiseAtk, raiseDef),true);
+        var json = JsonUtility.ToJson(new PlayerVolatilityData(playerData, pos, stageData), true);
         File.WriteAllText("path", json);
 
     }

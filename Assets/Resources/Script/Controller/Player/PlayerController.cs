@@ -25,7 +25,7 @@ public class PlayerController : MoveableObject
     private Collider[] playerAtkColl;
 
     /// <summary>
-    /// 스텟 변경시 변경된 스탯을 재설정 해주는 메소드
+    /// 초기 스텟 변경시 변경된 스탯을 재설정 해주는 메소드
     /// </summary>
     public void SetStat()
     {
@@ -51,8 +51,6 @@ public class PlayerController : MoveableObject
     public override void InsertComponent()
     {
         base.InsertComponent();
-
-        
     }
 
     public override void AttackColliderSet()
@@ -95,8 +93,7 @@ public class PlayerController : MoveableObject
     /// </summary>
     private void OnApplicationQuit()
     {
-        ResoureUtil.SaveData(playerData.index, playerData.level, StageManager.Instance.stageData.index, transform.position, playerData.currentRune,
-            playerData.maxHp, playerData.currentHp, playerData.atk, playerData.def);
+        ResoureUtil.SaveData(playerData,transform.position,StageManager.stageData);
     }*/
 
 
@@ -104,26 +101,30 @@ public class PlayerController : MoveableObject
 
     protected virtual void IdleState()
     {
-        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))         // Walk
+        if(NotToMove)
         {
-            FSM.ChangeState(Define.State.Walk, WalkState, true);
-            return;
-        }
-        if (Input.GetKey(KeyCode.Space))     // Evasion
-        {
-            anim.SetBool("Evasion", true);
-            FSM.ChangeState(Define.State.Evasion, EvasionState, true);
-            return;
-        }
-        if (Input.GetKey(KeyCode.W) | Input.GetKey(KeyCode.A) | Input.GetKey(KeyCode.S) | Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.LeftShift))      // Running
-        {
-            FSM.ChangeState(Define.State.Running, RunningState, true);
-            return;
-        }
-        if (Input.GetKey(KeyCode.Mouse0))    // Attack
-        {
-            FSM.ChangeState(Define.State.Attack, NormalAttackState);
-            return;
+            if (Input.GetKey(KeyCode.W) | Input.GetKey(KeyCode.S) | Input.GetKey(KeyCode.A) | Input.GetKey(KeyCode.D))         // Walk
+            {
+                FSM.ChangeState(Define.State.Walk, WalkState, true);
+                return;
+            }
+            if (Input.GetKey(KeyCode.Space) && !anim.GetBool("Evasion"))     // Evasion
+            {
+                anim.SetBool("Evasion", true);
+                playerData.currentStamina -= 30f;
+                FSM.ChangeState(Define.State.Evasion, EvasionState, true);
+                return;
+            }
+            if (Input.GetKey(KeyCode.W) | Input.GetKey(KeyCode.A) | Input.GetKey(KeyCode.S) | Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.LeftShift))      // Running
+            {
+                FSM.ChangeState(Define.State.Running, RunningState, true);
+                return;
+            }
+            if (Input.GetKey(KeyCode.Mouse0))    // Attack
+            {
+                FSM.ChangeState(Define.State.Attack, NormalAttackState);
+                return;
+            }
         }
 
         anim.SetFloat("MoveX", Mathf.Lerp(anim.GetFloat("MoveX"), 0, Time.deltaTime * 4f));
@@ -133,48 +134,53 @@ public class PlayerController : MoveableObject
 
     protected virtual void WalkState()
     {
-        // 좌, 우측키를 누르지 않았을 시, MoveX 값 0으로 재설정
-        if(!Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
+        if(NotToMove)
         {
-            anim.SetFloat("MoveX", Mathf.Lerp(anim.GetFloat("MoveX"), 0, Time.deltaTime * 4f));
+            // 좌, 우측키를 누르지 않았을 시, MoveX 값 0으로 재설정
+            if (!Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
+            {
+                anim.SetFloat("MoveX", Mathf.Lerp(anim.GetFloat("MoveX"), 0, Time.deltaTime * 4f));
+            }
+            if (Input.GetKey(KeyCode.W))         // 전진키
+            {
+                anim.SetFloat("MoveZ", Mathf.Lerp(anim.GetFloat("MoveZ"), 1, Time.deltaTime * 4f));
+            }
+            if (Input.GetKey(KeyCode.A))         // 좌측 전진키
+            {
+                anim.SetFloat("MoveX", Mathf.Lerp(anim.GetFloat("MoveX"), -1, Time.deltaTime * 4f));
+            }
+            if (Input.GetKey(KeyCode.D))         // 우측 전진키
+            {
+                anim.SetFloat("MoveX", Mathf.Lerp(anim.GetFloat("MoveX"), 1, Time.deltaTime * 4f));
+            }
+            if (Input.GetKey(KeyCode.S))                                     // 후진키
+            {
+                anim.SetFloat("MoveZ", Mathf.Lerp(anim.GetFloat("MoveZ"), -1, Time.deltaTime * 4f));
+            }
+            if (Input.GetKey(KeyCode.Space) && !anim.GetBool("Evasion"))     // Evasion
+            {
+                anim.SetBool("Evasion", true);
+                playerData.currentStamina -= 30f;
+                FSM.ChangeState(Define.State.Evasion, EvasionState, true);
+                return;
+            }
+            if (!Input.anyKey)  // Idle
+            {
+                FSM.ChangeState(Define.State.Idle, IdleState, true);
+                return;
+            }
+            if (Input.GetKey(KeyCode.W) | Input.GetKey(KeyCode.A) | Input.GetKey(KeyCode.S) | Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.LeftShift))      // Running
+            {
+                FSM.ChangeState(Define.State.Running, RunningState, true);
+                return;
+            }
+            if (Input.GetKey(KeyCode.Mouse0))    // Attack
+            {
+                FSM.ChangeState(Define.State.Attack, NormalAttackState);
+                return;
+            }
         }
-        if (Input.GetKey(KeyCode.W))         // 전진키
-        {
-            anim.SetFloat("MoveZ", Mathf.Lerp(anim.GetFloat("MoveZ"), 1, Time.deltaTime * 4f));
-        }
-        if (Input.GetKey(KeyCode.A))         // 좌측 전진키
-        {
-            anim.SetFloat("MoveX", Mathf.Lerp(anim.GetFloat("MoveX"), -1, Time.deltaTime * 4f));
-        }
-        if (Input.GetKey(KeyCode.D))         // 우측 전진키
-        {
-            anim.SetFloat("MoveX", Mathf.Lerp(anim.GetFloat("MoveX"), 1, Time.deltaTime * 4f));
-        }
-        if (Input.GetKey(KeyCode.S))                                     // 후진키
-        {
-            anim.SetFloat("MoveZ", Mathf.Lerp(anim.GetFloat("MoveZ"), -1, Time.deltaTime * 4f));
-        }
-        if(Input.GetKey(KeyCode.Space))     // Evasion
-        {
-            anim.SetBool("Evasion", true);
-            FSM.ChangeState(Define.State.Evasion, EvasionState, true);
-            return;
-        }
-        if (!Input.anyKey)  // Idle
-        {
-            FSM.ChangeState(Define.State.Idle, IdleState, true);
-            return;
-        }
-        if (Input.GetKey(KeyCode.W) | Input.GetKey(KeyCode.A) | Input.GetKey(KeyCode.S) | Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.LeftShift))      // Running
-        {
-            FSM.ChangeState(Define.State.Running, RunningState, true);
-            return;
-        }
-        if (Input.GetKey(KeyCode.Mouse0))    // Attack
-        {
-            FSM.ChangeState(Define.State.Attack, NormalAttackState);
-            return;
-        }
+        
 
         FSM.State = Define.State.Walk;
     }
@@ -183,6 +189,8 @@ public class PlayerController : MoveableObject
     {
         if(!anim.GetBool("Evasion"))
         {
+            // 회피가 끝난 이후 스테미너 자연회복 실행
+            StartCoroutine(NatureRecovery.NatureRecoveryStamina());
             FSM.ChangeState(Define.State.Idle, IdleState, true);
             return;
         }
@@ -193,9 +201,10 @@ public class PlayerController : MoveableObject
 
     protected virtual void RunningState()
     {
-        if (Input.GetKey(KeyCode.Space))     // Evasion
+        if (Input.GetKey(KeyCode.Space) && !anim.GetBool("Evasion"))     // Evasion
         {
             anim.SetBool("Evasion", true);
+            playerData.currentStamina -= 30f;
             FSM.ChangeState(Define.State.Evasion, EvasionState, true);
             return;
         }
@@ -379,6 +388,9 @@ public class PlayerController : MoveableObject
     /// </summary>
     private void PlayerLookingMouse()
     {
+        if (!NotToMove)
+            return;
+
         mouseX += Input.GetAxis("Mouse X") * 10f;     // 좌,우
 
         float mouseY = Input.GetAxis("Mouse Y");     // 상,하

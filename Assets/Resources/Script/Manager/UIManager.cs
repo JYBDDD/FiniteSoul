@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -38,7 +39,8 @@ public class UIManager : Singleton<UIManager>
     /// <param name="uiDraw">변경시 상태도 같이 전환되는 UIDraw 상태 (외부의 넣은 변수값도 영향을 받도록 값을 참조함 Ref)</param>
     /// <param name="originDraw">uiDraw와 값이 다를시 변경되도록 사용되는 상태 (외부의 넣은 변수값도 영향을 받도록 값을 참조함 Ref)</param>
     /// <param name="cGroup">On/Off를 실행할 캔버스 그룹</param>
-    public void SwitchWindowOption(ref Define.UIDraw uiDraw,ref Define.UIDraw originDraw,CanvasGroup cGroup)
+    /// <param name="addAction">추가할 값</param>
+    public void SwitchWindowOption(ref Define.UIDraw uiDraw,ref Define.UIDraw originDraw,CanvasGroup cGroup, Action addAction = null)
     {
         // 총괄 UI 상태값이 변경되었다면 실행
         if (uiDraw != originDraw)
@@ -69,6 +71,8 @@ public class UIManager : Singleton<UIManager>
     private void UIWindowActive(CanvasGroup cGroup)
     {
         cGroup.alpha = 1;
+        cGroup.blocksRaycasts = true;
+        cGroup.interactable = true;
     }
 
     /// <summary>
@@ -99,6 +103,8 @@ public class UIManager : Singleton<UIManager>
             if(time >= duraction)
             {
                 cGroup.alpha = 1;
+                cGroup.blocksRaycasts = true;
+                cGroup.interactable = true;
                 yield break;
             }
             yield return null;
@@ -115,6 +121,8 @@ public class UIManager : Singleton<UIManager>
             cGroup = canvasGroup;
         }
         cGroup.alpha = 0;
+        cGroup.blocksRaycasts = false;
+        cGroup.interactable = false;
     }
 
     /// <summary>
@@ -145,6 +153,8 @@ public class UIManager : Singleton<UIManager>
             if (time >= duraction)
             {
                 cGroup.alpha = 0;
+                cGroup.blocksRaycasts = false;
+                cGroup.interactable = false;
                 yield break;
             }
             yield return null;

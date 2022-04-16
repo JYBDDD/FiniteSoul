@@ -64,18 +64,21 @@ public class PlayerVolatilityData
     /// </summary>
     public float raiseDef;
 
-    public PlayerVolatilityData(int index, int level, int stageIndex, Vector3 pos, float rune, float raiseHp, float currentHp, float raiseAtk, float raiseDef)
+    public PlayerVolatilityData(UsePlayerData playerData, Vector3 pos, StageData stageData)
     {
-        this.index = index;
-        this.level = level;
-        this.stageIndex = stageIndex;
+        if (playerData == null)
+            return;
+
+        this.index = playerData.index;
+        this.level = playerData.level;
+        this.stageIndex = stageData.index;
         this.posX = pos.x;
         this.posY = pos.y;
         this.posZ = pos.z;
-        this.rune = rune;
-        this.raiseHp = raiseHp;
-        this.currentHp = currentHp;
-        this.raiseAtk = raiseAtk;
-        this.raiseDef = raiseDef;
+        this.rune = playerData.currentRune;
+        this.raiseHp = playerData.maxHp;
+        this.currentHp = playerData.currentHp;
+        this.raiseAtk = playerData.atk;
+        this.raiseDef = playerData.def;
     }
 }

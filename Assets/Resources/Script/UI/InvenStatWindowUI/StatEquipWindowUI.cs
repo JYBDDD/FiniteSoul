@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 스탯 + 장비 창 UI를 관리하는 클래스
+/// </summary>
 public class StatEquipWindowUI : MonoBehaviour
 {
     #region 2번째 캔버스 그룹 조정 변수
@@ -42,16 +45,14 @@ public class StatEquipWindowUI : MonoBehaviour
     private void Start()
     {
         StatEquipCanvasGroup = GetComponent<CanvasGroup>();
+        StatEquipCanvasGroup.blocksRaycasts = false;     // 해당 캔버스 자식의 레이캐스트 미호출상태 전환
     }
 
     private void Update()
     {
-        // 모닥불에 상호작용했을때 값을 바꿀수 있도록 할것임 TODO
-        UIManager.Instance.SwitchWindowOption(ref StatEquipState, ref StatEquipOriginState, StatEquipCanvasGroup);
-
-
-
         NumberTwoCanvasSetting();
+
+        UIManager.Instance.SwitchWindowOption(ref StatEquipState, ref StatEquipOriginState, StatEquipCanvasGroup);
     }
 
     /// <summary>
@@ -67,6 +68,7 @@ public class StatEquipWindowUI : MonoBehaviour
                 // 스탯 + 장비창을 제외한 모든창을 서서히 Off
                 Num2CanvasState = Define.UIDraw.SlowlyInactive;
                 UIManager.Instance.SwitchWindowOption(ref Num2CanvasState, ref Num2OriginState, Number2CanvasGroup);
+                StatEquipCanvasGroup.blocksRaycasts = false;     // 해당 캔버스 자식의 레이캐스트 미호출상태 전환
             }
             // 스탯창이 서서히 Off 상태라면
             if (StatEquipState == Define.UIDraw.SlowlyInactive)
@@ -74,6 +76,8 @@ public class StatEquipWindowUI : MonoBehaviour
                 // 스탯 + 장비창을 제외한 모든창을 서서히 On
                 Num2CanvasState = Define.UIDraw.SlowlyActivation;
                 UIManager.Instance.SwitchWindowOption(ref Num2CanvasState, ref Num2OriginState, Number2CanvasGroup);
+                StatEquipCanvasGroup.blocksRaycasts = true;     // 해당 캔버스 자식의 레이캐스트 호출상태 전환
+
             }
         }
     }
