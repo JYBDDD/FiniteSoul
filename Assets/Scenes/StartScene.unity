@@ -3509,8 +3509,6 @@ MonoBehaviour:
     width: 1
   m_Looped: 0
   m_Waypoints:
-  - position: {x: -79.609406, y: 110, z: 63.143055}
-    roll: 0
   - position: {x: 1.999985, y: 56.250404, z: 56.5004}
     roll: 0
   - position: {x: 4, y: 2.5, z: 3}
@@ -3546,6 +3544,8 @@ PlayableDirector:
   m_SceneBindings:
   - key: {fileID: 4293871748693352156, guid: b1e43614c2c98ad4395a18a15a93a1c8, type: 2}
     value: {fileID: 2005142891}
+  - key: {fileID: -775021755633440979, guid: b1e43614c2c98ad4395a18a15a93a1c8, type: 2}
+    value: {fileID: 684435386}
   m_ExposedReferences:
     m_References:
     - 42483f5d9e8c0b247868fadccd1527c0: {fileID: 684435384}
@@ -4117,6 +4117,7 @@ GameObject:
   m_Component:
   - component: {fileID: 684435385}
   - component: {fileID: 684435384}
+  - component: {fileID: 684435386}
   m_Layer: 0
   m_Name: DolyCam
   m_TagString: Untagged
@@ -4174,6 +4175,25 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 15, y: 180, z: 0}
+--- !u!95 &684435386
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 684435383}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &687434932
 GameObject:
   m_ObjectHideFlags: 0
@@ -10046,7 +10066,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2005142887}
   m_LocalRotation: {x: 0, y: 0.9914449, z: -0.13052616, w: 0}
-  m_LocalPosition: {x: 1.999985, y: 56.250404, z: 56.5004}
+  m_LocalPosition: {x: 4, y: 2.5, z: 3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -14162,12 +14182,7 @@ Animator:
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
-  m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
-    are already bound by a Humanoid avatar. These transforms can only be changed
-    by Humanoid clips.\n\tTransform 'Spine1'\n\tTransform 'LeftHandMiddle2'\n\tTransform
-    'Neck'\n\tTransform 'LeftHandThumb1'\n\tTransform 'LeftHandRing2'\n\tTransform
-    'RightHandIndex3'\n\tTransform 'LeftHandRing3'\n\tTransform 'RightHandMiddle1'\n\tTransform
-    'LeftUpLeg'\n\tTransform 'LeftHandIndex2'\n\tand more ..."
+  m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
