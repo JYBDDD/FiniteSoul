@@ -55,10 +55,10 @@ public class ResourceUtil : MonoBehaviour
     {
         string path = Resources.Load<TextAsset>("Document/SaveData/SaveData").ToString();
 
-        PlayerVolatilityData playerVolatilityData = JsonUtility.FromJson<PlayerVolatilityData>(path);
+        PlayerVolatilityData[] playerVolatilityData = JsonConvert.DeserializeObject<PlayerVolatilityData[]>(path);
 
-        // 스테이지 인덱스가 1000 이 아닐경우 이어하기 할 수있는 파일
-        if (playerVolatilityData.stageIndex != 1000)
+        // 스테이지 인덱스가 1000 보다 클 경우
+        if (playerVolatilityData[0].stageIndex > 1000)
         {
             return true;
         }
@@ -144,6 +144,8 @@ public class ResourceUtil : MonoBehaviour
         // 저장 파일 위치
         var path = Resources.Load("Document/SaveData/SaveData.json");
         // 저장할 플레이어 데이터 -> 저장 파일 위치 덮어쓰기
+
+        // 인벤토리 저장 데이터도 만들어야함 TODO
 
         var json = JsonUtility.ToJson(new PlayerVolatilityData(playerData, pos, stageData), true);
         File.WriteAllText("path", json);

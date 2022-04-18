@@ -51,11 +51,11 @@ public class OrderInteraction : MonoBehaviour
                     // 스테이터스창 활성화
                     StatEquipWindowUI.StatEquipState = Define.UIDraw.SlowlyInactive;
 
+                    // 데이터 저장
+                    ResourceUtil.SaveData(InGameManager.Instance.Player.playerData, transform.position, StageManager.stageData);
+
                     return;
                 }
-
-                // 데이터 저장
-                //ResourceUtil.SaveData(InGameManager.Instance.Player.playerData, transform.position, StageManager.stageData);
 
                 // 이동 불가 지정
                 InGameManager.Instance.Player.NotToMove = false;

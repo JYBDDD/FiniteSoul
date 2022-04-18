@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,6 +23,12 @@ public class StartSceneAdjust : MonoBehaviour
 
     [SerializeField]
     Button exitButton;       // 종료하기 버튼
+
+
+    [SerializeField]
+    Image descriptionWindow;    // 설명 윈도우
+    [SerializeField]
+    TextMeshProUGUI dWText;     // 설명 윈도우 텍스트
 
     private void Start()
     {
@@ -49,7 +56,7 @@ public class StartSceneAdjust : MonoBehaviour
     /// </summary>
     public void NewButtonSet()
     {
-        // 첫시작은 무조건 1001 스테이지에서 생성  (현재는 SampleScene) TODO
+        // 캐릭터 선택창 만들기 TODO
         LoadingSceneAdjust.LoadScene("1001");
     }
 
@@ -58,12 +65,59 @@ public class StartSceneAdjust : MonoBehaviour
     /// </summary>
     public void ContinueButtonSet()
     {
-        // TODO
-        // 이어서 할 경우 별도의 저장파일을 불러오는 위치를 지정해줄 것 (ResourcesUtil 에 만들면 될듯)
+        // 이어하기 할수 없는 파일이라면 실행
+        if(!ResourceUtil.LoadConfirmFile())
+        {
+            // 이어하기를 할수 없는 파일입니다 실행 TODO
 
-        // 이어서 할 파일이 없을 경우 인덱스를 없는 값인 (1000)으로 설정해줄 것
-        // 만약 이어서 할 파일이 있다면, "게임을 이어서 진행합니다" 라는 텍스트를 갖는 윈도우 출력, 후 2초뒤 로딩씬으로 넘기기
-        // 아니라면, "로드할 파일이 없습니다. 게임을 새로 진행합니다" 라는 텍스트를 갖는 윈도우 출력, 후 2초뒤 로딩씬으로 넘기기
+            // 설명 윈도우 표시
+            dWText.text = "이어하기 할수없는 \n 파일입니다..";
+            StartCoroutine(AppearWindow());
+
+            return;
+        }
+
+        // 이어하기 저장된 데이터 불러오기
+        var saveData = ResourceUtil.LoadSaveFile();
+
+        // 일정시간후 (저장된 데이터의)다음씬으로 전환
+        StartCoroutine(ContinueGame());
+
+
+        IEnumerator ContinueGame()
+        {
+            // 3초뒤 실행
+            yield return new WaitForSeconds(3f);
+
+            // 설명 윈도우 넣기 TODO @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+
+            // 씬을 전환
+            LoadingSceneAdjust.LoadScene($"{saveData.playerVolatility.stageIndex}");
+            yield break;
+        }
+
+        
+        IEnumerator AppearWindow()
+        {
+            // 알파값 재조정
+            ReturnAlpha(255f / 255f);
+
+            // 2초 대기
+            yield return new WaitForSeconds(2f);
+
+            // 알파값 재조정
+            ReturnAlpha(0f / 0f);
+            yield break;
+
+        }
+
+        void ReturnAlpha(float alpha)
+        {
+            descriptionWindow.color = new Color(descriptionWindow.color.r, descriptionWindow.color.g, descriptionWindow.color.b, alpha);
+            dWText.color = new Color(dWText.color.r, dWText.color.g, dWText.color.b, alpha);
+        }
+
     }
 
     /// <summary>

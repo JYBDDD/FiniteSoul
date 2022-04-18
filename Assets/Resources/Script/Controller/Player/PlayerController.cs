@@ -88,14 +88,6 @@ public class PlayerController : MoveableObject
         FSM.UpdateMethod();
     }
 
-    /*/// <summary>
-    /// 게임 종료시 저장
-    /// </summary>
-    private void OnApplicationQuit()
-    {
-        ResoureUtil.SaveData(playerData,transform.position,StageManager.stageData);
-    }*/
-
 
     // Paladin, Archer 공통으로 사용되는 부분만 작성되었음
 
