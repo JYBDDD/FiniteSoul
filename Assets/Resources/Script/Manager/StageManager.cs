@@ -80,7 +80,7 @@ public class StageManager : Singleton<StageManager>
         playerC.Initialize(playerC.playerData);
         playerC.AttackColliderSet();
         // 플레이어 스텟 설정
-        playerC.SetStat();
+        playerC.SetStat(volData);
         // 플레이어 레이어,태그 설정
         playerC.gameObject.layer = LayerMask.NameToLayer("Player");
         playerC.tag = "Player";
@@ -90,6 +90,11 @@ public class StageManager : Singleton<StageManager>
         InGameManager.Instance.PlayerRegist(playerC);
         // 스테이터스 설정
         StatusUI.playerData = InGameManager.Instance.Player.playerData;
+
+        // 메인카메라 생성
+        ResourceUtil.InsertPrefabs(Define.CameraPath.mainCamPath);
+        // 플레이어를 바라보는 VirtualCam 생성
+        ResourceUtil.InsertPrefabs(Define.CameraPath.playerVirtualCamPath);
 
         // 만약 워프를 탔다면 이동후 저장 TODO
     }

@@ -30,6 +30,23 @@ public class StartSceneAdjust : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI dWText;     // 설명 윈도우 텍스트
 
+    /// <summary>
+    /// 시작대기씬의 캔버스 그룹
+    /// </summary>
+    [SerializeField]
+    CanvasGroup canvasGroup;
+
+    /// <summary>
+    /// 시작대기씬 캔버스 상태
+    /// </summary>
+    public static Define.UIDraw StartCanvasState = Define.UIDraw.Activation;
+
+    /// <summary>
+    /// 시짝씬 캔버스의 바뀌기전 상태
+    /// </summary>
+    protected Define.UIDraw StartCanvasOriginState = Define.UIDraw.Inactive;
+
+
     private void Start()
     {
         // 메인 타이틀 셋팅
@@ -48,7 +65,8 @@ public class StartSceneAdjust : MonoBehaviour
         continueButton.onClick.AddListener(ContinueButtonSet);
         exitButton.onClick.AddListener(ExitButtonSet);
 
-
+        // 캔버스 그룹 설정
+        canvasGroup = GetComponent<CanvasGroup>();
     }
 
     /// <summary>
@@ -57,6 +75,9 @@ public class StartSceneAdjust : MonoBehaviour
     public void NewButtonSet()
     {
         // 캐릭터 선택창 만들기 TODO
+        
+        // 데이터 초기화
+        ResourceUtil.NewDataReturn(1001);   // ->  캐릭터 선택후 해당 캐릭터 인덱스 삽입하기 TODO
         LoadingSceneAdjust.LoadScene("1001");
     }
 
@@ -77,19 +98,21 @@ public class StartSceneAdjust : MonoBehaviour
             return;
         }
 
-        // 이어하기 저장된 데이터 불러오기
+        // 이어하기 저장된 데이터의 스테이지 데이터값을 찾음
         var saveData = ResourceUtil.LoadSaveFile();
 
         // 일정시간후 (저장된 데이터의)다음씬으로 전환
+        dWText.text = "이어하기 데이터를 \n 불러옵니다..";
         StartCoroutine(ContinueGame());
 
 
         IEnumerator ContinueGame()
         {
-            // 3초뒤 실행
-            yield return new WaitForSeconds(3f);
+            // 알파값 1;
+            ReturnAlpha(255f / 255f);
 
-            // 설명 윈도우 넣기 TODO @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+            // 3초뒤 실행
+            yield return new WaitForSeconds(2f);
 
 
             // 씬을 전환
@@ -106,7 +129,7 @@ public class StartSceneAdjust : MonoBehaviour
             // 2초 대기
             yield return new WaitForSeconds(2f);
 
-            // 알파값 재조정
+            // 알파값 0;
             ReturnAlpha(0f / 0f);
             yield break;
 
@@ -233,4 +256,34 @@ public class StartSceneAdjust : MonoBehaviour
         yield return null;
     }
 
+    /// <summary>
+    /// 캐릭터 선택창으로 이동한다
+    /// </summary>
+    private void CharacterChoiseMoving()
+    {
+        UIManager.Instance.SwitchWindowOption(ref StartCanvasState, ref StartCanvasOriginState, canvasGroup);
+
+        // 캐릭터 선택씬으로 카메라를 이동시킨다
+        StartCoroutine(CharacterChoise());
+
+
+        IEnumerator CharacterChoise()
+        {
+
+            //////////////////////////////////////////  미작성 TODO
+
+            yield return null;
+        }
+    }
+
+    /// <summary>
+    /// 본래 캔버스가 있던 위치로 리턴
+    /// </summary>
+    private void ReturnCanvasMoving()
+    {
+        UIManager.Instance.SwitchWindowOption(ref StartCanvasState,ref StartCanvasOriginState,canvasGroup);
+
+
+        // 본래 있던 카메라 위치로 즉시 이동 TODO
+    }
 }

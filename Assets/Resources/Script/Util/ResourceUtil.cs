@@ -1,9 +1,11 @@
 using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using UnityEditor;
 using UnityEngine;
 
 public class ResourceUtil : MonoBehaviour
@@ -55,10 +57,10 @@ public class ResourceUtil : MonoBehaviour
     {
         string path = Resources.Load<TextAsset>("Document/SaveData/SaveData").ToString();
 
-        PlayerVolatilityData[] playerVolatilityData = JsonConvert.DeserializeObject<PlayerVolatilityData[]>(path);
+        PlayerVolatilityData playerVolatilityData = JsonConvert.DeserializeObject<PlayerVolatilityData>(path);
 
         // 스테이지 인덱스가 1000 보다 클 경우
-        if (playerVolatilityData[0].stageIndex > 1000)
+        if (playerVolatilityData.stageIndex > 1000)
         {
             return true;
         }
@@ -74,12 +76,12 @@ public class ResourceUtil : MonoBehaviour
         var textAsset = Resources.Load<TextAsset>("Document/SaveData/SaveData");
         string path = textAsset.ToString();
 
-        PlayerVolatilityData[] playerVolatilityData = JsonConvert.DeserializeObject<PlayerVolatilityData[]>(path);
+        PlayerVolatilityData playerVolatilityData = JsonConvert.DeserializeObject<PlayerVolatilityData>(path);
 
-        UsePlayerData playerData = GameManager.Instance.FullData.playersData.Where(_ => _.index == playerVolatilityData[0].index).SingleOrDefault();
+        UsePlayerData playerData = GameManager.Instance.FullData.playersData.Where(_ => _.index == playerVolatilityData.index).SingleOrDefault();
         GrowthStatData growthStatData = GameManager.Instance.FullData.growthsData.Where(_ => _.index == playerData.growthRef).SingleOrDefault();
 
-        return new UsePlayerData(growthStatData, playerData, playerVolatilityData[0]);
+        return new UsePlayerData(growthStatData, playerData, playerVolatilityData);
     }
 
     /// <summary>
@@ -142,14 +144,30 @@ public class ResourceUtil : MonoBehaviour
     public static void SaveData(UsePlayerData playerData, Vector3 pos, StageData stageData)
     {
         // 저장 파일 위치
-        var path = Resources.Load("Document/SaveData/SaveData.json");
-        // 저장할 플레이어 데이터 -> 저장 파일 위치 덮어쓰기
+        var path = "Assets/Resources/Document/SaveData/SaveData.json";
 
         // 인벤토리 저장 데이터도 만들어야함 TODO
 
-        var json = JsonUtility.ToJson(new PlayerVolatilityData(playerData, pos, stageData), true);
-        File.WriteAllText("path", json);
+        File.WriteAllText(path, JsonUtility.ToJson(new PlayerVolatilityData(playerData, pos, stageData), true));
 
+        // 데이터 베이스 새로고침
+        AssetDatabase.Refresh();
     }
 
+    /// <summary>
+    /// 새로하기 데이터로 초기화 하는 메서드
+    /// </summary>
+    public static void NewDataReturn(int characterIndex)
+    {
+        // 저장 파일 위치
+        var path = "Assets/Resources/Document/SaveData/SaveData.json";
+        
+        File.WriteAllText(path, JsonUtility.ToJson(new PlayerVolatilityData(characterIndex), true));
+
+        // 데이터 베이스 새로고침
+        AssetDatabase.Refresh();
+        
+    }
+
+    
 }

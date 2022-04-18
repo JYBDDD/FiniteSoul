@@ -27,7 +27,7 @@ public class PlayerController : MoveableObject
     /// <summary>
     /// 초기 스텟 변경시 변경된 스탯을 재설정 해주는 메소드
     /// </summary>
-    public void SetStat()
+    public void SetStat(PlayerVolatilityData volData)
     {
         // 룬으로 레벨업시 교체되는 데이터
         playerData.maxHp = playerData.growthStat.maxHp;
@@ -45,7 +45,16 @@ public class PlayerController : MoveableObject
         playerData.currentMana = playerData.maxMana;
         playerData.currentStamina = playerData.maxStamina;
 
-        // 휘발성데이터가 추가해야되는 상황이라면 값을 여기서 다시 재설정 TODO
+        // 이어하기를 설정하였다면 값 재설정
+        if(volData.currentHp > 0)
+        {
+            playerData.level = volData.level;
+            playerData.currentRune = volData.rune;
+            playerData.currentHp = volData.currentHp;
+            playerData.maxHp = volData.raiseHp;
+            playerData.atk = volData.raiseAtk;
+            playerData.def = volData.raiseDef;
+        }
     }
 
     public override void InsertComponent()

@@ -64,6 +64,14 @@ public class PlayerVolatilityData
     /// </summary>
     public float raiseDef;
 
+    public PlayerVolatilityData() { }
+
+    /// <summary>
+    /// SaveData에 사용되는 휘발성 데이터
+    /// </summary>
+    /// <param name="playerData"></param>
+    /// <param name="pos"></param>
+    /// <param name="stageData"></param>
     public PlayerVolatilityData(UsePlayerData playerData, Vector3 pos, StageData stageData)
     {
         if (playerData == null)
@@ -80,5 +88,24 @@ public class PlayerVolatilityData
         this.currentHp = playerData.currentHp;
         this.raiseAtk = playerData.atk;
         this.raiseDef = playerData.def;
+    }
+
+    /// <summary>
+    /// NewDataReturn에 사용되는 데이터 (저장된 데이터 초기값으로 리턴)
+    /// </summary>
+    /// <param name="characterIndex"></param>
+    public PlayerVolatilityData(int characterIndex)
+    {
+        this.index = characterIndex;
+        this.level = 1;
+        this.stageIndex = 0;
+        this.posX = 0;
+        this.posY = 0;
+        this.posZ = 0;
+        this.rune = 0;
+        this.raiseHp = 0;
+        this.currentHp = 0;
+        this.raiseAtk = 0;
+        this.raiseDef = 0;
     }
 }

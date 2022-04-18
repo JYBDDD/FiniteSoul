@@ -127,15 +127,16 @@ public static class Define
         SlowlyInactive,
     }
 
-    public class HitPath
+    public class CameraPath
     {
         /// <summary>
-        /// Mutant Hit 애니메이션 Path   (Resources.LoadAll 전용)
+        /// 메인 카메라 Path (Resources.Load 전용)
         /// </summary>
-        public const string mutantPath = "Art/Anim/Animation/Monster/Mutant/Hit";
+        public const string mainCamPath = "Prefabs/Camera/MainCamera";
+
         /// <summary>
-        /// Warrok Hit 애니메이션 Path   (Resources.LoadAll 전용)
+        /// 플레이어를 바라보는 VirtualCamera Path (Resources.Load 전용)
         /// </summary>
-        public const string warrokPath = "Art/Anim/Animation/Monster/Warrok/Hit";
+        public const string playerVirtualCamPath = "Prefabs/Camera/LookPlayerVirtualCam";
     }
 }
