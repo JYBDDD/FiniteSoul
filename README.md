@@ -192,7 +192,7 @@
 		-> 새로하기 버튼 클릭시 장면이 전환되며 플레이어가 있는곳으로 카메라 위치를 서서히 변경, 배경 캔버스를 false로 바꾸기
 			-> 시네머신으로 카메라 땡겨오면 될듯
 			-> StartSceneAdjust 의 CharacterChoiseMoving() 메소드 작성중... TODO
-				-> 참고 - https://velog.io/@marintelli/%EC%9C%A0%EB%8B%88%ED%8B%B0-CinemachineBrain-%EC%8B%9C%EB%84%A4%EB%A8%B8%EC%8B%A0
+				-> https://docs.unity3d.com/Packages/com.unity.cinemachine@2.2/manual/CinemachineDolly.html
 		-> 캐릭터 선택을 하지 않을경우 본래 값으로 리턴
 		
 		
