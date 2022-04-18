@@ -190,9 +190,8 @@
 
 	4.5 캐릭터 선택창 만들기
 		-> 새로하기 버튼 클릭시 장면이 전환되며 플레이어가 있는곳으로 카메라 위치를 서서히 변경, 배경 캔버스를 false로 바꾸기
-			-> 시네머신으로 카메라 땡겨오면 될듯
+			-> 시네머신으로 카메라 땡겨오는중 ... TODO
 			-> StartSceneAdjust 의 CharacterChoiseMoving() 메소드 작성중... TODO
-				-> https://docs.unity3d.com/Packages/com.unity.cinemachine@2.2/manual/CinemachineDolly.html
 		-> 캐릭터 선택을 하지 않을경우 본래 값으로 리턴
 		
 		
