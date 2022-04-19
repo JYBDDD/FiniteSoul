@@ -1,7 +1,10 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Playables;
+using UnityEngine.Timeline;
 using UnityEngine.UI;
 
 /// <summary>
@@ -9,6 +12,7 @@ using UnityEngine.UI;
 /// </summary>
 public class StartSceneAdjust : MonoBehaviour
 {
+    #region 기본 캔버스 변수 (Button, Image, Text)
     [SerializeField]
     Image worldImg;          // 배경
 
@@ -24,12 +28,48 @@ public class StartSceneAdjust : MonoBehaviour
     [SerializeField]
     Button exitButton;       // 종료하기 버튼
 
-
     [SerializeField]
     Image descriptionWindow;    // 설명 윈도우
     [SerializeField]
     TextMeshProUGUI dWText;     // 설명 윈도우 텍스트
+    #endregion
 
+    #region 캐릭터창 변수 (Button, Image)
+    /// <summary>
+    /// 캐릭터 선택버튼
+    /// </summary>
+    [SerializeField]
+    Button ChoiseButton;
+
+    /// <summary>
+    /// 캐릭터 변경버튼
+    /// </summary>
+    [SerializeField]
+    Button ChangeCharacter;
+
+    #endregion
+
+    #region 시네머신 관련 변수
+    /// <summary>
+    /// 게임오브젝트와 실행할 타임라인이 연결되어있는 변수
+    /// </summary>
+    [SerializeField]
+    PlayableDirector playableDirectors;
+
+    /// <summary>
+    /// 실행시킬 타임라인
+    /// </summary>
+    [SerializeField]
+    TimelineAsset timelineAsset;
+
+    /// <summary>
+    /// 사용되는 메인 VirtualCam
+    /// </summary>
+    [SerializeField]
+    CinemachineVirtualCamera useVirtualCam;
+    #endregion
+
+    #region 캔버스 그룹 변수
     /// <summary>
     /// 시작대기씬의 캔버스 그룹
     /// </summary>
@@ -44,7 +84,25 @@ public class StartSceneAdjust : MonoBehaviour
     /// <summary>
     /// 시짝씬 캔버스의 바뀌기전 상태
     /// </summary>
-    protected Define.UIDraw StartCanvasOriginState = Define.UIDraw.Inactive;
+    private Define.UIDraw StartCanvasOriginState = Define.UIDraw.Inactive;
+
+    /// <summary>
+    /// 캐릭터 선택창의 캔버스 그룹
+    /// </summary>
+    [SerializeField]
+    CanvasGroup choiseCanvasGroup;
+
+    /// <summary>
+    /// 캐릭터 선택창의 캔버스 상태
+    /// </summary>
+    public static Define.UIDraw ChoiseCanvasState = Define.UIDraw.Inactive;
+
+    /// <summary>
+    /// 캐릭터 선택창의 변경전 캔버스 상태
+    /// </summary>
+    private Define.UIDraw ChoiseOriginState = Define.UIDraw.Activation;
+
+    #endregion
 
 
     private void Start()
@@ -67,6 +125,8 @@ public class StartSceneAdjust : MonoBehaviour
 
         // 캔버스 그룹 설정
         canvasGroup = GetComponent<CanvasGroup>();
+
+        UIManager.Instance.SwitchWindowOption(ref ChoiseCanvasState, ref ChoiseOriginState, choiseCanvasGroup);
     }
 
     /// <summary>
@@ -74,11 +134,12 @@ public class StartSceneAdjust : MonoBehaviour
     /// </summary>
     public void NewButtonSet()
     {
-        // 캐릭터 선택창 만들기 TODO
+        // 캐릭터 선택창으로 이동
+        CharacterChoiseMoving();
         
         // 데이터 초기화
-        ResourceUtil.NewDataReturn(1001);   // ->  캐릭터 선택후 해당 캐릭터 인덱스 삽입하기 TODO
-        LoadingSceneAdjust.LoadScene("1001");
+        //ResourceUtil.NewDataReturn(1001);   // ->  캐릭터 선택후 해당 캐릭터 인덱스 삽입하기 TODO
+        //LoadingSceneAdjust.LoadScene("1001");
     }
 
     /// <summary>
@@ -89,8 +150,6 @@ public class StartSceneAdjust : MonoBehaviour
         // 이어하기 할수 없는 파일이라면 실행
         if(!ResourceUtil.LoadConfirmFile())
         {
-            // 이어하기를 할수 없는 파일입니다 실행 TODO
-
             // 설명 윈도우 표시
             dWText.text = "이어하기 할수없는 \n 파일입니다..";
             StartCoroutine(AppearWindow());
@@ -154,7 +213,7 @@ public class StartSceneAdjust : MonoBehaviour
         // "Yes" 버튼 클릭시 게임 종료, "No" 버튼 클릭시 해당 윈도우 SetActive(false)
     }
 
-
+    #region 시작시 화면 셋팅 메서드
     /// <summary>
     /// 바탕화면 색상을 변경시켜줄 코루틴
     /// </summary>
@@ -255,26 +314,41 @@ public class StartSceneAdjust : MonoBehaviour
         text.fontSize = 200;
         yield return null;
     }
+    #endregion
 
+    #region 캐릭터 선택에 사용되는 메서드 (+시네머신)
     /// <summary>
     /// 캐릭터 선택창으로 이동한다
     /// </summary>
     private void CharacterChoiseMoving()
     {
+        // 기본 캔버스창 즉시 비활성화
+        StartCanvasState = Define.UIDraw.Inactive;
         UIManager.Instance.SwitchWindowOption(ref StartCanvasState, ref StartCanvasOriginState, canvasGroup);
 
-        // 캐릭터 선택씬으로 카메라를 이동시킨다
-        StartCoroutine(CharacterChoise());
+        // 캐릭터 선택창으로 이동하는 타임라인 실행
+        ChoiseStart();
 
+        StartCoroutine(WaitingTime());
 
-        IEnumerator CharacterChoise()
+        IEnumerator WaitingTime()
         {
+            yield return new WaitForSeconds(2f);
 
-            //////////////////////////////////////////  미작성 TODO
+            // 캐릭터 선택창 UI 서서히 활성화
+            ChoiseCanvasState = Define.UIDraw.SlowlyActivation;
+            UIManager.Instance.SwitchWindowOption(ref ChoiseCanvasState, ref ChoiseOriginState, choiseCanvasGroup);
 
-            yield return null;
+            yield break;
+        }
+
+        void ChoiseStart()
+        {
+            playableDirectors.Play(timelineAsset);
         }
     }
+
+    ///////////////////////////////////////////////////// 밑에 있는 메소드 들은 버튼클릭, 기본캔버스로 돌아갈때 사용할 메서드임 TODO
 
     /// <summary>
     /// 본래 캔버스가 있던 위치로 리턴
@@ -286,4 +360,15 @@ public class StartSceneAdjust : MonoBehaviour
 
         // 본래 있던 카메라 위치로 즉시 이동 TODO
     }
+    /// <summary>
+    /// 바라볼 대상을 변경하는 메서드
+    /// </summary>
+    /// <param name="timelineAsset">실행시킬 타임라인</param>
+    /// <param name="choiseCharacter">지정할 캐릭터</param>
+    private void ChoiseCineMachine(Transform choiseCharacter)
+    {
+        useVirtualCam.Follow = choiseCharacter;
+        useVirtualCam.LookAt = choiseCharacter;
+    }
+    #endregion
 }

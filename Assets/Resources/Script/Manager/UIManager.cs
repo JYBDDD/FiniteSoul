@@ -60,6 +60,8 @@ public class UIManager : Singleton<UIManager>
                     UIWindowSlowlyInActive(cGroup);
                     break;
             }
+            addAction?.Invoke();
+
             originDraw = uiDraw;
         }
         
@@ -81,9 +83,7 @@ public class UIManager : Singleton<UIManager>
     private void UIWindowSlowlyActive(CanvasGroup cGroup)
     {
         if (cGroup == null)
-        {
-            cGroup = canvasGroup;
-        }
+            return;
 
         StartCoroutine(SlowlyActive());
 
@@ -117,9 +117,7 @@ public class UIManager : Singleton<UIManager>
     private void UIWindowInActive(CanvasGroup cGroup)
     {
         if (cGroup == null)
-        {
-            cGroup = canvasGroup;
-        }
+            return;
         cGroup.alpha = 0;
         cGroup.blocksRaycasts = false;
         cGroup.interactable = false;
@@ -131,9 +129,7 @@ public class UIManager : Singleton<UIManager>
     private void UIWindowSlowlyInActive(CanvasGroup cGroup)
     {
         if (cGroup == null)
-        {
-            cGroup = canvasGroup;
-        }
+            return;
 
         StartCoroutine(SlowlyInActive());
 

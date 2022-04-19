@@ -50,9 +50,7 @@ public class StatEquipWindowUI : MonoBehaviour
 
     private void Update()
     {
-        NumberTwoCanvasSetting();
-
-        UIManager.Instance.SwitchWindowOption(ref StatEquipState, ref StatEquipOriginState, StatEquipCanvasGroup);
+        UIManager.Instance.SwitchWindowOption(ref StatEquipState, ref StatEquipOriginState, StatEquipCanvasGroup,NumberTwoCanvasSetting);
     }
 
     /// <summary>
