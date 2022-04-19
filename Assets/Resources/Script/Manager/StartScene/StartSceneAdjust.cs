@@ -1,4 +1,4 @@
-using Cinemachine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -13,93 +13,48 @@ using UnityEngine.UI;
 public class StartSceneAdjust : MonoBehaviour
 {
     #region 기본 캔버스 변수 (Button, Image, Text)
-    [SerializeField]
-    Image worldImg;          // 배경
+    [SerializeField,Header("기본 캔버스 변수"),Tooltip("배경")]
+    Image worldImg;
 
-    [SerializeField]
-    Text mainTitle;          // 메인 타이틀
+    [SerializeField, Tooltip("메인 타이틀")]
+    Text mainTitle;
 
-    [SerializeField]
-    Button newButton;        // 새로하기 버튼
+    [SerializeField, Tooltip("새로하기 버튼")]
+    Button newButton;
 
-    [SerializeField]
-    Button continueButton;   // 이어하기 버튼
+    [SerializeField, Tooltip("이어하기 버튼")]
+    Button continueButton;
 
-    [SerializeField]
-    Button exitButton;       // 종료하기 버튼
+    [SerializeField, Tooltip("종료하기 버튼")]
+    Button exitButton;
 
-    [SerializeField]
-    Image descriptionWindow;    // 설명 윈도우
-    [SerializeField]
-    TextMeshProUGUI dWText;     // 설명 윈도우 텍스트
-    #endregion
-
-    #region 캐릭터창 변수 (Button, Image)
-    /// <summary>
-    /// 캐릭터 선택버튼
-    /// </summary>
-    [SerializeField]
-    Button ChoiseButton;
-
-    /// <summary>
-    /// 캐릭터 변경버튼
-    /// </summary>
-    [SerializeField]
-    Button ChangeCharacter;
-
+    [SerializeField, Tooltip("설명 윈도우")]
+    Image descriptionWindow;
+    [SerializeField, Tooltip("설명 윈도우 텍스트")]
+    TextMeshProUGUI dWText;
     #endregion
 
     #region 시네머신 관련 변수
-    /// <summary>
-    /// 게임오브젝트와 실행할 타임라인이 연결되어있는 변수
-    /// </summary>
-    [SerializeField]
+    [SerializeField,Header("시네머신 관련 변수"),Tooltip("게임오브젝트와 실행할 타임라인이 연결되어있는 변수")]
     PlayableDirector playableDirectors;
 
-    /// <summary>
-    /// 실행시킬 타임라인
-    /// </summary>
-    [SerializeField]
+    [SerializeField,Tooltip("실행시킬 타임라인")]
     TimelineAsset timelineAsset;
-
-    /// <summary>
-    /// 사용되는 메인 VirtualCam
-    /// </summary>
-    [SerializeField]
-    CinemachineVirtualCamera useVirtualCam;
     #endregion
 
     #region 캔버스 그룹 변수
-    /// <summary>
-    /// 시작대기씬의 캔버스 그룹
-    /// </summary>
-    [SerializeField]
+    [SerializeField,Header("캔버스 그룹 변수"),Tooltip("시작대기씬의 캔버스 그룹")]
     CanvasGroup canvasGroup;
-
-    /// <summary>
-    /// 시작대기씬 캔버스 상태
-    /// </summary>
+    [Tooltip("시작 대기씬의 캔버스 상태")]
     public static Define.UIDraw StartCanvasState = Define.UIDraw.Activation;
-
-    /// <summary>
-    /// 시짝씬 캔버스의 바뀌기전 상태
-    /// </summary>
+    [Tooltip("시작 대기씬의 기본 캔버스 상태")]
     private Define.UIDraw StartCanvasOriginState = Define.UIDraw.Inactive;
 
-    /// <summary>
-    /// 캐릭터 선택창의 캔버스 그룹
-    /// </summary>
-    [SerializeField]
+    [SerializeField,Tooltip("캐릭터 선택창의 캔버스 그룹")]
     CanvasGroup choiseCanvasGroup;
-
-    /// <summary>
-    /// 캐릭터 선택창의 캔버스 상태
-    /// </summary>
+    [Tooltip("캐릭터 선택창의 캔버스 상태")]
     public static Define.UIDraw ChoiseCanvasState = Define.UIDraw.Inactive;
-
-    /// <summary>
-    /// 캐릭터 선택창의 변경전 캔버스 상태
-    /// </summary>
+    [Tooltip("캐릭터 선택창의 기본 캔버스 상태")]
     private Define.UIDraw ChoiseOriginState = Define.UIDraw.Activation;
 
     #endregion
@@ -122,10 +77,11 @@ public class StartSceneAdjust : MonoBehaviour
         newButton.onClick.AddListener(NewButtonSet);
         continueButton.onClick.AddListener(ContinueButtonSet);
         exitButton.onClick.AddListener(ExitButtonSet);
+    }
 
-        // 캔버스 그룹 설정
-        canvasGroup = GetComponent<CanvasGroup>();
-
+    private void Update()
+    {
+        UIManager.Instance.SwitchWindowOption(ref StartCanvasState, ref StartCanvasOriginState, canvasGroup);
         UIManager.Instance.SwitchWindowOption(ref ChoiseCanvasState, ref ChoiseOriginState, choiseCanvasGroup);
     }
 
@@ -136,10 +92,6 @@ public class StartSceneAdjust : MonoBehaviour
     {
         // 캐릭터 선택창으로 이동
         CharacterChoiseMoving();
-        
-        // 데이터 초기화
-        //ResourceUtil.NewDataReturn(1001);   // ->  캐릭터 선택후 해당 캐릭터 인덱스 삽입하기 TODO
-        //LoadingSceneAdjust.LoadScene("1001");
     }
 
     /// <summary>
@@ -223,9 +175,9 @@ public class StartSceneAdjust : MonoBehaviour
         float duration = 2f;    // 변경 간격
         float time = 0;
 
-        float R = Random.Range(150, 255);
-        float G = Random.Range(150, 255);
-        float B = Random.Range(150, 255);
+        float R = UnityEngine.Random.Range(150, 255);
+        float G = UnityEngine.Random.Range(150, 255);
+        float B = UnityEngine.Random.Range(150, 255);
 
         while (time < duration)
         {
@@ -324,7 +276,6 @@ public class StartSceneAdjust : MonoBehaviour
     {
         // 기본 캔버스창 즉시 비활성화
         StartCanvasState = Define.UIDraw.Inactive;
-        UIManager.Instance.SwitchWindowOption(ref StartCanvasState, ref StartCanvasOriginState, canvasGroup);
 
         // 캐릭터 선택창으로 이동하는 타임라인 실행
         ChoiseStart();
@@ -337,7 +288,9 @@ public class StartSceneAdjust : MonoBehaviour
 
             // 캐릭터 선택창 UI 서서히 활성화
             ChoiseCanvasState = Define.UIDraw.SlowlyActivation;
-            UIManager.Instance.SwitchWindowOption(ref ChoiseCanvasState, ref ChoiseOriginState, choiseCanvasGroup);
+
+            // 캐릭터의 이름값을 넘겨줌
+            CharacterChoiseStatus.charcterStaticName = "Paladin";
 
             yield break;
         }
@@ -346,29 +299,6 @@ public class StartSceneAdjust : MonoBehaviour
         {
             playableDirectors.Play(timelineAsset);
         }
-    }
-
-    ///////////////////////////////////////////////////// 밑에 있는 메소드 들은 버튼클릭, 기본캔버스로 돌아갈때 사용할 메서드임 TODO
-
-    /// <summary>
-    /// 본래 캔버스가 있던 위치로 리턴
-    /// </summary>
-    private void ReturnCanvasMoving()
-    {
-        UIManager.Instance.SwitchWindowOption(ref StartCanvasState,ref StartCanvasOriginState,canvasGroup);
-
-
-        // 본래 있던 카메라 위치로 즉시 이동 TODO
-    }
-    /// <summary>
-    /// 바라볼 대상을 변경하는 메서드
-    /// </summary>
-    /// <param name="timelineAsset">실행시킬 타임라인</param>
-    /// <param name="choiseCharacter">지정할 캐릭터</param>
-    private void ChoiseCineMachine(Transform choiseCharacter)
-    {
-        useVirtualCam.Follow = choiseCharacter;
-        useVirtualCam.LookAt = choiseCharacter;
     }
     #endregion
 }

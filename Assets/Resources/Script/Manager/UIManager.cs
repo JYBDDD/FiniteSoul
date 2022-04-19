@@ -72,6 +72,8 @@ public class UIManager : Singleton<UIManager>
     /// </summary>
     private void UIWindowActive(CanvasGroup cGroup)
     {
+        if (cGroup == null)
+            return;
         cGroup.alpha = 1;
         cGroup.blocksRaycasts = true;
         cGroup.interactable = true;

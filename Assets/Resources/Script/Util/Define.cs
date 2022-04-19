@@ -127,6 +127,18 @@ public static class Define
         SlowlyInactive,
     }
 
+    public class ChoiseCharacterPos
+    {
+        /// <summary>
+        /// 팔라딘 선택 위치값
+        /// </summary>
+        public static Vector3 paladinPos = new Vector3(4f, 2.5f, 3f);
+        /// <summary>
+        /// 아처 선택 위치값
+        /// </summary>
+        public static Vector3 archerPos = new Vector3(-4f, 2.5f, 3f);
+    }
+
     public class CameraPath
     {
         /// <summary>

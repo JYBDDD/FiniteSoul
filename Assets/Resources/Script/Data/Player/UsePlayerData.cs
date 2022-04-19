@@ -79,4 +79,13 @@ public class UsePlayerData : PlayerData
         def = usePlayerData.def;
     }
 
+    /// <summary>
+    /// 데이터가 null일시 불러오는 생성자
+    /// </summary>
+    /// <param name="growthStatData"></param>
+    public UsePlayerData(GrowthStatData growthStatData)
+    {
+        growthStat = growthStatData;
+    }
+
 }
