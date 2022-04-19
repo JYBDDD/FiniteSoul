@@ -18,7 +18,7 @@
     "growthRune": "1.25",
     "atk": "40",
     "extraAtk": "2",
-    "def": "0",
+    "def": "1",
     "extraDef": "2"
   }
 ]

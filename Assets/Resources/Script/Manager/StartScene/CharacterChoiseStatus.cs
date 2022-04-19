@@ -60,6 +60,25 @@ public class CharacterChoiseStatus : MonoBehaviour
         cameraBasicPos = new Vector3(4f,2.5f,3f);
     }
 
+    private void Update()
+    {
+        // 시작씬 캔버스에서 캐릭터 생성창으로 넘어올시 사용
+        if(StartSceneAdjust.choiseBool == true)
+        {
+            var playerData = GameManager.Instance.FullData.playersData.Where(_ => _.name == charcterStaticName).SingleOrDefault();
+            var growthData = GameManager.Instance.FullData.growthsData.Where(_ => _.index == playerData.index).SingleOrDefault();
+
+            // 스탯값이 Null 이라면 재설정
+            if (playerData.growthStat == null)
+            {
+                playerData = new UsePlayerData(playerData, growthData);
+            }
+
+            StatusFillAmountChange(playerData);
+            StartSceneAdjust.choiseBool = false;
+        }
+    }
+
     /// <summary>
     /// 해당 캐릭터 스테이터스 값 설정
     /// </summary>
@@ -81,11 +100,10 @@ public class CharacterChoiseStatus : MonoBehaviour
 
                 time += Time.deltaTime;
 
-                // growthStat 이 Null 값으로 출력됨 TODO
                 maxHpImg.fillAmount = Mathf.Lerp(maxHpImg.fillAmount, playerData.growthStat.maxHp / 300f, time / duraction);
-                atkImg.fillAmount = Mathf.Lerp(atkImg.fillAmount, playerData.growthStat.atk / 50f, time / duraction);
-                defImg.fillAmount = Mathf.Lerp(defImg.fillAmount, playerData.growthStat.def / 10f, time / duraction);
-                moveSpeedImg.fillAmount = Mathf.Lerp(moveSpeedImg.fillAmount, playerData.moveSpeed / 10f, time / duraction);
+                atkImg.fillAmount = Mathf.Lerp(atkImg.fillAmount, playerData.growthStat.atk / 60f, time / duraction);
+                defImg.fillAmount = Mathf.Lerp(defImg.fillAmount, playerData.growthStat.def / 7f, time / duraction);
+                moveSpeedImg.fillAmount = Mathf.Lerp(moveSpeedImg.fillAmount, playerData.moveSpeed / 5f, time / duraction);
 
                 yield return null;
             }
@@ -95,9 +113,9 @@ public class CharacterChoiseStatus : MonoBehaviour
         void ChangeEnd()
         {
             maxHpImg.fillAmount = playerData.growthStat.maxHp / 300f;
-            atkImg.fillAmount = playerData.growthStat.atk / 50f;
-            defImg.fillAmount = playerData.growthStat.def / 10f;
-            moveSpeedImg.fillAmount = playerData.moveSpeed / 10f;
+            atkImg.fillAmount = playerData.growthStat.atk / 60f;
+            defImg.fillAmount = playerData.growthStat.def / 7f;
+            moveSpeedImg.fillAmount = playerData.moveSpeed / 5f;
         }
 
     }
@@ -147,11 +165,12 @@ public class CharacterChoiseStatus : MonoBehaviour
             characterName.text = charcterStaticName;
 
             var playerData = GameManager.Instance.FullData.playersData.Where(_ => _.name == charcterStaticName).SingleOrDefault();
+            var growthData = GameManager.Instance.FullData.growthsData.Where(_ => _.index == playerData.index).SingleOrDefault();
 
             // 스탯값이 Null 이라면 재설정
             if (playerData.growthStat == null)
             {
-                playerData = ResourceUtil.LoadSaveFile();        // 여기 고쳐졌나 확인하기  TODO
+                playerData = new UsePlayerData(playerData, growthData);
             }
 
             // 바라볼 대상 설정

@@ -69,7 +69,7 @@ public class UsePlayerData : PlayerData
         growthStat = growthStatData;
 
         currentRune = usePlayerData.currentRune;
-        maxRune = usePlayerData.growthStat.maxRune * usePlayerData.level * usePlayerData.growthStat.growthRune;
+        maxRune = growthStatData.maxRune * usePlayerData.level * growthStatData.growthRune;
         maxHp = usePlayerData.maxHp;
         currentHp = usePlayerData.currentHp;
         currentMana = usePlayerData.currentMana;
@@ -77,6 +77,7 @@ public class UsePlayerData : PlayerData
         level = usePlayerData.level;
         atk = usePlayerData.atk;
         def = usePlayerData.def;
+        moveSpeed = usePlayerData.moveSpeed;
     }
 
     /// <summary>
