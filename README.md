@@ -180,6 +180,8 @@
 10. 캐릭터 선택창 구현 및 (선택된 캐릭터)데이터 전달, 캐릭터 시네머신 설정
 	-> 플레이어를 바라보는 캐릭터는 스테이지 변경시 VirtualCam, 메인카메라(in CineMachineBrain)을 생성하여 플레이어를 따라가도록 설정
 		-> VirtualCam 생성시 Start에서 Follow,LookAt값을 InGameManager.Instance.Player.transform로 설정
+	-> 시작씬에서 새로하기 버튼클릭시 저장된 타임라인이 실행되며 캐릭터 선택창으로 전환 (DolyTrack 사용)
+	->
 	
 22.04.19 ~
 
@@ -189,9 +191,8 @@
 1. 할 것    TODO
 
 	4.5 캐릭터 선택창 만들기
-		-> 새로하기 버튼 클릭시 장면이 전환되며 플레이어가 있는곳으로 카메라 위치를 서서히 변경, 배경 캔버스를 false로 바꾸기
-			-> 시네머신으로 카메라 땡겨오는중 ... TODO
-			-> StartSceneAdjust 의 CharacterChoiseMoving() 메소드 작성중... TODO
+		-> 캐릭터 변경창 버튼 추가중... TODO	
+	
 		-> 캐릭터 선택을 하지 않을경우 본래 값으로 리턴
 		
 		
