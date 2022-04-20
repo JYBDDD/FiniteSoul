@@ -8,8 +8,15 @@ using UnityEngine;
 /// </summary>
 public class AttackController : MonoBehaviour
 {
-    // 임시로 값을 들고있을 데이터 (MoveableObject 초기화시 값을 넘겨준다)
+    /// <summary>
+    /// 임시로 값을 들고있을 데이터 (MoveableObject 초기화시 값을 넘겨준다)
+    /// </summary>
     public StaticData staticData;
+
+    /// <summary>
+    /// 기본값 True    -> 발사체일 경우 땅에 맞았을시 값을 체크하지 않는 용도
+    /// </summary>
+    public bool checkBool = true;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -17,7 +24,7 @@ public class AttackController : MonoBehaviour
         if (staticData.characterType == Define.CharacterType.Player)
         {
             // 몬스터와 닿았다면
-            if(other.gameObject.CompareTag("Monster"))
+            if(other.gameObject.CompareTag("Monster") && checkBool == true)
             {
                 var monsterC = other.gameObject.GetComponent<MonsterController>();
                 var playerAtk = InGameManager.Instance.Player.playerData.atk;
@@ -49,7 +56,7 @@ public class AttackController : MonoBehaviour
         // 값을 들고있는 데이터가 몬스터라면 실행
         if (staticData.characterType == Define.CharacterType.Monster)
         {
-            if(other.gameObject.CompareTag("Player"))
+            if(other.gameObject.CompareTag("Player") && checkBool == true)
             {
                 // Where 의 SingleOrDefault으로 값을 추출하면 두개이상의 값을 찾아 오류가 발생할수 있기에 
                 // FirstOrDefault 로 첫번째 값만 가져오도록 설정
