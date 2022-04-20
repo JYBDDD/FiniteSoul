@@ -12,16 +12,23 @@ public class Arrow : ProjectileBase
 
     private void OnEnable()
     {
-        dir = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        dir = Camera.main.ScreenToWorldPoint(Input.mousePosition) - gameObject.transform.position;
         //var angle = Mathf.Atan2(dir.z - transform.position.z, dir.x - transform.position.x) * Mathf.Rad2Deg;
         //this.transform.rotation = Quaternion.AngleAxis(angle - 90, Vector3.forward);
         // 방향값 수정 필요함 TODO
 
+
+    }
+
+    private void Start()
+    {
+        gameObject.GetComponent<Rigidbody>().AddForce(dir.normalized * 500f);
     }
 
     private void Update()
     {
         //gameObject.GetComponent<Transform>().transform.Translate(dir * 2f * Time.deltaTime);
+
     }
 
     /// <summary>
