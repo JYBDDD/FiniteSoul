@@ -12,11 +12,4 @@ public class Paladin : PlayerController
         base.Awake();
     }
 
-
-
-
-    #region 캐릭터 애니메이션 구현부
-
-
-    #endregion
 }

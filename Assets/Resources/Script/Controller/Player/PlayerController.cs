@@ -10,14 +10,16 @@ public class PlayerController : MoveableObject
 {
     public UsePlayerData playerData;
 
-    public Define.State state;          // 나중에 지우셈 TODO    @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-
     // 캐릭터가 바라보는 방향을 MouseX (좌,우)
     float mouseX = 0;
 
     // 플레이어 이동값
     float moveX = 0;
     float moveZ = 0;
+
+    // 플레이어 회피 고정이동값
+    float evasionMoveX = 0;
+    float evasionMoveZ = 0;
 
     // 플레이어가 땅에 닿아있는지 체크
     bool IsGround = false;
@@ -67,6 +69,11 @@ public class PlayerController : MoveableObject
     public override void AttackColliderSet()
     {
         base.AttackColliderSet();
+
+        // 공격타입이 원거리일경우 리턴, 원거리인 경우는 해당 발사체 생성시 컴포넌트를 추가
+        if (playerData.atkType == Define.AtkType.Projectile)
+            return;
+
         // 해당 콜라이더를 가지고 있는 오브젝트에 AttackController 스크립트를 추가
         for (int i = 0; i < playerAtkColl.Length; ++i)
         {
@@ -97,12 +104,10 @@ public class PlayerController : MoveableObject
 
         // 상태머신에서 Update시켜야하는 값이라면 실행, 아니라면 실행중지
         FSM.UpdateMethod();
-
-        state = FSM.State;
     }
 
 
-    // Paladin, Archer 공통으로 사용되는 부분만 작성되었음
+    // Paladin, Archer 공통으로 작성
 
     protected virtual void IdleState()
     {
@@ -113,7 +118,7 @@ public class PlayerController : MoveableObject
                 FSM.ChangeState(Define.State.Walk, WalkState, true);
                 return;
             }
-            if (Input.GetKey(KeyCode.Space) && !anim.GetBool("Evasion"))     // Evasion
+            if (Input.GetKey(KeyCode.Space) && !anim.GetBool("Evasion") && !Input.GetKey(KeyCode.S))     // Evasion
             {
                 anim.SetBool("Evasion", true);
                 playerData.currentStamina -= 30f;
@@ -163,7 +168,7 @@ public class PlayerController : MoveableObject
             {
                 anim.SetFloat("MoveZ", Mathf.Lerp(anim.GetFloat("MoveZ"), -1, Time.deltaTime * 4f));
             }
-            if (Input.GetKey(KeyCode.Space) && !anim.GetBool("Evasion"))     // Evasion
+            if (Input.GetKey(KeyCode.Space) && !anim.GetBool("Evasion") && !Input.GetKey(KeyCode.S))     // Evasion
             {
                 anim.SetBool("Evasion", true);
                 playerData.currentStamina -= 30f;
@@ -196,18 +201,23 @@ public class PlayerController : MoveableObject
         if(!anim.GetBool("Evasion"))
         {
             // 회피가 끝난 이후 스테미너 자연회복 실행
+            evasionMoveX = 0;
+            evasionMoveZ = 0;
             StartCoroutine(NatureRecovery.NatureRecoveryStamina());
             FSM.ChangeState(Define.State.Idle, IdleState, true);
             return;
         }
 
+        evasionMoveX = moveX;
+        evasionMoveZ = moveZ;
         anim.SetBool("Evasion", true);
         FSM.State = Define.State.Evasion;
+        //  -> Evasion의 종료는 해당 애니메이션에 삽입하였음
     }
 
     protected virtual void RunningState()
     {
-        if (Input.GetKey(KeyCode.Space) && !anim.GetBool("Evasion"))     // Evasion
+        if (Input.GetKey(KeyCode.Space) && !anim.GetBool("Evasion") && !Input.GetKey(KeyCode.S))     // Evasion
         {
             anim.SetBool("Evasion", true);
             playerData.currentStamina -= 30f;
@@ -352,6 +362,14 @@ public class PlayerController : MoveableObject
     private void Move()
     {
         Vector3 posVec = new Vector3(moveX, 0, moveZ).normalized;
+
+        // 회피 상태중일시 이동값을 현재의 값으로 일시 고정
+        if(evasionMoveX != 0 | evasionMoveZ !=0)
+        {
+            moveX = evasionMoveX / 100f;
+            moveZ = evasionMoveZ / 100f;
+            transform.Translate(posVec * (playerData.moveSpeed) * Time.deltaTime);
+        }
 
         // 왼 시프트를 누른상태라면 이동속도 2f 곱
         if (Input.GetKey(KeyCode.LeftShift))

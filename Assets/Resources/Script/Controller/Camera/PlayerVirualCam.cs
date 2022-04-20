@@ -17,6 +17,9 @@ public class PlayerVirualCam : MonoBehaviour
 
     private void Start()
     {
+        if (InGameManager.Instance.Player == null)
+            return;
+
         // 플레이어를 따라가고 바라보도록 설정
         virtualCam.Follow = InGameManager.Instance.Player.transform;
         virtualCam.LookAt = InGameManager.Instance.Player.transform;

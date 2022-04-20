@@ -122,7 +122,7 @@ public class ResourceUtil : MonoBehaviour
     }
 
     /// <summary>
-    /// Resources 폴더에서 가져올 프리팹(즉시 생성)
+    /// Resources 폴더에서 가져올 프리팹(즉시 생성)   / 풀링으로 생성하는것이 아님 (주의※)
     /// </summary>
     /// <param name="path"></param>
     public static GameObject InsertPrefabs(string path)

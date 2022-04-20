@@ -6,22 +6,45 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
 {
     List<GameObject> gameObjects = new List<GameObject>();
 
+    /// <summary>
+    /// 풀링매니저의 몬스터 부모
+    /// </summary>
+    public static GameObject ParentMonster;
+
+    /// <summary>
+    /// 풀링매니저의 발사체 부모
+    /// </summary>
+    public static GameObject ParentProjectile;
+
     protected override void Awake()
     {
         base.Awake();
 
         // 몬스터 풀링 부모 생성
-        new GameObject { name = "Monster" }.transform.SetParent(transform);
+        ParentMonster = new GameObject { name = "Monster" };
+        ParentMonster.transform.SetParent(transform);   // 몬스터부모의 최종Root부모는 풀링매니저로 설정
+
         // Projectile 풀링 부모 생성
-        new GameObject { name = "Projectile" }.transform.SetParent(transform);
+        ParentProjectile = new GameObject { name = "Projectile" };
+        ParentProjectile.transform.SetParent(transform);    // 발사체부모의 최종Root부모는 풀링매니저로 설정
     }
 
     /// <summary>
     /// 오브젝트 비활성화, GetPool로 생성하지 않은 상태라면 풀링폴더로 들어가지않는다.
     /// </summary>
-    public void GetPush(GameObject thisObject)
+    /// <param name="thisObject">리턴시킬 오브젝트</param>
+    /// <param name="trans">해당 오브젝트를 부모에 반환이 필요할시 사용가능</param>
+    public void GetPush(GameObject thisObject,Transform trans = null)
     {
         thisObject.SetActive(false);
+
+        // 부모 반환이 필요한 경우 실행
+        if(trans != null)
+        {
+            // 부모 재설정
+            thisObject.transform.SetParent(trans);
+        }
+
     }
 
     /// <summary>

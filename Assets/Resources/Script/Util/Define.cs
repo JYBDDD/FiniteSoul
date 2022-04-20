@@ -151,4 +151,14 @@ public static class Define
         /// </summary>
         public const string playerVirtualCamPath = "Prefabs/Camera/LookPlayerVirtualCam";
     }
+
+
+    public class ProjectilePath
+    {
+        /// <summary>
+        /// 발사체 경로 : 화살 (Resources.Load 전용)
+        /// </summary>
+        public const string arrowPath = "Prefabs/Projectile/Arrow";
+    }
+
 }
