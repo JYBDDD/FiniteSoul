@@ -10,6 +10,8 @@ public class PlayerController : MoveableObject
 {
     public UsePlayerData playerData;
 
+    public Define.State state;          // 나중에 지우셈 TODO    @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
     // 캐릭터가 바라보는 방향을 MouseX (좌,우)
     float mouseX = 0;
 
@@ -95,6 +97,8 @@ public class PlayerController : MoveableObject
 
         // 상태머신에서 Update시켜야하는 값이라면 실행, 아니라면 실행중지
         FSM.UpdateMethod();
+
+        state = FSM.State;
     }
 
 
@@ -126,6 +130,7 @@ public class PlayerController : MoveableObject
                 FSM.ChangeState(Define.State.Attack, NormalAttackState);
                 return;
             }
+            
         }
 
         anim.SetFloat("MoveX", Mathf.Lerp(anim.GetFloat("MoveX"), 0, Time.deltaTime * 4f));
@@ -295,7 +300,8 @@ public class PlayerController : MoveableObject
         {
             if (anim.GetCurrentAnimatorStateInfo(0).IsName(animationName))
             {
-                if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime < 0.9f && Input.GetKey(KeyCode.Mouse0))
+                // 원거리가 아니라면 연속공격 실행
+                if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime < 0.9f && Input.GetKey(KeyCode.Mouse0) && playerData.atkType != Define.AtkType.Projectile)
                 {
                     return 0;
                 }
@@ -326,13 +332,6 @@ public class PlayerController : MoveableObject
         }
 
         FSM.State = Define.State.Attack;
-    }
-
-    /// ------------------------------------------------------------  현재 FSM  NormalAttack 까지 구현 , 밑에 부분은 미구현 상태 TODO
-
-    protected virtual void ProjectileAttackState()
-    {
-
     }
 
     public virtual void HurtState()

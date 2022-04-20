@@ -58,6 +58,9 @@ public class CharacterChoiseStatus : MonoBehaviour
 
         // 카메라 기본 위치값 설정
         cameraBasicPos = new Vector3(4f,2.5f,3f);
+
+        // VirtualCam 값 초기화
+        VirtualCamSetReturn();
     }
 
     private void Update()
@@ -131,7 +134,6 @@ public class CharacterChoiseStatus : MonoBehaviour
             var playerData = GameManager.Instance.FullData.playersData.Where(_ => _.name == charcterStaticName).FirstOrDefault();
             ResourceUtil.NewDataReturn(playerData.index);
         }
-        VirtualCamSetReturn();
 
         LoadingSceneAdjust.LoadScene("1001");
     }

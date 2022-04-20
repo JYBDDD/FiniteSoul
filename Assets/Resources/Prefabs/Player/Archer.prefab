@@ -206,6 +206,7 @@ MonoBehaviour:
       currentHp: 0
       raiseAtk: 0
       raiseDef: 0
+  state: 0
   playerAtkColl: []
 --- !u!1 &308982219014089268
 GameObject:
