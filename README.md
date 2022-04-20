@@ -209,6 +209,8 @@
 				-> 아처가 공격시 애니메이션 이벤트로 화살을 생성하고 Arrow 스크립트를 가진 화살이 타겟을 향해 이동하도록 설정할것임
 					-> 화살 시작 forward값 조정하기 
 						// Arrow 스크립트, Archer 스크립트 수정중... TODO
+						// 참고 - https://m.blog.naver.com/dj3630/221454784479
+						// 참고 -https://www.google.co.kr/search?q=%EC%9C%A0%EB%8B%88%ED%8B%B0+%EC%98%A4%EB%B8%8C%EC%A0%9D%ED%8A%B8+forward%EB%B0%A9%ED%96%A5+%EB%B0%94%EA%BE%B8%EA%B8%B0&sxsrf=APq-WBvpehATrjzwsHrby3aT_bPNEztPgQ%3A1650444641108&source=hp&ei=YclfYrL9BIy02roPnOCc2AQ&iflsig=AHkkrS4AAAAAYl_XcQhJ_bMW85GKdXjBbEFPj8i1FDs4&ved=0ahUKEwjysba0oaL3AhUMmlYBHRwwB0sQ4dUDCAk&uact=5&oq=%EC%9C%A0%EB%8B%88%ED%8B%B0+%EC%98%A4%EB%B8%8C%EC%A0%9D%ED%8A%B8+forward%EB%B0%A9%ED%96%A5+%EB%B0%94%EA%BE%B8%EA%B8%B0&gs_lcp=Cgdnd3Mtd2l6EAMyBQgAEKIEMgUIABCiBDIFCAAQogQyBQgAEKIEMgUIABCiBDoHCCMQ6gIQJzoECCMQJzoRCC4QgAQQsQMQgwEQxwEQ0QM6CwgAEIAEELEDEIMBOhEILhCABBCxAxCDARDHARCjAjoECAAQAzoECC4QAzoICC4QgAQQsQM6BQgAEIAEOg0IABCABBCHAhCxAxAUOgQIABBDOgoIABCxAxCDARBDOgcIABCxAxBDOggIABCABBCxAzoKCAAQgAQQhwIQFDoGCAAQCBAeOgUIIRCgAToJCCEQChCgARAqOgYIIRAKECpQmgVYnWNgzmRoCnAAeAaAAZAFiAGuPpIBDDAuNDEuMS4xLjAuMZgBAKABAbABCg&sclient=gws-wiz
 	
 
 		
