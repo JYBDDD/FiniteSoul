@@ -193,8 +193,11 @@
 	
 22.04.19
 	
-11. 상점 및 인벤토리 구현, 인벤토리 저장데이터 추가
-	->
+11. 상점 및 인벤토리 구현, 인벤토리 저장데이터 추가, 궁수(발사체) 설정
+	-> 궁수가 발사체를 발사시 공격시 ScreenPointToRay(Input.mousePosition)로 RayCast 하여 
+		- LayerMask 체크를 하여 몬스터일 경우 몬스터 추척, Default 레이어일 경우 해당 hit.point 추척
+	-> 해당 발사체에 ReQuirmentComponet 를 사용하여 강제로 AttackController를 추가하였음
+	-> 발사체.GetComponent<AttackController>().staticData = maindata 로 설정하여 데이터 값을 넘겨주었음
 	
 22.04.20
 
@@ -204,13 +207,13 @@
 1. 할 것    TODO
 
 	4.5 캐릭터 선택창 만들기
-		-> 궁수 컨트롤러 설정하기
-			-> 화살을 유도탄으로 설정중
-				-> 아처가 공격시 애니메이션 이벤트로 화살을 생성하고 Arrow 스크립트를 가진 화살이 타겟을 향해 이동하도록 설정할것임
-					-> 화살 시작 forward값 조정하기 
-						// Arrow 스크립트, Archer 스크립트 수정중... TODO
-						// 참고 - https://m.blog.naver.com/dj3630/221454784479
-						// 참고 -https://www.google.co.kr/search?q=%EC%9C%A0%EB%8B%88%ED%8B%B0+%EC%98%A4%EB%B8%8C%EC%A0%9D%ED%8A%B8+forward%EB%B0%A9%ED%96%A5+%EB%B0%94%EA%BE%B8%EA%B8%B0&sxsrf=APq-WBvpehATrjzwsHrby3aT_bPNEztPgQ%3A1650444641108&source=hp&ei=YclfYrL9BIy02roPnOCc2AQ&iflsig=AHkkrS4AAAAAYl_XcQhJ_bMW85GKdXjBbEFPj8i1FDs4&ved=0ahUKEwjysba0oaL3AhUMmlYBHRwwB0sQ4dUDCAk&uact=5&oq=%EC%9C%A0%EB%8B%88%ED%8B%B0+%EC%98%A4%EB%B8%8C%EC%A0%9D%ED%8A%B8+forward%EB%B0%A9%ED%96%A5+%EB%B0%94%EA%BE%B8%EA%B8%B0&gs_lcp=Cgdnd3Mtd2l6EAMyBQgAEKIEMgUIABCiBDIFCAAQogQyBQgAEKIEMgUIABCiBDoHCCMQ6gIQJzoECCMQJzoRCC4QgAQQsQMQgwEQxwEQ0QM6CwgAEIAEELEDEIMBOhEILhCABBCxAxCDARDHARCjAjoECAAQAzoECC4QAzoICC4QgAQQsQM6BQgAEIAEOg0IABCABBCHAhCxAxAUOgQIABBDOgoIABCxAxCDARBDOgcIABCxAxBDOggIABCABBCxAzoKCAAQgAQQhwIQFDoGCAAQCBAeOgUIIRCgAToJCCEQChCgARAqOgYIIRAKECpQmgVYnWNgzmRoCnAAeAaAAZAFiAGuPpIBDDAuNDEuMS4xLjAuMZgBAKABAbABCg&sclient=gws-wiz
+		-> Arrow 몬스터에 맞았을때 몬스터 안으로 SetParent 설정이 좀 이상하게 됨;;  TODO
+	
+		-> Arrow 에 이펙트 넣어주기
+	
+		-> AttackController의 피격 이펙트 설정을 Define에서 뭐 값 추가해가지고 캐릭터마다 넣기 편하게 만들기
+	
+		-> Arrow 가 지금은 직선으로 날라가는데 포물선으로 날아가게 할것인지 고르기
 	
 
 		
