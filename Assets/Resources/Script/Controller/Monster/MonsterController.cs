@@ -19,7 +19,7 @@ public class MonsterController : MoveableObject
     float walkStateMultiple = 0;
 
     // 몬스터의 체력이 0이 되었을시 호출되는 Bool타입 변수
-    bool deadMonster = false;
+    public bool deadMonster = false;
 
     // 몬스터의 생성 위치
     public Vector3 monsterStartPos = Vector3.zero;
@@ -45,15 +45,6 @@ public class MonsterController : MoveableObject
     /// </summary>
     public virtual void Update()
     {
-        // 몬스터의 현재체력이 0이하라면 상태를 Dead로 변경한다
-        if(monsterData.currentHp <= 0 && deadMonster == false)
-        {
-            deadMonster = true;
-            agent.SetDestination(transform.position);
-            FSM.ChangeState(Define.State.Die, DieState, false);
-            return;
-        }
-
         // 몬스터의 데이터(시야각, 시야 거리)가 존재한다면 실행
         if (monsterData != null)
         {
@@ -87,11 +78,7 @@ public class MonsterController : MoveableObject
     {
         base.InsertComponent();
         agent ??= GetComponent<NavMeshAgent>();
-        agent.enabled = true;
         target = null;  // 타겟 비우기
-
-        
-
     }
 
     public override void AttackColliderSet()
@@ -226,22 +213,21 @@ public class MonsterController : MoveableObject
         // 이동속도 증가
         agent.speed = (monsterData.moveSpeed * 2f);
 
+        // 플레이어 목표 설정, 이동
+        agent.SetDestination(target.transform.position);
+
         StartCoroutine(LockTarget());
 
         IEnumerator LockTarget()
         {
             while(true)
             {
-                // 몬스터가 타겟을 바라보도록 설정
-                transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(target.transform.position), Time.deltaTime);
-
                 // 플레이어와 몬스터의 거리
                 float distance = Vector3.Distance(target.transform.position, transform.position);
 
                 // 플레이어가 공격범위 안으로 들어올경우 AttackState() 로 변경시킨다
                 if (distance <= monsterData.atkRange)
                 {
-
                     // 스피드 본래값으로 재설정
                     agent.speed = monsterData.moveSpeed;
 
@@ -257,12 +243,11 @@ public class MonsterController : MoveableObject
                 anim.SetFloat("MoveZ", Mathf.Lerp(anim.GetFloat("MoveZ"), 2, Time.deltaTime * 2f));
                 anim.SetFloat("RandA", Mathf.Lerp(anim.GetFloat("RandA"), 0, Time.deltaTime * 2f));
 
-                // 플레이어 목표 설정, 이동
-                if(FSM.State != Define.State.Attack)
+                // 거리가 공격 사거리보다 멀고, Hurt,Die 상태가 아니라면 실행
+                if(distance > monsterData.atkRange && FSM.State != Define.State.Hurt && FSM.State != Define.State.Die)
                 {
                     agent.SetDestination(target.transform.position);
                 }
-
 
                 yield return null;
             }
@@ -312,7 +297,7 @@ public class MonsterController : MoveableObject
         // 현재 CreatureBase 한곳에서만 사용중
     }
 
-    protected virtual void DieState()
+    public virtual void DieState()
     {
         anim.SetBool("Die", true);
     }
@@ -367,7 +352,6 @@ public class MonsterController : MoveableObject
     {
         anim.SetBool("Attack", false);
     }
-
     #endregion
 
 }

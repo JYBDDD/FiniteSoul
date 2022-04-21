@@ -18,9 +18,12 @@ public class Arrow : ProjectileBase
     /// </summary>
     bool hitCheck = false;
 
+    AttackController attackController;
+
     private void Awake()
     {
         rigid = GetComponent<Rigidbody>();
+        attackController = GetComponent<AttackController>();
     }
 
     private void OnEnable()
@@ -34,17 +37,16 @@ public class Arrow : ProjectileBase
         hitCheck = false;
 
         //rigid.AddForce(InGameManager.Instance.Player.transform.forward * 50f, ForceMode.Impulse);     TODO 삭제
-        StartCoroutine(AccelArrow());
+
     }
 
-    IEnumerator AccelArrow()
+    public void movePoint(Vector3 hitPoint)
     {
-        var playerForward = InGameManager.Instance.Player.transform.forward;
+        StartCoroutine(AccelArrow(hitPoint));
+    }
 
-        Ray ray = Camera.main.ScreenPointToRay(playerForward);
-        RaycastHit hit;
-        Physics.Raycast(ray, out hit);
-
+    IEnumerator AccelArrow(Vector3 hitPoint)
+    {
         while(true)
         {
             // 타겟에 닿은상태라면 종료
@@ -53,8 +55,8 @@ public class Arrow : ProjectileBase
                 yield break;
             }
 
-            // 거리가 다르더라도 동일한 속도로 출력될수 있도록 설정 필요 TODO
-            transform.position = Vector3.Lerp(playerForward, hit.point, Time.deltaTime);
+            // 거리가 다르더라도 동일한 속력으로 출력
+            transform.position = Vector3.MoveTowards(transform.position, hitPoint, 0.3f);
 
 
             yield return null;
@@ -68,6 +70,8 @@ public class Arrow : ProjectileBase
         {
             // 중력값 설정
             rigid.useGravity = true;
+            // 물리값 적용 상태
+            rigid.isKinematic = false;
 
             // 타겟 체크
             hitCheck = true;
@@ -76,45 +80,15 @@ public class Arrow : ProjectileBase
             StartCoroutine(ArrowCheckTime(20f));
         }
         // 다른 곳에 맞았다면 실행
-        else
+        if(other.gameObject.CompareTag("Ground") || other.gameObject.CompareTag("Untagged"))
         {
             // 중력값 설정
             rigid.useGravity = true;
+            // 물리값 적용 상태
+            rigid.isKinematic = false;
 
             // 타겟 체크
             hitCheck = true;
-
-            // 한번 맞은후 체크하지 않도록 변경
-            gameObject.GetComponent<AttackController>().checkBool = false;
-
-            // 3초 활성화후 풀링매니저 리턴
-            StartCoroutine(ArrowCheckTime(3f));
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        // 몬스터에게 맞았다면 실행
-        if (other.gameObject.CompareTag("Monster"))
-        {
-            // 중력값 설정
-            rigid.useGravity = true;
-            // 물리값 적용 상태
-            rigid.isKinematic = false;
-
-            // 20초 활성화후 풀링매니저 리턴
-            StartCoroutine(ArrowCheckTime(20f));
-        }
-        // 다른 곳에 맞았다면 실행
-        else
-        {
-            // 중력값 설정
-            rigid.useGravity = true;
-            // 물리값 적용 상태
-            rigid.isKinematic = false;
-
-            // 한번 맞은후 체크하지 않도록 변경
-            gameObject.GetComponent<AttackController>().checkBool = false;
 
             // 3초 활성화후 풀링매니저 리턴
             StartCoroutine(ArrowCheckTime(3f));
@@ -129,7 +103,6 @@ public class Arrow : ProjectileBase
     IEnumerator ArrowCheckTime(float checkTime)
     {
         float time = 0;
-        bool notCheck = false;
 
         while(true)
         {
@@ -138,13 +111,6 @@ public class Arrow : ProjectileBase
                 // 오브젝트 반환
                 ReturnObject();
                 yield break;
-            }
-
-            if(time > 0.3f && notCheck == false)
-            {
-                // 한번 맞은후 체크하지 않도록 변경
-                gameObject.GetComponent<AttackController>().checkBool = false;
-                notCheck = true;
             }
 
             time += Time.deltaTime;

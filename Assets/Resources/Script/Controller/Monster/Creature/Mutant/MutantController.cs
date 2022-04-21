@@ -40,7 +40,7 @@ public class MutantController : CreatureBase
         base.HurtState();
     }
 
-    protected override void DieState()
+    public override void DieState()
     {
         base.DieState();
     }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,11 +9,11 @@ using UnityEngine;
 /// </summary>
 public class CreatureBase : MonsterController
 {
-    int hitCall = 0;
-    int originCall = 1;
-
     // 시작 HitCount
-    int startCount = 1;
+    int startCount = 0;
+
+    // 시작전 originCount;
+    int originCount = 0;
 
     public override void Update()
     {
@@ -42,13 +43,13 @@ public class CreatureBase : MonsterController
 
     public override void HurtState()
     {
-        // 재호출 감지 카운트
-        hitCall++;
+        // 시작 카운트 상승
+        ++startCount;
 
-
+        // 애니메이터의 HitCount int를 불러옴
         anim.SetInteger("HitCount",startCount);
 
-
+        // 목적지 -> 자신의 위치 (잠시 이동 불가하는것처럼 정지할것)
         agent.SetDestination(transform.position);
 
         StartCoroutine(ChainHit());
@@ -58,23 +59,19 @@ public class CreatureBase : MonsterController
             // Hit1 이 재생중인 상태에서 피격시 Hit2 재생, Hit2 가 재생중인 상태에서 재생시 Hit3 재생
             while (true)
             {
-                if(EndAnim("Hit3"))
+                if (EndAnim("Hit3"))
                 {
                     EndCall();
                 }
-                if (HitAnimationing("Hit2") == 0)
+                if (HitAnimationing("Hit2") == 0 && startCount > 2)
                 {
                     // Hit3 애니메이션으로 넘긴다
                     target ??= InGameManager.Instance.Player.gameObject;
-                    transform.rotation = Quaternion.LookRotation(target.transform.position);
-
                 }
-                if (HitAnimationing("Hit1") == 0)
+                if (HitAnimationing("Hit1") == 0 && startCount > 1)
                 {
                     // Hit2 애니메이션으로 넘긴다
                     target ??= InGameManager.Instance.Player.gameObject;
-                    transform.rotation = Quaternion.LookRotation(target.transform.position);
-                    anim.SetTrigger("NotHitTrigger");
                 }
 
                 yield return null;
@@ -87,11 +84,10 @@ public class CreatureBase : MonsterController
             if (anim.GetCurrentAnimatorStateInfo(0).IsName(animationName))
             {
                 // 애니메이션이 끝나지 않은상태에서 재호출시 실행
-                if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime < 0.8f && hitCall > originCall)
+                if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime < 0.8f && startCount > originCount)
                 {
-                    originCall = hitCall;
-                    anim.SetInteger("HitCount", ++startCount);
-                    agent.SetDestination(transform.position);
+                    originCount = startCount;
+                    anim.SetInteger("HitCount", startCount);
                     return 0;
                 }
                 if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.8f)
@@ -125,13 +121,11 @@ public class CreatureBase : MonsterController
         {
             anim.SetInteger("HitCount", 0);
             anim.SetTrigger("NotHitTrigger");
-            hitCall = 0;
-            originCall = 1;
-            startCount = 1;
+            startCount = 0;
         }
     }
 
-    protected override void DieState()
+    public override void DieState()
     {
         base.DieState();
     }

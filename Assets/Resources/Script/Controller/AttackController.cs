@@ -12,11 +12,17 @@ public class AttackController : MonoBehaviour
     /// 임시로 값을 들고있을 데이터 (MoveableObject 초기화시 값을 넘겨준다)
     /// </summary>
     public StaticData staticData;
+    public Define.AtkType atkType;
 
     /// <summary>
     /// 기본값 True    -> 발사체일 경우 땅에 맞았을시 값을 체크하지 않는 용도
     /// </summary>
     public bool checkBool = true;
+
+    private void OnEnable()
+    {
+        checkBool = true;
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -38,6 +44,14 @@ public class AttackController : MonoBehaviour
                 // 몬스터 현재 체력 - (플레이어 공격력 - 몬스터 방어력)
                 monsterC.monsterData.currentHp -= damage;
 
+                // 몬스터의 체력이 0이하일시 실행
+                if(monsterC.monsterData.currentHp <= 0)
+                {
+                    monsterC.deadMonster = true;
+                    monsterC.FSM.ChangeState(Define.State.Die, monsterC.DieState, false);
+                    return;
+                }
+
                 // 몬스터 상태 Hurt로 변경
                 monsterC.FSM.ChangeState(Define.State.Hurt, monsterC.HurtState);
 
@@ -50,13 +64,20 @@ public class AttackController : MonoBehaviour
                     TargetMonsterUI.TargetUIState = Define.UIDraw.Activation;
                 }
 
+                // 원거리라면 실행한다
+                if(atkType == Define.AtkType.Projectile)
+                {
+                    checkBool = false;
+                }
+
+
             }
         }
 
         // 값을 들고있는 데이터가 몬스터라면 실행
         if (staticData.characterType == Define.CharacterType.Monster)
         {
-            if(other.gameObject.CompareTag("Player") && checkBool == true)
+            if(other.gameObject.CompareTag("Player"))
             {
                 // Where 의 SingleOrDefault으로 값을 추출하면 두개이상의 값을 찾아 오류가 발생할수 있기에 
                 // FirstOrDefault 로 첫번째 값만 가져오도록 설정

@@ -79,6 +79,7 @@ public class PlayerController : MoveableObject
         {
             AttackController attackController = playerAtkColl[i].gameObject.AddComponent<AttackController>();
             attackController.staticData = playerData;
+            attackController.atkType = playerData.atkType;
         }
     }
 

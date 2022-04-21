@@ -20,13 +20,25 @@ public class Archer : PlayerController
     /// </summary>
     public Vector3 hitPos;
 
-    RaycastHit hit;
+    public static RaycastHit hit;
 
     protected override void Awake()
     {
         base.Awake();
     }
 
+    protected override void NormalAttackState()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Physics.Raycast(ray, out hit);
+
+        if(hit.point == null)
+        {
+            hit.point = Vector3.forward;
+        }
+
+        base.NormalAttackState();
+    }
 
 
     /// <summary>
@@ -37,14 +49,15 @@ public class Archer : PlayerController
         // 발사체 생성
         var arrowObject = ObjectPoolManager.Instance.GetPool<Arrow>(Define.ProjectilePath.arrowPath, Resources.Load(Define.ProjectilePath.arrowPath).name);
         // 발사체 생성 위치값
-        arrowObject.transform.position = SpawnPos.transform.position + InGameManager.Instance.Player.transform.forward;
+        arrowObject.transform.position = SpawnPos.transform.position;
         // 발사체 Forward 값
-        var parentBowPos = InGameManager.Instance.Player.transform.position;
-        arrowObject.transform.rotation = Quaternion.LookRotation(new Vector3(parentBowPos.x,0,parentBowPos.z));
+        arrowObject.transform.rotation = Quaternion.LookRotation(hit.point);
+        // 발사체 해당 방향으로 이동 설정
+        arrowObject.GetComponent<Arrow>().movePoint(hit.point);
         // 해당 발사체에 값 설정 
         var arrowAttackC = arrowObject.GetComponent<AttackController>();
+        arrowAttackC.enabled = true;
         arrowAttackC.staticData = mainData;
-        arrowAttackC.checkBool = true;
-
+        arrowAttackC.atkType = playerData.atkType;
     }
 }
