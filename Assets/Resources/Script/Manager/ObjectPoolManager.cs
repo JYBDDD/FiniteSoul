@@ -16,6 +16,11 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
     /// </summary>
     public static GameObject ParentProjectile;
 
+    /// <summary>
+    /// 파티클(이펙트)의 부모
+    /// </summary>
+    public static GameObject ParentParticle;
+
     protected override void Awake()
     {
         base.Awake();
@@ -27,6 +32,9 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
         // Projectile 풀링 부모 생성
         ParentProjectile = new GameObject { name = "Projectile" };
         ParentProjectile.transform.SetParent(transform);    // 발사체부모의 최종Root부모는 풀링매니저로 설정
+
+        ParentParticle = new GameObject { name = "Particle" };
+        ParentParticle.transform.SetParent(transform);  // 파티클부모의 최종Root부모는 풀링매니저로 설정
     }
 
     /// <summary>
@@ -65,15 +73,20 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
         // 아니라면 하나를 재생성한다
         GameObject returnObj = ResourceUtil.InsertPrefabs(resourcePath);
 
-        // type이 몬스터라면, 오브젝트의 부모를 몬스터로 설정한다
+        // type이 몬스터라면, 오브젝트의 부모를 몬스터로 설정
         if(type == Define.CharacterType.Monster)
         {
             returnObj.transform.SetParent(gameObject.transform.GetChild(0));
         }
-        // type이 None 이라면, 오브젝트의 부모를 Projectile로 설정한다
-        if(type == Define.CharacterType.None)
+        // type이 발사체 라면, 오브젝트의 부모를 Projectile로 설정
+        if(type == Define.CharacterType.Projectile)
         {
             returnObj.transform.SetParent(gameObject.transform.GetChild(1));
+        }
+        // type이 파티클 이라면, 오브젝트의 부모를 Particle로 설정
+        if(type == Define.CharacterType.Particle)
+        {
+            returnObj.transform.SetParent(gameObject.transform.GetChild(2));
         }
 
         // 리스트++

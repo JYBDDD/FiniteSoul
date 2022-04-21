@@ -11,6 +11,8 @@ public static class Define
     {
         Player,
         Monster,
+        Projectile,
+        Particle,
         None,
     }
 
@@ -126,6 +128,41 @@ public static class Define
         /// </summary>
         SlowlyInactive,
     }
+
+    /// <summary>
+    /// 파티클 이펙트 위치값을 모아둔 클래스
+    /// </summary>
+    public class ParticleEffectPath
+    {
+        public class PlayerParticle
+        {
+            /// <summary>
+            /// 발사체(화살) 공격 이펙트  (Resources.Load)
+            /// </summary>
+            public const string arrowShot = "Prefabs/ParticleEffect/ArrowAttackEffect";
+
+            /// <summary>
+            /// (검) 공격 이펙트
+            /// </summary>
+            public const string swordAttack = "Prefabs/ParticleEffect/SwordAttackEffett";
+
+        }
+
+        public class MonsterParticle
+        {
+
+            /// <summary>
+            /// 몬스터 피격 이펙트 (Resources.Load)
+            /// </summary>
+            public const string monsterHit = "Prefabs/ParticleEffect/MonsterHitEffect";
+
+            /// <summary>
+            /// 몬스터 공격 이펙트 (Resources.Load)
+            /// </summary>
+            public const string monsterAttack = "Prefabs/ParticleEffect/MonsterAttackEffect";
+        }
+    }
+
 
     public class ChoiseCharacterPos
     {

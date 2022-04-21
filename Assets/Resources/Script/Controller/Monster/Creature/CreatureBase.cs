@@ -120,7 +120,6 @@ public class CreatureBase : MonsterController
         void EndCall()
         {
             anim.SetInteger("HitCount", 0);
-            anim.SetTrigger("NotHitTrigger");
             startCount = 0;
         }
     }
