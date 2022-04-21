@@ -49,7 +49,7 @@ public class MonsterController : MoveableObject
         if(monsterData.currentHp <= 0 && deadMonster == false)
         {
             deadMonster = true;
-            agent.enabled = false;
+            agent.SetDestination(transform.position);
             FSM.ChangeState(Define.State.Die, DieState, false);
             return;
         }
