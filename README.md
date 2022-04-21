@@ -194,10 +194,10 @@
 22.04.19
 	
 11. 상점 및 인벤토리 구현, 인벤토리 저장데이터 추가, 궁수(발사체) 설정
-	-> 궁수가 발사체를 발사시 공격시 ScreenPointToRay(Input.mousePosition)로 RayCast 하여 
-		- LayerMask 체크를 하여 몬스터일 경우 몬스터 추척, Default 레이어일 경우 해당 hit.point 추척
 	-> 해당 발사체에 ReQuirmentComponet 를 사용하여 강제로 AttackController를 추가하였음
 	-> 발사체.GetComponent<AttackController>().staticData = maindata 로 설정하여 데이터 값을 넘겨주었음
+	-> 화살을 플레이어의 정면방향으로 발사
+	
 	
 22.04.20
 
@@ -207,7 +207,11 @@
 1. 할 것    TODO
 
 	4.5 캐릭터 선택창 만들기
-		-> Arrow 몬스터에 맞았을때 몬스터 안으로 SetParent 설정이 좀 이상하게 됨;;  TODO
+			-> Terrain collider 가끔씩 충돌 무시 뜨나? TODO
+			-> 발사했을때 갑자기 화살이 없어질때가 있음  TODO
+	
+			-> 몬스터 맞고나서 멈춘상태에서 달라붙는것 고치기
+	
 	
 		-> Arrow 에 이펙트 넣어주기
 	
