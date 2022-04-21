@@ -49,8 +49,9 @@ public class MonsterController : MoveableObject
         if(monsterData.currentHp <= 0 && deadMonster == false)
         {
             deadMonster = true;
-            agent.SetDestination(transform.position);
+            agent.enabled = false;
             FSM.ChangeState(Define.State.Die, DieState, false);
+            return;
         }
 
         // 몬스터의 데이터(시야각, 시야 거리)가 존재한다면 실행
@@ -86,6 +87,7 @@ public class MonsterController : MoveableObject
     {
         base.InsertComponent();
         agent ??= GetComponent<NavMeshAgent>();
+        agent.enabled = true;
         target = null;  // 타겟 비우기
 
         

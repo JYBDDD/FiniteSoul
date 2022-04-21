@@ -1209,7 +1209,7 @@ MonoBehaviour:
     atkRange: 0
     dropRune: 0
     dropItemPer: 0
-    ResourcePath: 
+    resourcePath: 
     currentHp: 0
   monsterStartPos: {x: 0, y: 0, z: 0}
   atkCollider:
@@ -1226,8 +1226,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1.493195, z: 0.7208175}
-  m_Center: {x: 0, y: 0.7620032, z: 0.13959125}
+  m_Size: {x: 1, y: 1.4493902, z: 0.8072698}
+  m_Center: {x: 0, y: 0.74010074, z: 0.1846211}
 --- !u!195 &5492839822348252163
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1241,7 +1241,7 @@ NavMeshAgent:
   m_Speed: 3.5
   m_Acceleration: 5
   avoidancePriority: 50
-  m_AngularSpeed: 300
+  m_AngularSpeed: 1000
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1

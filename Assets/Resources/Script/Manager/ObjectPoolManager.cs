@@ -55,7 +55,7 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
         // 반환하려고 하는 해당 오브젝트가 SetActive(false) 라면 반환,
         for(int i = 0; i < gameObjects.Count; ++i)
         {
-            if (ObjectName == gameObjects[i].name && !gameObjects[i].activeSelf)
+            if (ObjectName + "(Clone)" == gameObjects[i].name && !gameObjects[i].activeSelf)
             {
                 gameObjects[i].SetActive(true);
                 return gameObjects[i];

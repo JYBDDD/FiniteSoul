@@ -27,44 +27,6 @@ public class Archer : PlayerController
         base.Awake();
     }
 
-    protected override void NormalAttackState()
-    {
-        // 현재 마우스 위치로 Ray를 쏜후 몬스터, 땅에 맞았다면 타겟을 발사체의 Target값으로 넘겨준다
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        LayerMask layerMask = 1 << LayerMask.NameToLayer("Monster") + 1 << LayerMask.NameToLayer("Default");
-        if (Physics.Raycast(ray,out hit,layerMask))
-        {
-            // 땅에 맞았다면 실행
-            if(!hit.transform.CompareTag("Monster"))
-            {
-                // 위치값 삽입
-                hitPos = hit.point;
-                // 몬스터가 아니더라도 값은 임시로 들고있는다
-                lockOnTarget = hit.transform.gameObject;
-            }
-            // 몬스터에 맞았다면
-            if(hit.transform.CompareTag("Monster"))
-            {
-                // 타겟 설정
-                lockOnTarget = hit.transform.gameObject;
-                // 위치값 초기화
-                hitPos = Vector3.zero;
-            }
-
-        }
-        // 아닐경우 타겟값을 Null 값 셋팅
-        else
-        {
-            lockOnTarget = null;
-            hitPos = Vector3.zero;
-        }
-
-        base.NormalAttackState();
-
-    }
-
-
-
 
 
     /// <summary>
@@ -75,12 +37,10 @@ public class Archer : PlayerController
         // 발사체 생성
         var arrowObject = ObjectPoolManager.Instance.GetPool<Arrow>(Define.ProjectilePath.arrowPath, Resources.Load(Define.ProjectilePath.arrowPath).name);
         // 발사체 생성 위치값
-        arrowObject.transform.position = SpawnPos.transform.position;
+        arrowObject.transform.position = SpawnPos.transform.position + InGameManager.Instance.Player.transform.forward;
         // 발사체 Forward 값
-        var parentBowPos = SpawnPos.transform.parent.position;
+        var parentBowPos = InGameManager.Instance.Player.transform.position;
         arrowObject.transform.rotation = Quaternion.LookRotation(new Vector3(parentBowPos.x,0,parentBowPos.z));
-        // 발사체 타겟 설정(타겟이 null 일경우도 발사체에서 감지)
-        arrowObject.GetComponent<Arrow>().TargetSetting(lockOnTarget,hitPos);
         // 해당 발사체에 값 설정 
         var arrowAttackC = arrowObject.GetComponent<AttackController>();
         arrowAttackC.staticData = mainData;

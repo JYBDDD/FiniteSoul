@@ -49,11 +49,7 @@ public class CreatureBase : MonsterController
         anim.SetInteger("HitCount",startCount);
 
 
-        // 움직일 수 있는 상태라면 도착지점을 현재 자신의 위치로 변경
-        if (NotToMove == true)
-        {
-            agent.SetDestination(transform.position);
-        }
+        agent.SetDestination(transform.position);
 
         StartCoroutine(ChainHit());
 
@@ -70,11 +66,14 @@ public class CreatureBase : MonsterController
                 {
                     // Hit3 애니메이션으로 넘긴다
                     target ??= InGameManager.Instance.Player.gameObject;
+                    transform.rotation = Quaternion.LookRotation(target.transform.position);
+
                 }
                 if (HitAnimationing("Hit1") == 0)
                 {
                     // Hit2 애니메이션으로 넘긴다
                     target ??= InGameManager.Instance.Player.gameObject;
+                    transform.rotation = Quaternion.LookRotation(target.transform.position);
                     anim.SetTrigger("NotHitTrigger");
                 }
 
@@ -92,6 +91,7 @@ public class CreatureBase : MonsterController
                 {
                     originCall = hitCall;
                     anim.SetInteger("HitCount", ++startCount);
+                    agent.SetDestination(transform.position);
                     return 0;
                 }
                 if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.8f)
