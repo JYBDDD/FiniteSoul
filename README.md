@@ -196,7 +196,13 @@
 11. 상점 및 인벤토리 구현, 인벤토리 저장데이터 추가, 궁수(발사체) 설정
 	-> 해당 발사체에 ReQuirmentComponet 를 사용하여 강제로 AttackController를 추가하였음
 	-> 발사체.GetComponent<AttackController>().staticData = maindata 로 설정하여 데이터 값을 넘겨주었음
-	-> 화살을 플레이어의 정면방향으로 발사
+	-> 화살을 플레이어의 정면방향으로 발사 (화살 활성화시 hit.point 방향으로 Lerp 이동)
+		-> Vector3.MoveTowards 메소드로 거리가 다르더라도 동일한 속도가 적용되도록 설정
+		-> 화살이 몬스터가 아닌 다른 오브젝트에 맞을 경우 데미지 체크를 하지않도록 해당 AttackController의 checkBool = false 로 지정
+	
+	/ 참고사항 /
+	// NavmeshAgent를 돌리고 있는 오브젝트가 있을때 오브젝트가 SetDestination을 통해 회전하지만, 거기에서 추가로
+		 오브젝트에 로테이션 회전을 줄 경우 이상한 회전값이 출력될 수 있음
 	
 	
 22.04.20
@@ -207,19 +213,12 @@
 1. 할 것    TODO
 
 	4.5 캐릭터 선택창 만들기
-			-> Terrain collider 가끔씩 충돌 무시 뜨나? TODO
-			-> 발사했을때 갑자기 화살이 없어질때가 있음  TODO
-	
-			-> 몬스터 맞고나서 멈춘상태에서 달라붙는것 고치기
-	
+
+		-> 화살이 가끔 타겟에 닿기전에 멈춤  TODO
 	
 		-> Arrow 에 이펙트 넣어주기
 	
 		-> AttackController의 피격 이펙트 설정을 Define에서 뭐 값 추가해가지고 캐릭터마다 넣기 편하게 만들기
-	
-		-> Arrow 가 지금은 직선으로 날라가는데 포물선으로 날아가게 할것인지 고르기
-	
-
 		
 		
 	
@@ -255,6 +254,7 @@
 		2. 플레이어의 체력이 0일시 죽도록 하는거
 		3. SerilizeField 로 만든것 설명은 ToolTip으로 넣어주기
 		4. 가끔식 플레이어 공격 두번하는거 고치기 	-ChainAttack() 코루틴에 걷는부분, 뛰는부분 넘겨줄때 AttackTrigger가 켜진상태로 넘겨져서 바로 넘어가짐
+												- ResetTrigger 설정 안해줘서 그
 		
 	
 	-> 빌드 후 확인해야될 사항
