@@ -199,6 +199,19 @@
 	-> 화살을 플레이어의 정면방향으로 발사 (화살 활성화시 hit.point 방향으로 Lerp 이동)
 		-> Vector3.MoveTowards 메소드로 거리가 다르더라도 동일한 속도가 적용되도록 설정
 		-> 화살이 몬스터가 아닌 다른 오브젝트에 맞을 경우 데미지 체크를 하지않도록 해당 AttackController의 checkBool = false 로 지정
+	-> 파티클(이펙트)
+		-> 파티클베이스 - 파티클자식 스크립트를 생성하여 ParticleSystem.IsPlaying을 코루틴으로 실행시켜 거짓일 경우 풀링매니저에 반환
+			-> Arrow(이펙트)파티클 출력
+				-> Arrow 발사체일 경우 닿았을시 other.bounds.ClosestPoint(transform.position) 로 충돌지점 위치값,
+					각도계산(플레이어 , other로테이션)을 하여 파티클 출력
+				-> Arrow 발사체는 생성시 TrailRenderer 로 인하여 궤적이 남도록 출력 (원형을 그리는 Material 삽입)
+			-> 몬스터Attack(이펙트)파티클 출력
+				-> 플레이어가 공격을 받았을시 충돌지점에서 파티클 출력
+			
+			-> Sword(이펙트)파티클 출력
+				-> 플레이어가 공격에 성공했을시 충돌지점에서 파티클 출력
+					-> 해당 파티클은 손목의 회전각도에 따라 출력되는 Rotation 값이 다르도록 출력
+	
 	
 	/ 참고사항 /
 	// NavmeshAgent를 돌리고 있는 오브젝트가 있을때 오브젝트가 SetDestination을 통해 회전하지만, 거기에서 추가로
@@ -213,15 +226,15 @@
 1. 할 것    TODO
 
 	4.5 이펙트 추가용
-		-> 이펙트 모아논것
-			- 화살AttackEffect
-			- 화살 날아가는거 Effect	(없음)	-> 이거는 그냥 Trail Renderer 로 할까?
-			- 검AttackEffect
-			- 몬스터 HitEffect
-			- 플레이어 HitEffect
-		
-		-> 위에 프리팹들은 모아놓고 Define 에 Resources.Load 위치 잡아놓음 이제 프리팹 넣기만 하면됨 TODO
-		
+		-> 팔라딘 공격 가끔씩 뻑남  TODO
+	
+	
+		-> 가끔식 플레이어 공격 두번하는거 고치기 	
+			-ChainAttack() 코루틴에 걷는부분, 뛰는부분 넘겨줄때 AttackTrigger가 켜진상태로 넘겨져서 바로 넘어가짐
+			- ResetTrigger 설정 안해줘서 그런듯?
+	
+		-> 화살 멈추는 버그 있음
+	
 		
 	
 	4.6 UI
@@ -250,8 +263,6 @@
 		1. 몬스터 아이템 드랍
 		2. 플레이어의 체력이 0일시 죽도록 하는거
 		3. SerilizeField 로 만든것 설명은 ToolTip으로 넣어주기
-		4. 가끔식 플레이어 공격 두번하는거 고치기 	-ChainAttack() 코루틴에 걷는부분, 뛰는부분 넘겨줄때 AttackTrigger가 켜진상태로 넘겨져서 바로 넘어가짐
-												- ResetTrigger 설정 안해줘서 그
 		
 	
 
