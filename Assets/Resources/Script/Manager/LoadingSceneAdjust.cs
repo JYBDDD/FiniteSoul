@@ -32,6 +32,7 @@ public class LoadingSceneAdjust : MonoBehaviour
 
     public static void LoadScene(string sceneName)
     {
+        //////////////////////////////  DiyingUI 종료시키기 TODO ///////////////////////////////////////////////
         SceneManager.LoadScene("LoadingScene");     // 먼저 로딩씬 전환
         nextSceneName = sceneName;
         StageManager.StageDataInsert(nextSceneName);
@@ -105,6 +106,7 @@ public class LoadingSceneAdjust : MonoBehaviour
                 StageManager.Instance.MonsterSpawn();
                 // UIManager 드로잉 서서히 활성화
                 UIManager.UIDrawState = Define.UIDraw.SlowlyActivation;
+                StatEquipWindowUI.Num2CanvasState = Define.UIDraw.SlowlyActivation;
             };
 
             yield break;

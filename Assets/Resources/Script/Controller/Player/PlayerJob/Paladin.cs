@@ -11,5 +11,4 @@ public class Paladin : PlayerController
     {
         base.Awake();
     }
-
 }

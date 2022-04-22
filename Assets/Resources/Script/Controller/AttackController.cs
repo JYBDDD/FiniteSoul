@@ -68,13 +68,6 @@ public class AttackController : MonoBehaviour
                 // 몬스터 상태 Hurt로 변경
                 monsterC.FSM.ChangeState(Define.State.Hurt, monsterC.HurtState);
 
-/*                // 몬스터의 체력이 0이하일시 실행
-                if (monsterC.monsterData.currentHp <= 0)
-                {
-                    monsterC.FSM.ChangeState(Define.State.Die, monsterC.DieState, false);
-                    return;
-                }*/
-
                 // TargetMonsterUI 의 타깃 컨트롤러에 타겟값 설정
                 TargetMonsterUI.targetMonsterC = monsterC;
 
@@ -83,8 +76,6 @@ public class AttackController : MonoBehaviour
                 {
                     TargetMonsterUI.TargetUIState = Define.UIDraw.Activation;
                 }
-
-                
             }
 
             // 원거리라면 실행 / 몬스터에 맞지 않았더라도 데미지처리 불가하게 변경
@@ -121,6 +112,15 @@ public class AttackController : MonoBehaviour
                 playerC.playerData.currentHp -= damage;
                 // 플레이어 상태 Hurt로 변경
                 playerC.FSM.ChangeState(Define.State.Hurt, playerC.HurtState);
+
+                // 플레이어의 체력이 0보다 낮다면 Diying UI Window를 출력시킨다
+                if(playerC.playerData.currentHp <= 0)
+                {
+                    DyingWindowUI.DyingUIState = Define.UIDraw.SlowlyActivation;
+                    UIManager.Instance.SwitchWindowOption(ref DyingWindowUI.DyingUIState, ref DyingWindowUI.dyingUIOriginState,
+                        DyingWindowUI.dyingCanvas, DyingWindowUI.AllUIQuit);
+                    return;
+                }
             }
         }
     }

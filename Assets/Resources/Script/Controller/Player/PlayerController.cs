@@ -59,6 +59,8 @@ public class PlayerController : MoveableObject
             playerData.atk = volData.raiseAtk;
             playerData.def = volData.raiseDef;
         }
+
+        NotToMove = true;
     }
 
     public override void InsertComponent()
@@ -346,6 +348,13 @@ public class PlayerController : MoveableObject
 
     public virtual void HurtState()
     {
+        // 체력이 0보다 낮다면 실행
+        if(playerData.currentHp <= 0)
+        {
+            FSM.ChangeState(Define.State.Die, DieState);
+            return;
+        }
+
         anim.SetTrigger("HitTrigger");
         anim.ResetTrigger("AttackTrigger");
         FSM.ChangeState(Define.State.Idle, IdleState, true);
@@ -355,7 +364,8 @@ public class PlayerController : MoveableObject
 
     protected virtual void DieState()
     {
-        
+        NotToMove = false;
+        //// Die 애니메이션 출력 시키기... TODO
     }
 
     #region 캐릭터 움직임 구현부
@@ -413,16 +423,9 @@ public class PlayerController : MoveableObject
 
         float mouseY = Input.GetAxis("Mouse Y");     // 상,하
 
-        Vector3 camAngle = Camera.main.transform.rotation.eulerAngles;
-        float x = camAngle.x - mouseY;
-        
-
         if (!(mouseX == 0 && mouseY == 0))
         {
             transform.eulerAngles = new Vector3(0, mouseX, 0);  // 좌, 우 회전
-
-            //Camera.main.transform.rotation = Quaternion.Euler(x, transform.eulerAngles.y, 0);   // 상, 하 회전
-
         }
     }
 
