@@ -47,17 +47,13 @@ public class Archer : PlayerController
     public void ArrowSpawn()
     {
         // 발사체 생성
-        var arrowObject = ObjectPoolManager.Instance.GetPool<Arrow>(Define.ProjectilePath.arrowPath, Resources.Load(Define.ProjectilePath.arrowPath).name,Define.CharacterType.Projectile);
-        // 발사체 생성 위치값
-        arrowObject.transform.position = SpawnPos.transform.position;
-        // 발사체 Forward 값
-        arrowObject.transform.rotation = Quaternion.LookRotation(hit.point);
+        var arrowObject = ObjectPoolManager.Instance.GetPool<Arrow>(Define.ProjectilePath.arrowPath,Define.CharacterType.Projectile);
+        // 발사체 생성 위치값, 방향값 지정
+        ResourceUtil.PosDirectionDesign(arrowObject, SpawnPos.transform.position, Quaternion.LookRotation(hit.point - transform.position)); 
         // 발사체 해당 방향으로 이동 설정
         arrowObject.GetComponent<Arrow>().movePoint(hit.point);
         // 해당 발사체에 값 설정 
         var arrowAttackC = arrowObject.GetComponent<AttackController>();
-        arrowAttackC.enabled = true;
-        arrowAttackC.staticData = mainData;
-        arrowAttackC.atkType = playerData.atkType;
+        arrowAttackC.AttackControllerInit(mainData, playerData.atkType);
     }
 }

@@ -88,7 +88,7 @@ public class MonsterController : MoveableObject
         for (int i = 0; i < atkCollider.Count; ++i)
         {
             AttackController attackController = atkCollider[i].gameObject.AddComponent<AttackController>();
-            attackController.staticData = monsterData;
+            attackController.AttackControllerInit(monsterData, monsterData.atkType);
         }
     }
 

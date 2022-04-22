@@ -78,8 +78,7 @@ public class PlayerController : MoveableObject
         for (int i = 0; i < playerAtkColl.Length; ++i)
         {
             AttackController attackController = playerAtkColl[i].gameObject.AddComponent<AttackController>();
-            attackController.staticData = playerData;
-            attackController.atkType = playerData.atkType;
+            attackController.AttackControllerInit(playerData, playerData.atkType);
         }
     }
 

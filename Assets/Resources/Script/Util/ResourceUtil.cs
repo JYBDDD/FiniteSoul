@@ -131,6 +131,35 @@ public class ResourceUtil : MonoBehaviour
     }
 
     /// <summary>
+    /// 오브젝트의 위치,방향값 지정
+    /// </summary>
+    /// <param name="thisObject"></param>
+    /// <param name="pos"></param>
+    /// <param name="rot"></param>
+    public static void PosDirectionDesign(GameObject thisObject,Vector3 pos,Quaternion rot)
+    {
+        thisObject.transform.position = pos;
+        thisObject.transform.rotation = rot;
+    }
+
+    /// <summary>
+    /// 파티클 이펙트 생성 및 설정
+    /// </summary>
+    /// <param name="path"></param>
+    /// <param name="type"></param>
+    /// <param name="ac"></param>
+    /// <param name="pos"></param>
+    /// <param name="rot"></param>
+    public static void ParticleInit(string path, Define.CharacterType type, AttackController ac, Vector3 pos, Quaternion rot)
+    {
+        if (ac.checkBool == true)
+        {
+            GameObject particleObj = ObjectPoolManager.Instance.GetPool<ParticleChild>(path, type);
+            PosDirectionDesign(particleObj, pos, rot);
+        }
+    }
+
+    /// <summary>
     /// 데이터 저장
     /// </summary>
     /// <param name="index"></param>

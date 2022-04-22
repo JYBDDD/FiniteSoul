@@ -37,7 +37,7 @@ public class StageManager : Singleton<StageManager>
             if (monsterData != null)
             {
                 // 몬스터 생성
-                GameObject monsterObj = ObjectPoolManager.Instance.GetPool<MoveableObject>(monsterData.resourcePath, monsterData.name, Define.CharacterType.Monster);
+                GameObject monsterObj = ObjectPoolManager.Instance.GetPool<MoveableObject>(monsterData.resourcePath, Define.CharacterType.Monster);
                 // 몬스터 위치값 지정
                 monsterObj.transform.position = MonsterSpawnsDoc.stageItem.locations[j];
                 MonsterController monsterC = monsterObj.GetComponent<MonsterController>();

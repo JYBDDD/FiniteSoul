@@ -144,18 +144,12 @@ public static class Define
             /// <summary>
             /// (검) 공격 이펙트
             /// </summary>
-            public const string swordAttack = "Prefabs/ParticleEffect/SwordAttackEffett";
+            public const string swordAttack = "Prefabs/ParticleEffect/SwordAttackEffect";
 
         }
 
         public class MonsterParticle
         {
-
-            /// <summary>
-            /// 몬스터 피격 이펙트 (Resources.Load)
-            /// </summary>
-            public const string monsterHit = "Prefabs/ParticleEffect/MonsterHitEffect";
-
             /// <summary>
             /// 몬스터 공격 이펙트 (Resources.Load)
             /// </summary>

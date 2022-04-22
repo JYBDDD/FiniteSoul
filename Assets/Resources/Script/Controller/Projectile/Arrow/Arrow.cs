@@ -35,9 +35,6 @@ public class Arrow : ProjectileBase
 
         // 타겟 체크 Bool값 재설정
         hitCheck = false;
-
-        //rigid.AddForce(InGameManager.Instance.Player.transform.forward * 50f, ForceMode.Impulse);     TODO 삭제
-
     }
 
     public void movePoint(Vector3 hitPoint)
@@ -75,6 +72,16 @@ public class Arrow : ProjectileBase
 
             // 타겟 체크
             hitCheck = true;
+
+            // 각도 계산
+            float angle = Quaternion.Angle(InGameManager.Instance.Player.transform.rotation, other.transform.rotation);
+
+            // 충돌 위치값
+            var closetPos = other.bounds.ClosestPoint(transform.position);
+
+            // 화살 AttackEffect 활성화
+            ResourceUtil.ParticleInit(Define.ParticleEffectPath.PlayerParticle.arrowShot,Define.CharacterType.Particle,attackController,
+                closetPos,Quaternion.LookRotation(new Vector3(angle,angle,angle)));
 
             // 20초 활성화후 풀링매니저 리턴
             StartCoroutine(ArrowCheckTime(20f));

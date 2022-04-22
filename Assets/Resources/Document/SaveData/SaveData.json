@@ -1,13 +1,13 @@
 {
-    "index": 1002,
+    "index": 1001,
     "level": 1,
     "stageIndex": 1001,
-    "posX": 47.092674255371097,
-    "posY": -0.013043105602264405,
-    "posZ": 39.66252517700195,
+    "posX": 47.2828483581543,
+    "posY": -0.013043045997619629,
+    "posZ": 39.522430419921878,
     "rune": 0.0,
-    "raiseHp": 200.0,
-    "currentHp": 200.0,
-    "raiseAtk": 40.0,
-    "raiseDef": 1.0
+    "raiseHp": 250.0,
+    "currentHp": 250.0,
+    "raiseAtk": 50.0,
+    "raiseDef": 5.0
 }

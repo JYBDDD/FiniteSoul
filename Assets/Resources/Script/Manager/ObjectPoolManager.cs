@@ -58,8 +58,11 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
     /// <summary>
     /// 오브젝트 반환
     /// </summary>
-    public GameObject GetPool<T>(string resourcePath,string ObjectName,Define.CharacterType type = Define.CharacterType.None) where T : MonoBehaviour,RecyclePooling
+    public GameObject GetPool<T>(string resourcePath,Define.CharacterType type = Define.CharacterType.None) where T : MonoBehaviour,RecyclePooling
     {
+        // 해당 오브젝트의 이름
+        string ObjectName = Resources.Load(resourcePath).name;
+
         // 반환하려고 하는 해당 오브젝트가 SetActive(false) 라면 반환,
         for(int i = 0; i < gameObjects.Count; ++i)
         {

@@ -19,8 +19,15 @@ public class AttackController : MonoBehaviour
     /// </summary>
     public bool checkBool = true;
 
-    private void OnEnable()
+    /// <summary>
+    /// 어택 컨트롤러 데이터값 초기화
+    /// </summary>
+    /// <param name="staticData"></param>
+    /// <param name="atkType"></param>
+    public void AttackControllerInit(StaticData staticData,Define.AtkType atkType)
     {
+        this.staticData = staticData;
+        this.atkType = atkType;
         checkBool = true;
     }
 
@@ -32,6 +39,18 @@ public class AttackController : MonoBehaviour
             // 몬스터와 닿았다면
             if(other.gameObject.CompareTag("Monster") && checkBool == true)
             {
+                // 근거리라면 실행
+                if (atkType == Define.AtkType.Normal)
+                {
+                    // 충돌 위치값
+                    var closetPos = other.bounds.ClosestPoint(transform.position);
+
+                    // 플레이어 SwordAttackEffect 출력
+                    ResourceUtil.ParticleInit(Define.ParticleEffectPath.PlayerParticle.swordAttack, Define.CharacterType.Particle, this,
+                        closetPos, gameObject.transform.parent.rotation);
+
+                }
+
                 var monsterC = other.gameObject.GetComponent<MonsterController>();
                 var playerAtk = InGameManager.Instance.Player.playerData.atk;
                 var damage = playerAtk - monsterC.monsterData.def;
@@ -69,8 +88,6 @@ public class AttackController : MonoBehaviour
                 {
                     checkBool = false;
                 }
-
-
             }
         }
 
@@ -79,6 +96,13 @@ public class AttackController : MonoBehaviour
         {
             if(other.gameObject.CompareTag("Player"))
             {
+                // 충돌 위치값
+                var closetPos = other.bounds.ClosestPoint(transform.position);
+
+                // 몬스터 AttackEffect 출력
+                ResourceUtil.ParticleInit(Define.ParticleEffectPath.MonsterParticle.monsterAttack, Define.CharacterType.Particle, this,
+                    closetPos, Quaternion.identity);
+
                 // Where 의 SingleOrDefault으로 값을 추출하면 두개이상의 값을 찾아 오류가 발생할수 있기에 
                 // FirstOrDefault 로 첫번째 값만 가져오도록 설정
                 var monsterC = InGameManager.Instance.Monsters.FirstOrDefault(_ => _.monsterData.index == staticData.index);
