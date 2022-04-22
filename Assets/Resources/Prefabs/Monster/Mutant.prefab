@@ -877,7 +877,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7395872168527525022}
   - component: {fileID: 3624696295096744625}
-  - component: {fileID: 2567469183718798531}
   m_Layer: 0
   m_Name: MutantMesh
   m_TagString: Untagged
@@ -987,19 +986,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.033555686, y: -0.0016181469, z: 0.29300943}
     m_Extent: {x: 0.81109774, y: 0.8862619, z: 0.579687}
   m_DirtyAABB: 0
---- !u!65 &2567469183718798531
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7019405539112325752}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.90412676, y: 1.4233859, z: 0.300975}
-  m_Center: {x: -0.020138681, y: 0.7166929, z: 0.11979811}
 --- !u!1 &7118792765026309164
 GameObject:
   m_ObjectHideFlags: 0
@@ -1211,6 +1197,7 @@ MonoBehaviour:
     dropItemPer: 0
     resourcePath: 
     currentHp: 0
+  deadMonster: 0
   monsterStartPos: {x: 0, y: 0, z: 0}
   atkCollider:
   - {fileID: 860815803850183404}

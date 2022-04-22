@@ -39,8 +39,14 @@ public class AttackController : MonoBehaviour
             // 몬스터와 닿았다면
             if(other.gameObject.CompareTag("Monster") && checkBool == true)
             {
+                
+
+                var monsterC = other.gameObject.GetComponent<MonsterController>();
+                var playerAtk = InGameManager.Instance.Player.playerData.atk;
+                var damage = playerAtk - monsterC.monsterData.def;
+
                 // 근거리라면 실행
-                if (atkType == Define.AtkType.Normal)
+                if (atkType == Define.AtkType.Normal && monsterC.monsterData.currentHp > 0)
                 {
                     // 충돌 위치값
                     var closetPos = other.bounds.ClosestPoint(transform.position);
@@ -51,28 +57,23 @@ public class AttackController : MonoBehaviour
 
                 }
 
-                var monsterC = other.gameObject.GetComponent<MonsterController>();
-                var playerAtk = InGameManager.Instance.Player.playerData.atk;
-                var damage = playerAtk - monsterC.monsterData.def;
-
                 // 데미지가 0보다 작거나 같다면 데미지를 1로 고정
-                if(damage <= 0)
+                if (damage <= 0)
                 {
                     damage = 1;
                 }
                 // 몬스터 현재 체력 - (플레이어 공격력 - 몬스터 방어력)
                 monsterC.monsterData.currentHp -= damage;
 
-                // 몬스터의 체력이 0이하일시 실행
-                if(monsterC.monsterData.currentHp <= 0)
-                {
-                    monsterC.deadMonster = true;
-                    monsterC.FSM.ChangeState(Define.State.Die, monsterC.DieState, false);
-                    return;
-                }
-
                 // 몬스터 상태 Hurt로 변경
                 monsterC.FSM.ChangeState(Define.State.Hurt, monsterC.HurtState);
+
+/*                // 몬스터의 체력이 0이하일시 실행
+                if (monsterC.monsterData.currentHp <= 0)
+                {
+                    monsterC.FSM.ChangeState(Define.State.Die, monsterC.DieState, false);
+                    return;
+                }*/
 
                 // TargetMonsterUI 의 타깃 컨트롤러에 타겟값 설정
                 TargetMonsterUI.targetMonsterC = monsterC;
@@ -83,11 +84,13 @@ public class AttackController : MonoBehaviour
                     TargetMonsterUI.TargetUIState = Define.UIDraw.Activation;
                 }
 
-                // 원거리라면 실행한다
-                if(atkType == Define.AtkType.Projectile)
-                {
-                    checkBool = false;
-                }
+                
+            }
+
+            // 원거리라면 실행 / 몬스터에 맞지 않았더라도 데미지처리 불가하게 변경
+            if (atkType == Define.AtkType.Projectile)
+            {
+                checkBool = false;
             }
         }
 

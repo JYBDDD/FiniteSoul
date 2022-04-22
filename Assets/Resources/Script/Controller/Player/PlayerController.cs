@@ -310,14 +310,14 @@ public class PlayerController : MoveableObject
         {
             if (anim.GetCurrentAnimatorStateInfo(0).IsName(animationName))
             {
-                // 원거리가 아니라면 연속공격 실행
-                if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime < 0.9f && Input.GetKey(KeyCode.Mouse0) && playerData.atkType != Define.AtkType.Projectile)
+                // 원거리가 아니고 일정 시간안에 공격키 클릭시, 연속공격 실행
+                if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.4f && anim.GetCurrentAnimatorStateInfo(0).normalizedTime < 0.9f && 
+                    Input.GetKey(KeyCode.Mouse0) && playerData.atkType != Define.AtkType.Projectile)
                 {
                     return 0;
                 }
                 if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.9f)
                 {
-                    anim.SetTrigger("NotAttackTrigger");
                     anim.ResetTrigger("AttackTrigger");
                     FSM.ChangeState(Define.State.Idle, IdleState, true);
                     return 2;

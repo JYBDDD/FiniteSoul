@@ -43,40 +43,47 @@ public class CreatureBase : MonsterController
 
     public override void HurtState()
     {
-        // 시작 카운트 상승
-        ++startCount;
+        base.HurtState();
 
-        // 애니메이터의 HitCount int를 불러옴
-        anim.SetInteger("HitCount",startCount);
-
-        // 목적지 -> 자신의 위치 (잠시 이동 불가하는것처럼 정지할것)
-        agent.SetDestination(transform.position);
-
-        StartCoroutine(ChainHit());
-
-        IEnumerator ChainHit()
+        if(monsterData.currentHp > 0)
         {
-            // Hit1 이 재생중인 상태에서 피격시 Hit2 재생, Hit2 가 재생중인 상태에서 재생시 Hit3 재생
-            while (true)
-            {
-                if (EndAnim("Hit3"))
-                {
-                    EndCall();
-                }
-                if (HitAnimationing("Hit2") == 0 && startCount > 2)
-                {
-                    // Hit3 애니메이션으로 넘긴다
-                    target ??= InGameManager.Instance.Player.gameObject;
-                }
-                if (HitAnimationing("Hit1") == 0 && startCount > 1)
-                {
-                    // Hit2 애니메이션으로 넘긴다
-                    target ??= InGameManager.Instance.Player.gameObject;
-                }
+            // 시작 카운트 상승
+            ++startCount;
 
-                yield return null;
+            // 애니메이터의 HitCount int를 불러옴
+            anim.SetInteger("HitCount", startCount);
+
+            // 목적지 -> 자신의 위치 (잠시 이동 불가하는것처럼 정지할것)
+            agent.SetDestination(transform.position);
+
+            StartCoroutine(ChainHit());
+
+            IEnumerator ChainHit()
+            {
+                // Hit1 이 재생중인 상태에서 피격시 Hit2 재생, Hit2 가 재생중인 상태에서 재생시 Hit3 재생
+                while (true)
+                {
+                    if (EndAnim("Hit3"))
+                    {
+                        EndCall();
+                    }
+                    if (HitAnimationing("Hit2") == 0 && startCount > 2)
+                    {
+                        // Hit3 애니메이션으로 넘긴다
+                        target ??= InGameManager.Instance.Player.gameObject;
+                    }
+                    if (HitAnimationing("Hit1") == 0 && startCount > 1)
+                    {
+                        // Hit2 애니메이션으로 넘긴다
+                        target ??= InGameManager.Instance.Player.gameObject;
+                    }
+
+                    yield return null;
+                }
             }
         }
+
+        
 
         // Hit 애니메이션이 실행중이라면 0, 아니라면 1
         int HitAnimationing(string animationName)
