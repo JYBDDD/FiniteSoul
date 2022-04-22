@@ -233,11 +233,8 @@
 1. 할 것    TODO
 
 			1. 플레이어의 체력이 0일시 죽도록 하는거
-				- Diy 애니메이션 Mixamo 에서 추가해야함 , 그리고 플레이어 DiyState 부분 추가작업하기  TODO
+				- Dying 애니메이션 Mixamo 에서 추가해야함 , 그리고 플레이어 DiyState 부분 추가작업하기  TODO
 					 
-	
-			-> 몬스터 가끔씩 맞아도 Hurt 애니메이션 뻑날때 있음
-				-> AttackController 가서 고쳐야 됨
 	
 	4.6 UI
 
