@@ -110,6 +110,7 @@ public class AttackController : MonoBehaviour
                 // 플레이어 현재 체력 - (몬스터 공격력 - 플레이어 방어력)
                 var damage = monsterAtk - playerC.playerData.def;
                 playerC.playerData.currentHp -= damage;
+
                 // 플레이어 상태 Hurt로 변경
                 playerC.FSM.ChangeState(Define.State.Hurt, playerC.HurtState);
 

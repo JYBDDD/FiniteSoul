@@ -91,13 +91,13 @@ public class CreatureBase : MonsterController
             if (anim.GetCurrentAnimatorStateInfo(0).IsName(animationName))
             {
                 // 애니메이션이 끝나지 않은상태에서 재호출시 실행
-                if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime < 0.8f && startCount > originCount)
+                if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime < 0.7f && startCount > originCount)
                 {
                     originCount = startCount;
                     anim.SetInteger("HitCount", startCount);
                     return 0;
                 }
-                if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.8f)
+                if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f)
                 {
                     // 시간안에 피격당하지 않았을시, 블랜드 트리로 다시 넘긴다
                     target ??= InGameManager.Instance.Player.gameObject;
