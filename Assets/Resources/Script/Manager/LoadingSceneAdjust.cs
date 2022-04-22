@@ -32,8 +32,8 @@ public class LoadingSceneAdjust : MonoBehaviour
 
     public static void LoadScene(string sceneName)
     {
-        //////////////////////////////  DiyingUI 종료시키기 TODO ///////////////////////////////////////////////
-        SceneManager.LoadScene("LoadingScene");     // 먼저 로딩씬 전환
+        // 씬 전환 (로드)
+        SceneManager.LoadScene("LoadingScene");     
         nextSceneName = sceneName;
         StageManager.StageDataInsert(nextSceneName);
     }

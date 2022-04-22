@@ -22,11 +22,6 @@ public class Archer : PlayerController
 
     public static RaycastHit hit;
 
-    protected override void Awake()
-    {
-        base.Awake();
-    }
-
     protected override void NormalAttackState()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);

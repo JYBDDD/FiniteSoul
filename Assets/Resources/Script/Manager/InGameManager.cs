@@ -45,6 +45,16 @@ public class InGameManager : Singleton<InGameManager>
     /// </summary>
     public void ClearInGame()
     {
+        for(int i = 0; i < Monsters.Count; ++i)
+        {
+            ObjectPoolManager.Instance.GetPush(Monsters[i].gameObject);
+        }
+
+        if(Player != null)
+        {
+            ObjectPoolManager.Instance.GetPush(Player.gameObject);
+        }
+
         Player = null;
         Monsters?.Clear();
     }

@@ -21,20 +21,31 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
     /// </summary>
     public static GameObject ParentParticle;
 
+    /// <summary>
+    /// 플레이어의 부모
+    /// </summary>
+    public static GameObject ParentPlayer;
+
     protected override void Awake()
     {
         base.Awake();
+        // 모든 부모의 최종Root부모는 풀링매니저로 설정
 
-        // 몬스터 풀링 부모 생성
+        // 몬스터 풀링 부모
         ParentMonster = new GameObject { name = "Monster" };
-        ParentMonster.transform.SetParent(transform);   // 몬스터부모의 최종Root부모는 풀링매니저로 설정
+        ParentMonster.transform.SetParent(transform); 
 
-        // Projectile 풀링 부모 생성
+        // Projectile 풀링 부모
         ParentProjectile = new GameObject { name = "Projectile" };
-        ParentProjectile.transform.SetParent(transform);    // 발사체부모의 최종Root부모는 풀링매니저로 설정
+        ParentProjectile.transform.SetParent(transform); 
 
+        // 파티클 풀링 부모
         ParentParticle = new GameObject { name = "Particle" };
-        ParentParticle.transform.SetParent(transform);  // 파티클부모의 최종Root부모는 풀링매니저로 설정
+        ParentParticle.transform.SetParent(transform); 
+
+        // 플레이어 풀링 부모
+        ParentPlayer = new GameObject { name = "Player" };
+        ParentPlayer.transform.SetParent(transform); 
     }
 
     /// <summary>
@@ -90,6 +101,10 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
         if(type == Define.CharacterType.Particle)
         {
             returnObj.transform.SetParent(gameObject.transform.GetChild(2));
+        }
+        if(type == Define.CharacterType.Player)
+        {
+            returnObj.transform.SetParent(gameObject.transform.GetChild(3));
         }
 
         // 리스트++

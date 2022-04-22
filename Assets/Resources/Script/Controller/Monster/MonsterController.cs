@@ -27,15 +27,6 @@ public class MonsterController : MoveableObject
     [SerializeField]
     private List<Collider> atkCollider = new List<Collider>();
 
-    /// <summary>
-    /// 몬스터들만 사용하는 Awake()
-    /// </summary>
-    protected virtual void Awake()
-    {
-        InsertComponent();
-
-        FSM.ChangeState(FSM.State, IdleState, false);
-    }
 
     /// <summary>
     /// (상위 부모) Update() -> FSM (몬스터 용)
@@ -57,6 +48,8 @@ public class MonsterController : MoveableObject
     /// </summary>
     public void SetStat()
     {
+        InsertComponent();
+
         monsterData.currentHp = monsterData.maxHp;
 
         // NavMeshAgent 이동속도 = 몬스터데이터 이동속도 지정
@@ -67,6 +60,8 @@ public class MonsterController : MoveableObject
         anim.SetFloat("RandA", 0);
         anim.SetBool("Attack", false);
         anim.SetBool("Die", false);
+
+        FSM.ChangeState(FSM.State, IdleState, false);
     }
 
     public override void InsertComponent()
@@ -79,11 +74,15 @@ public class MonsterController : MoveableObject
     public override void AttackColliderSet()
     {
         base.AttackColliderSet();
+
         // 해당 콜라이더를 가지고 있는 오브젝트에 AttackController 스크립트를 추가
         for (int i = 0; i < atkCollider.Count; ++i)
         {
-            AttackController attackController = atkCollider[i].gameObject.AddComponent<AttackController>();
-            attackController.AttackControllerInit(monsterData, monsterData.atkType);
+            if(atkCollider[i].GetComponent<AttackController>() == null)
+            {
+                AttackController attackController = atkCollider[i].gameObject.AddComponent<AttackController>();
+                attackController.AttackControllerInit(monsterData, monsterData.atkType);
+            }
         }
     }
 

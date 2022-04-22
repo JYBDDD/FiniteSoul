@@ -88,7 +88,7 @@ public class AttackController : MonoBehaviour
         // 값을 들고있는 데이터가 몬스터라면 실행
         if (staticData.characterType == Define.CharacterType.Monster)
         {
-            if(other.gameObject.CompareTag("Player"))
+            if(other.gameObject.CompareTag("Player") && InGameManager.Instance.Player.playerData.currentHp > 0)
             {
                 // 충돌 위치값
                 var closetPos = other.bounds.ClosestPoint(transform.position);
@@ -118,7 +118,7 @@ public class AttackController : MonoBehaviour
                 {
                     DyingWindowUI.DyingUIState = Define.UIDraw.SlowlyActivation;
                     UIManager.Instance.SwitchWindowOption(ref DyingWindowUI.DyingUIState, ref DyingWindowUI.dyingUIOriginState,
-                        DyingWindowUI.dyingCanvas, DyingWindowUI.AllUIQuit);
+                        DyingWindowUI.dyingCanvas,DyingWindowUI.DyingWindowStart);
                     return;
                 }
             }

@@ -61,11 +61,12 @@ public class PlayerController : MoveableObject
         }
 
         NotToMove = true;
-    }
+        FSM.ChangeState(FSM.State, IdleState, true);
 
-    public override void InsertComponent()
-    {
-        base.InsertComponent();
+        InputManager.Instance.KeyAction += Move;
+        InputManager.Instance.KeyAction += Jump;
+
+        InsertComponent();
     }
 
     public override void AttackColliderSet()
@@ -79,22 +80,18 @@ public class PlayerController : MoveableObject
         // 해당 콜라이더를 가지고 있는 오브젝트에 AttackController 스크립트를 추가
         for (int i = 0; i < playerAtkColl.Length; ++i)
         {
-            AttackController attackController = playerAtkColl[i].gameObject.AddComponent<AttackController>();
-            attackController.AttackControllerInit(playerData, playerData.atkType);
+            if(playerAtkColl[i].GetComponent<AttackController>() == null)
+            {
+                AttackController attackController = playerAtkColl[i].gameObject.AddComponent<AttackController>();
+                attackController.AttackControllerInit(playerData, playerData.atkType);
+            }
         }
     }
 
-    /// <summary>
-    /// 플레이어들만 사용하는 Awake()
-    /// </summary>
-    protected virtual void Awake()
+    protected void OnDisable()
     {
-        InsertComponent();
-
-        InputManager.Instance.KeyAction += Move;
-        InputManager.Instance.KeyAction += Jump;
-
-        FSM.ChangeState(FSM.State, IdleState, true);
+        InputManager.Instance.KeyAction -= Move;
+        InputManager.Instance.KeyAction -= Jump;
     }
 
     /// <summary>

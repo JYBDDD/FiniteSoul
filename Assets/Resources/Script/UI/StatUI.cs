@@ -24,9 +24,9 @@ public class StatUI : MonoBehaviour
     RectTransform staminaBar;   // 스테미너 이미지의 부모 Rect
 
     // 변경후 데이터
-    public UsePlayerData playerData;
+    public static UsePlayerData playerData;
     // 변경전 데이터
-    private UsePlayerData originData;
+    private UsePlayerData originData = new UsePlayerData();
 
     private void Update()
     {
@@ -42,27 +42,17 @@ public class StatUI : MonoBehaviour
     /// </summary>
     private void StatUpdate()
     {
-        // 플레이어 데이터의 인덱스가 정상값이 아니라면 값을 삽입
-        if (playerData.index <= 999)
-        {
-            originData = playerData;
-            playerData = InGameManager.Instance.Player.playerData;
-        }
-
         // 플레이어의 데이터가 변경되었다면 실행
-        if (playerData != originData | playerData.level != originData.level)
+        if (playerData.level != originData.level | playerData.currentStamina != originData.currentStamina |
+            playerData.currentHp != originData.currentHp | playerData.currentMana != originData.currentMana)
         {
             // 현재 스텟 변경
             CurrentStatChange();
 
-            // 레벨이 상승하였다면 실행
-            if (playerData.level != originData.level)
-            {
-                // 스텟 부모 크기 설정
-                CurrentRectChange();
-            }
-            
-            originData = new UsePlayerData(playerData, InGameManager.Instance.Player.playerData.growthStat);
+            // 스텟 부모 크기 설정
+            CurrentRectChange();
+
+            originData = new UsePlayerData(playerData,playerData.growthStat);
 
             return;
         }

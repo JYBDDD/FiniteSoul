@@ -7,8 +7,5 @@ using UnityEngine;
 /// </summary>
 public class Paladin : PlayerController
 {
-    protected override void Awake()
-    {
-        base.Awake();
-    }
+    
 }
