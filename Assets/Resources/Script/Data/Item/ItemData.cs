@@ -45,6 +45,11 @@ public class ItemData : StaticData
     public float salePrice;
 
     /// <summary>
+    /// 아이템 설명
+    /// </summary>
+    public string description;
+
+    /// <summary>
     /// 이미지(택스쳐) 경로
     /// </summary>
     public string resourcePath;

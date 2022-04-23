@@ -210,5 +210,12 @@ public static class Define
         public const string dropRunePath = "Prefabs/ParticleEffect/Rune/Rune";
     }
 
+    public class SlotUIPath
+    {
+        /// <summary>
+        /// 인벤토리 슬롯 경로  (Resources.Load)
+        /// </summary>
+        public const string invenSlotPath = "Prefabs/UI/InvenSlot/InvenSlot";
+    }
 
 }

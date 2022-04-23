@@ -27,6 +27,7 @@ public class UseItemData : ItemData
         maxHandCount = useItem.maxHandCount;
         dropPer = useItem.dropPer;
         salePrice = useItem.salePrice;
+        description = useItem.description;
         resourcePath = useItem.resourcePath;
     }
 }

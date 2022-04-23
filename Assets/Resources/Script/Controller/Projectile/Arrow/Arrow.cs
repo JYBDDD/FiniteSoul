@@ -83,11 +83,11 @@ public class Arrow : ProjectileBase
             ResourceUtil.ParticleInit(Define.ParticleEffectPath.PlayerParticle.arrowShot,Define.CharacterType.Particle,attackController,
                 closetPos,Quaternion.LookRotation(new Vector3(angle,angle,angle)));
 
-            // 20초 활성화후 풀링매니저 리턴
-            StartCoroutine(ArrowCheckTime(20f));
+            // 3초 활성화후 풀링매니저 리턴
+            StartCoroutine(ArrowCheckTime(3f));
         }
         // 다른 곳에 맞았다면 실행
-        if(other.gameObject.CompareTag("Ground") || other.gameObject.CompareTag("Untagged"))
+        if(other.gameObject.CompareTag("Ground") || other.gameObject.CompareTag("OtherObject"))
         {
             // 중력값 설정
             rigid.useGravity = true;
@@ -113,14 +113,14 @@ public class Arrow : ProjectileBase
 
         while(true)
         {
-            if(time > checkTime)
+            time += Time.deltaTime;
+
+            if (time > checkTime)
             {
                 // 오브젝트 반환
                 ReturnObject();
                 yield break;
             }
-
-            time += Time.deltaTime;
 
             yield return null;
         }

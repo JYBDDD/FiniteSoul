@@ -8,6 +8,7 @@
     "maxHandCount": "1",
     "dropPer": "5",
     "salePrice": "2500",
+    "description": "어느 이름 모를 전사가 착용했던 낡은 한손검이다.",
     "resourcePath": "Art/Textures/UI/Item/Sword"
   },
   {
@@ -19,6 +20,7 @@
     "maxHandCount": "1",
     "dropPer": "5",
     "salePrice": "1500",
+    "description": "상점 구석에 놓여있던 낡은 한손 방패다.",
     "resourcePath": "Art/Textures/UI/Item/Shield"
   },
   {
@@ -30,6 +32,7 @@
     "maxHandCount": "1",
     "dropPer": "5",
     "salePrice": "3000",
+    "description": "강철산 사냥꾼이 사용했다는 활이다.",
     "resourcePath": "Art/Textures/UI/Item/Bow"
   },
   {
@@ -41,6 +44,7 @@
     "maxHandCount": "99",
     "dropPer": "20",
     "salePrice": "100",
+    "description": "체력을 100 회복가능한 물약이다. \\n 오남용은 신체에 부담이 간다",
     "resourcePath": "Art/Textures/UI/Item/HpPotion"
   },
   {
@@ -52,6 +56,7 @@
     "maxHandCount": "99",
     "dropPer": "20",
     "salePrice": "100",
+    "description": "마나를 50 회복가능한 물약이다 \\n 건강에 좋은 약초로 만든 허브차이다.",
     "resourcePath": "Art/Textures/UI/Item/ManaPotion"
   },
   {
@@ -63,6 +68,7 @@
     "maxHandCount": "99",
     "dropPer": "15",
     "salePrice": "300",
+    "description": "비싸게 팔수있는 조금 금이간 보석이다.",
     "resourcePath": "Art/Textures/UI/Item/Jewel"
   },
   {
@@ -74,6 +80,7 @@
     "maxHandCount": "99",
     "dropPer": "30",
     "salePrice": "100",
+    "description": "무언가에 사용가능한 낡은 키다.",
     "resourcePath": "Art/Textures/UI/Item/Key"
   },
   {
@@ -85,6 +92,7 @@
     "maxHandCount": "99",
     "dropPer": "60",
     "salePrice": "50",
+    "description": "길가에 많이 자라있는 버섯이다. \\n 독이 들어있다.",
     "resourcePath": "Art/Textures/UI/Item/Mushroom"
   }
 ]
