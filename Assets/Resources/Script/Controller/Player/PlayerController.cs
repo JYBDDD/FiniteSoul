@@ -371,6 +371,19 @@ public class PlayerController : MoveableObject
     {
         NotToMove = false;
         anim.SetTrigger("DeathTrigger");
+
+        // 룬을 먹지 못한상태라면 삭제
+        if(ObjectPoolManager.ParentRune.transform.childCount > 0)
+        {
+            var runeObject = ObjectPoolManager.ParentRune.transform.GetChild(0).gameObject;
+            if (runeObject.activeSelf)
+            {
+                ObjectPoolManager.Instance.GetPush(runeObject);
+            }
+        }
+
+        // 플레이어 사망시 드랍룬 설정
+        Rune.DropRuneDataSetting(playerData.currentRune,transform.position);
     }
 
     #region 캐릭터 움직임 구현부

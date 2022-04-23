@@ -13,6 +13,7 @@ public static class Define
         Monster,
         Projectile,
         Particle,
+        Rune,
         None,
     }
 
@@ -98,6 +99,10 @@ public static class Define
         /// </summary>
         Shop,
         /// <summary>
+        /// 룬 -> 플레이어 사망시 드랍하는 룬
+        /// </summary>
+        Rune,
+        /// <summary>
         /// 아무 상호작용도 하지않는 상태
         /// </summary>
         None,
@@ -142,9 +147,14 @@ public static class Define
             public const string arrowShot = "Prefabs/ParticleEffect/ArrowAttackEffect";
 
             /// <summary>
-            /// (검) 공격 이펙트
+            /// (검) 공격 이펙트  (Resources.Load)
             /// </summary>
             public const string swordAttack = "Prefabs/ParticleEffect/SwordAttackEffect";
+
+            /// <summary>
+            /// 룬 획득 이펙트    (Resources.Load)
+            /// </summary>
+            public const string runeEffect = "Prefabs/ParticleEffect/Rune/GetRune";
 
         }
 
@@ -191,5 +201,14 @@ public static class Define
         /// </summary>
         public const string arrowPath = "Prefabs/Projectile/Arrow";
     }
+
+    public class DropRunePath
+    {
+        /// <summary>
+        /// 드랍할 프리팹 룬 경로 (Resources.Load)
+        /// </summary>
+        public const string dropRunePath = "Prefabs/ParticleEffect/Rune/Rune";
+    }
+
 
 }

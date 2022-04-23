@@ -170,14 +170,14 @@ public class ResourceUtil : MonoBehaviour
     /// <param name="currentHp"></param>
     /// <param name="raiseAtk"></param>
     /// <param name="raiseDef"></param>
-    public static void SaveData(UsePlayerData playerData, Vector3 pos, StageData stageData)
+    public static void SaveData(PlayerVolatilityData playerVolatilityData)
     {
         // 저장 파일 위치
         var path = "Assets/Resources/Document/SaveData/SaveData.json";
 
         // 인벤토리 저장 데이터도 만들어야함 TODO
 
-        File.WriteAllText(path, JsonUtility.ToJson(new PlayerVolatilityData(playerData, pos, stageData), true));
+        File.WriteAllText(path, JsonUtility.ToJson(playerVolatilityData, true));
 
         // 데이터 베이스 새로고침
         AssetDatabase.Refresh();

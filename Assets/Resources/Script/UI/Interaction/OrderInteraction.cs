@@ -52,7 +52,7 @@ public class OrderInteraction : MonoBehaviour
                     StatEquipWindowUI.StatEquipState = Define.UIDraw.SlowlyInactive;
 
                     // 데이터 저장
-                    ResourceUtil.SaveData(InGameManager.Instance.Player.playerData, transform.position, StageManager.stageData);
+                    ResourceUtil.SaveData(new PlayerVolatilityData(InGameManager.Instance.Player.playerData, transform.position, StageManager.stageData));
 
                     return;
                 }
@@ -62,6 +62,20 @@ public class OrderInteraction : MonoBehaviour
 
                 // 스테이터스창 활성화
                 StatEquipWindowUI.StatEquipState = Define.UIDraw.SlowlyActivation;
+            }
+
+            // 룬과 상호작용하려 한다면 해당 룬 회수
+            if(other.GetComponent<Interaction>().interactionTarget == Define.InteractionTarget.Rune && playerInteractionTrue)
+            {
+                // 플레이어에게 룬을 넘김
+                Rune.DropRuneHandOver();
+
+                // 룬을 풀링매니저로 넘김
+                ObjectPoolManager.Instance.GetPush(other.gameObject);
+
+                // 룬 획득 이펙트 활성화
+                var runeEffect = ObjectPoolManager.Instance.GetPool<ParticleChild>(Define.ParticleEffectPath.PlayerParticle.runeEffect, Define.CharacterType.Particle);
+                runeEffect.transform.position = other.gameObject.transform.position + Vector3.up;
             }
         }
 

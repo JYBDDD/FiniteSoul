@@ -26,6 +26,11 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
     /// </summary>
     public static GameObject ParentPlayer;
 
+    /// <summary>
+    /// 드랍 룬의 부모
+    /// </summary>
+    public static GameObject ParentRune;
+
     protected override void Awake()
     {
         base.Awake();
@@ -45,7 +50,11 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
 
         // 플레이어 풀링 부모
         ParentPlayer = new GameObject { name = "Player" };
-        ParentPlayer.transform.SetParent(transform); 
+        ParentPlayer.transform.SetParent(transform);
+
+        // 드랍 룬의 부모
+        ParentRune = new GameObject { name = "Rune" };
+        ParentRune.transform.SetParent(transform);
     }
 
     /// <summary>
@@ -105,6 +114,10 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
         if(type == Define.CharacterType.Player)
         {
             returnObj.transform.SetParent(gameObject.transform.GetChild(3));
+        }
+        if(type == Define.CharacterType.Rune)
+        {
+            returnObj.transform.SetParent(gameObject.transform.GetChild(4));
         }
 
         // 리스트++

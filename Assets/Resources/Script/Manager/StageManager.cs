@@ -79,8 +79,11 @@ public class StageManager : Singleton<StageManager>
         // 플레이어 레이어,태그 설정
         playerC.gameObject.layer = LayerMask.NameToLayer("Player");
         playerC.tag = "Player";
-        // 플레이어 상호작용기능 추가
-        playerC.gameObject.AddComponent<OrderInteraction>();
+        // 플레이어 상호작용기능 추가 (플레이어에게 상호작용 스크립트가 없는 경우만 적용)
+        if(playerC.GetComponent<OrderInteraction>() == null)
+        {
+            playerC.gameObject.AddComponent<OrderInteraction>();
+        }
         // InGameManager  Player 에 플레이어 등록
         InGameManager.Instance.PlayerRegist(playerC);
         // 스테이터스 설정
@@ -97,7 +100,8 @@ public class StageManager : Singleton<StageManager>
         // 플레이어를 바라보는 VirtualCam 생성
         ResourceUtil.InsertPrefabs(Define.CameraPath.playerVirtualCamPath);
 
-        // 만약 워프를 탔다면 이동후 저장 TODO
+        // 룬 드랍
+        Rune.RuneDrop();
     }
 
     /// <summary>
