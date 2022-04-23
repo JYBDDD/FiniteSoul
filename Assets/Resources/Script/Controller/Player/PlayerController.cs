@@ -24,8 +24,7 @@ public class PlayerController : MoveableObject
     // 플레이어가 땅에 닿아있는지 체크
     bool IsGround = false;
 
-    // 플레이어 무기의 콜라이더 (Attack 애니메이션 재생시, 해당 애니메이션에서 자체적으로 On/Off 전환)
-    [SerializeField]
+    [SerializeField, Tooltip("플레이어 무기의 콜라이더 (Attack 애니메이션 재생시, 해당 애니메이션에서 자체적으로 On/Off 전환)")]
     private Collider[] playerAtkColl;
 
     /// <summary>
@@ -90,8 +89,12 @@ public class PlayerController : MoveableObject
 
     protected void OnDisable()
     {
-        InputManager.Instance.KeyAction -= Move;
-        InputManager.Instance.KeyAction -= Jump;
+        // 오류 방지
+        if(playerData.currentHp <= 0)
+        {
+            InputManager.Instance.KeyAction -= Move;
+            InputManager.Instance.KeyAction -= Jump;
+        }
     }
 
     /// <summary>
@@ -216,6 +219,11 @@ public class PlayerController : MoveableObject
 
     protected virtual void RunningState()
     {
+        if(playerData.currentHp <= 0)
+        {
+            FSM.ChangeState(Define.State.Die, DieState);
+            return;
+        }
         if (Input.GetKey(KeyCode.Space) && !anim.GetBool("Evasion") && !Input.GetKey(KeyCode.S))     // Evasion
         {
             anim.SetBool("Evasion", true);
@@ -362,7 +370,7 @@ public class PlayerController : MoveableObject
     protected virtual void DieState()
     {
         NotToMove = false;
-        //// Die 애니메이션 출력 시키기... TODO
+        anim.SetTrigger("DeathTrigger");
     }
 
     #region 캐릭터 움직임 구현부

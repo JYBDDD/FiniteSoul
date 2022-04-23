@@ -9,10 +9,7 @@ using UnityEngine.UI;
 /// </summary>
 public class EquipUI : MonoBehaviour
 {
-    /// <summary>
-    /// 아이템 슬롯들을 들고있는 리스트
-    /// </summary>
-    [SerializeField]
+    [SerializeField,Tooltip("아이템 슬롯들을 들고있는 리스트")]
     public List<EquipSlot> equipSlots = new List<EquipSlot>();
 
     /// <summary>

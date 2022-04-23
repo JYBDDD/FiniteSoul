@@ -10,10 +10,7 @@ public class StageManager : Singleton<StageManager>
     // 해당 스테이지 데이터
     public static StageData stageData;
 
-    /// <summary>
-    /// 생성할 몬스터, 생성할 위치, 스테이지인덱스 값을 가지는 ScriptableObject 
-    /// </summary>
-    [SerializeField]
+    [SerializeField, Tooltip("생성할 몬스터, 생성할 위치, 스테이지인덱스 값을 가지는 ScriptableObject ")]
     public ScriptablePickUp MonsterSpawnsDoc;
 
     /// <summary>
@@ -91,6 +88,9 @@ public class StageManager : Singleton<StageManager>
 
         // UI Stat 설정
         StatUI.playerData = playerC.playerData;
+        // UI Target 설정 초기화
+        TargetMonsterUI.targetMonsterC = null;
+        TargetMonsterUI.TargetUIState = Define.UIDraw.Inactive;
 
         // 메인카메라 생성
         ResourceUtil.InsertPrefabs(Define.CameraPath.mainCamPath);

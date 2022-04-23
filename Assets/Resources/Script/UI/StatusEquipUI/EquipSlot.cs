@@ -8,10 +8,7 @@ using UnityEngine.UI;
 /// </summary>
 public class EquipSlot : MonoBehaviour
 {
-    /// <summary>
-    /// 해당 슬롯에 담을수 있는 아이템 타입
-    /// </summary>
-    [SerializeField]
+    [SerializeField, Tooltip("해당 슬롯에 담을수 있는 아이템 타입")]
     public string AbleToItemtype;
 
     /// <summary>

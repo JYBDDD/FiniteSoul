@@ -24,7 +24,7 @@ public class MonsterController : MoveableObject
     // 몬스터의 타겟
     protected GameObject target = null;
 
-    [SerializeField]
+    [SerializeField,Tooltip("공격 콜라이더 -> AttackController 내장")]
     private List<Collider> atkCollider = new List<Collider>();
 
 
@@ -62,6 +62,8 @@ public class MonsterController : MoveableObject
         anim.SetBool("Die", false);
 
         FSM.ChangeState(FSM.State, IdleState, false);
+
+        coll.enabled = true;
     }
 
     public override void InsertComponent()
@@ -272,7 +274,7 @@ public class MonsterController : MoveableObject
             // 공격상태일때 실행
             while (true)
             {
-                // 공격상태가 해제되었을때, RandA값(2개 공격 애니메이션) 재설정
+                // 공격상태가 해제되었을때, 실행
                 if (!anim.GetBool("Attack"))
                 {
                     anim.SetFloat("RandA", 0);
@@ -313,6 +315,7 @@ public class MonsterController : MoveableObject
     {
         // 경로 초기화
         agent.ResetPath();
+        coll.enabled = false;
 
         anim.SetBool("Die", true);
     }

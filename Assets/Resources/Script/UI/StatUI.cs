@@ -8,20 +8,20 @@ using UnityEngine.UI;
 /// </summary>
 public class StatUI : MonoBehaviour
 {
-    [SerializeField]
-    Image hp;                   // 체력 이미지
-    [SerializeField]
-    RectTransform hpBar;        // 체력 이미지의 부모 Rect
+    [SerializeField,Tooltip("체력 이미지")]
+    Image hp;   
+    [SerializeField, Tooltip("체력 이미지의 부모 Rect")]
+    RectTransform hpBar;
 
-    [SerializeField]
-    Image mp;                   // 마나 이미지
-    [SerializeField]
-    RectTransform mpBar;        // 마나 이미지의 부모 Rect
+    [SerializeField, Tooltip("마나 이미지")]
+    Image mp;   
+    [SerializeField, Tooltip("마나 이미지의 부모 Rect")]
+    RectTransform mpBar;  
 
-    [SerializeField]
-    Image stamina;              // 스테미너 이미지
-    [SerializeField]
-    RectTransform staminaBar;   // 스테미너 이미지의 부모 Rect
+    [SerializeField, Tooltip("스테미너 이미지")]
+    Image stamina;   
+    [SerializeField, Tooltip("스테미너 이미지의 부모 Rect")]
+    RectTransform staminaBar; 
 
     // 변경후 데이터
     public static UsePlayerData playerData;

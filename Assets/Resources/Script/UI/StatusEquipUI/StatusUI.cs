@@ -11,58 +11,45 @@ using UnityEngine.UI;
 public class StatusUI : MonoBehaviour
 {
     #region TextMeshPro 변수
-    // 레벨
-    [SerializeField]
+    [SerializeField,Tooltip("레벨")]
     TextMeshProUGUI lvText;
 
-    // 소지룬
-    [SerializeField]
+    [SerializeField, Tooltip("소지룬")]
     TextMeshProUGUI handRuneText;
 
-    // 필요룬
-    [SerializeField]
+    [SerializeField, Tooltip("필요룬")]
     TextMeshProUGUI maxRuneText;
 
-    // (현재체력 / 최대체력)
-    [SerializeField]
+    [SerializeField, Tooltip("(현재체력 / 최대체력)")]
     TextMeshProUGUI hpText;
 
-    // 공격력
-    [SerializeField]
+    [SerializeField, Tooltip("공격력")]
     TextMeshProUGUI atkText;
 
-    // 방어력
-    [SerializeField]
+    [SerializeField, Tooltip("방어력")]
     TextMeshProUGUI defText;
     #endregion
 
     #region 버튼 필드 직렬화 변수
-    // 체력 상승 버튼
-    [SerializeField]
+    [SerializeField, Tooltip("체력 상승 버튼")]
     Button hpUpButton;
 
-    // 체력 빼기 버튼
-    [SerializeField]
+    [SerializeField, Tooltip("체력 빼기 버튼")]
     Button hpDownButton;
 
-    // 공격력 상승 버튼
-    [SerializeField]
+    [SerializeField, Tooltip("공격력 상승 버튼")]
     Button atkUpButton;
 
-    // 공격력 빼기 버튼
-    [SerializeField]
+    [SerializeField, Tooltip("공격력 빼기 버튼")]
     Button atkDownButton;
 
-    // 방어력 상승 버튼
-    [SerializeField]
+    [SerializeField, Tooltip("방어력 상승 버튼")]
     Button defUpButton;
 
-    // 방어력 빼기 버튼
-    [SerializeField]
+    [SerializeField, Tooltip("방어력 빼기 버튼")]
     Button defDownButton;
 
-    // 변경사항 적용 버튼
-    [SerializeField]
+    [SerializeField, Tooltip("변경사항 적용 버튼")]
     Button applySetButton;
     #endregion
 

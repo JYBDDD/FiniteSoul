@@ -26,11 +26,11 @@ public class TargetMonsterUI : MonoBehaviour
 
     private float monsterOriginHp;
 
-    [SerializeField]
-    TextMeshProUGUI monsterName;    // 타깃 몬스터 이름
+    [SerializeField,Tooltip("타깃 몬스터 이름")]
+    TextMeshProUGUI monsterName;
 
-    [SerializeField]
-    Image monsterHp;                // 타깃 몬스터 체력
+    [SerializeField, Tooltip("타깃 몬스터 체력")]
+    Image monsterHp;  
 
     CanvasGroup targetCanvasGroup;
 

@@ -163,10 +163,8 @@ public class StartSceneAdjust : MonoBehaviour
     /// </summary>
     public void ExitButtonSet()
     {
-        // TODO
-        // "게임을 종료하시겠습니까?" 라는 텍스트를 갖는 윈도우(자식으로 "Yes" 버튼 , "NO" 버튼)를 출력
-        // 위의 해당 윈도우는 ExitButton 이 자식으로 SetActive 상태로 들고 있으며, ExitButton 클릭시 윈도우 SetActive(true) 로 변경
-        // "Yes" 버튼 클릭시 게임 종료, "No" 버튼 클릭시 해당 윈도우 SetActive(false)
+        // 게임 종료
+        Application.Quit();
     }
 
     #region 시작시 화면 셋팅 메서드

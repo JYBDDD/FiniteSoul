@@ -12,16 +12,10 @@ public class BelongingsUI : MonoBehaviour
 {
     // 깃허브 4.6.4 에 연동해서 작성할것 적어놓음 TODO
 
-    /// <summary>
-    /// 소비 아이템 이름
-    /// </summary>
-    [SerializeField]
+    [SerializeField,Tooltip("소비 아이템 이름")]
     private TextMeshProUGUI consumptionText;
 
-    /// <summary>
-    /// 소지품창의 데이터를 가지고있는 리스트
-    /// </summary>
-    [SerializeField]
+    [SerializeField, Tooltip("소지품창의 데이터를 가지고있는 리스트")]
     public List<EquipSlot> belongingsList = new List<EquipSlot>();
 
     /// <summary>

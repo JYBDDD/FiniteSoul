@@ -8,17 +8,17 @@ public class LoadingSceneAdjust : MonoBehaviour
 {
     public static string nextSceneName;
 
-    [SerializeField]
-    Image loadingProgress;      // 로딩바
+    [SerializeField,Tooltip("로딩바")]
+    Image loadingProgress;  
 
-    [SerializeField]
-    Image loadingBackProgress;  // 로딩 배경 이미지
+    [SerializeField, Tooltip("로딩 배경 이미지")]
+    Image loadingBackProgress;
 
-    [SerializeField]
-    Image worldImg;             // 배경 이미지
+    [SerializeField, Tooltip("배경 이미지")]
+    Image worldImg; 
 
-    [SerializeField]
-    Text loadingText;           // 로딩 진행 텍스트
+    [SerializeField, Tooltip("로딩 진행 텍스트")]
+    Text loadingText; 
 
     private void Start()
     {

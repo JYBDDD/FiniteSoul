@@ -8,10 +8,7 @@ using UnityEngine;
 public class StatEquipWindowUI : MonoBehaviour
 {
     #region 2번째 캔버스 그룹 조정 변수
-    /// <summary>
-    /// 스텟+장비창 활성화시 기존의 모든 UI를 Alpha 0으로 만들고 스텟+장비창만 출력시키기위한 캔버스 그룹
-    /// </summary>
-    [SerializeField]
+    [SerializeField,Tooltip("스텟+장비창 활성화시 기존의 모든 UI를 Alpha 0으로 만들고 스텟+장비창만 출력시키기위한 캔버스 그룹")]
     CanvasGroup Number2CanvasGroup;
 
     /// <summary>

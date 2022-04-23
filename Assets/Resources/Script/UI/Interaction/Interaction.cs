@@ -9,16 +9,10 @@ using UnityEngine.UI;
 /// </summary>
 public class Interaction : MonoBehaviour
 {
-    /// <summary>
-    /// 상호작용할 내용    / -> Save, Shop
-    /// </summary>
-    [SerializeField]
+    [SerializeField, Tooltip("상호작용할 내용")]
     public Define.InteractionTarget interactionTarget;
 
-    /// <summary>
-    /// 상호작용 텍스트
-    /// </summary>
-    [SerializeField]
+    [SerializeField,Tooltip("상호작용 텍스트")]
     public string interactionText;
 
     private void OnTriggerEnter(Collider other)
