@@ -51,8 +51,8 @@ public class SlotGenerator : MonoBehaviour
                 }
             }
 
-            // 상점 슬롯 15개를 만들어 리스트에 삽입
-            for (int i = 0; i < 15; ++i)
+            // 상점 슬롯 12개를 만들어 리스트에 삽입
+            for (int i = 0; i < 12; ++i)
             {
                 // 상점 슬롯 생성
                 GameObject shopObj = ResourceUtil.InsertPrefabs(Define.SlotUIPath.shopSlotPath);

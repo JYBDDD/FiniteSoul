@@ -44,7 +44,7 @@
     "currentHandCount": "1",
     "dropPer": "20",
     "salePrice": "100",
-    "description": "체력을 100 회복가능한 물약이다. \\n 오남용은 신체에 부담이 간다",
+    "description": "체력을 100 회복가능한 물약이다. 오남용은 신체에 부담이 간다",
     "resourcePath": "Art/Textures/UI/Item/HpPotion"
   },
   {
@@ -56,7 +56,7 @@
     "currentHandCount": "1",
     "dropPer": "20",
     "salePrice": "100",
-    "description": "마나를 50 회복가능한 물약이다 \\n 건강에 좋은 약초로 만든 허브차이다.",
+    "description": "마나를 50 회복가능한 물약이다. 건강에 좋은 약초로 만든 허브차이다.",
     "resourcePath": "Art/Textures/UI/Item/ManaPotion"
   },
   {
@@ -92,7 +92,7 @@
     "currentHandCount": "1",
     "dropPer": "60",
     "salePrice": "50",
-    "description": "길가에 많이 자라있는 버섯이다. \\n 독이 들어있다.",
+    "description": "길가에 많이 자라있는 버섯이다. 독이 들어있다.",
     "resourcePath": "Art/Textures/UI/Item/Mushroom"
   }
 ]

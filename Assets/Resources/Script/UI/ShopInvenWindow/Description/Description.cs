@@ -15,6 +15,9 @@ public class Description : MonoBehaviour
     [SerializeField,Tooltip("아이템 이미지")]
     Image itemImg;
 
+    [SerializeField, Tooltip("아이템 이름")]
+    TextMeshProUGUI itemName;
+
     [SerializeField,Tooltip("아이템 소지 개수 / 인벤토리 슬롯을 RayCast했을때만 실행")]
     TextMeshProUGUI itemBelongingsCount;
 
@@ -26,17 +29,19 @@ public class Description : MonoBehaviour
     /// <summary>
     /// 임시로 아이템 데이터를 가지고있을 변수
     /// </summary>
-    public static UseItemData temporaryItemData = new UseItemData();
+    UseItemData temporaryItemData = null;
 
-
-
-    // 다만 아이템 소지 개수는 인벤슬롯에 RayCast 했을때만 보여준다   TODO     ////////////////////////////////////////////
 
     /// <summary>
     /// 설명박스 데이터 셋팅
     /// </summary>
     public void DescriptionDataSetting(UseItemData itemData)
     {
+        DescriptionAlphaOne();
+
+        temporaryItemData = new UseItemData(itemData);
+
+        itemName.text = $"{itemData.name}";
         description.text = $"{itemData.description}";
         itemImg.sprite = Resources.Load<Sprite>(itemData.resourcePath);
 
@@ -45,21 +50,32 @@ public class Description : MonoBehaviour
     }
 
     /// <summary>
+    /// 넘겨줄 데이터값이 Null일시 실행시킬 메서드 (데이터 초기화)
+    /// </summary>
+    public void DescriptionDataNull()
+    {
+        temporaryItemData = null;
+
+        DescriptionAlphaZero();
+    }
+
+    /// <summary>
     /// 셋팅할 아이템정보가 존재한다면 실행
     /// </summary>
-    public void DescriptionAlphaOne()
+    private void DescriptionAlphaOne()
     {
-        AlphaSet(description.color, 1);
-        AlphaSet(itemImg.color, 1);
-        AlphaSet(itemBelongingsCount.color, 1);
-        AlphaSet(backImg.color, 1);
-        AlphaSet(backTitle.color, 1);
+        description.color = AlphaSet(description.color, 1);
+        itemImg.color = AlphaSet(itemImg.color, 1);
+        itemBelongingsCount.color = AlphaSet(itemBelongingsCount.color, 1);
+        backImg.color = AlphaSet(backImg.color, 1);
+        backTitle.color = AlphaSet(backTitle.color, 1);
+        itemName.color =  AlphaSet(itemName.color, 1);
     }
 
     /// <summary>
     /// 셋팅할 아이템정보가 존재하지 않는다면 실행
     /// </summary>
-    public void DescriptionAlphaZero()
+    private void DescriptionAlphaZero()
     {
         StartCoroutine(AlhpaZero());
 
@@ -77,6 +93,7 @@ public class Description : MonoBehaviour
                 itemBelongingsCount.color = Color.Lerp(itemBelongingsCount.color, AlphaSet(itemBelongingsCount.color, 0), time / 2);
                 backImg.color = Color.Lerp(backImg.color, AlphaSet(backImg.color, 0), time / 2);
                 backTitle.color = Color.Lerp(backTitle.color, AlphaSet(backTitle.color, 0), time / 2);
+                itemName.color = Color.Lerp(itemName.color, AlphaSet(itemName.color, 0), time / 2);
 
                 yield return null;
             }
@@ -108,9 +125,12 @@ public class Description : MonoBehaviour
         for(int i =0; i < inven.Count; ++i)
         {
             // 인벤토리에 있는 아이템 인덱스와 마우스 위치에 있는 아이템 인덱스가 같다면 값을 더한다
-            if(inven[i].itemData.index == temporaryItemData.index)
+            if(inven[i].itemData != null)
             {
-                thisCount += inven[i].itemData.currentHandCount;
+                if (inven[i].itemData.index == temporaryItemData?.index)
+                {
+                    thisCount += inven[i].itemData.currentHandCount;
+                }
             }
         }
 

@@ -2644,7 +2644,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 134
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f7153262e64e4954b8ea6b7366b12df6, type: 2}
   m_sharedMaterial: {fileID: 9106749714577531726, guid: f7153262e64e4954b8ea6b7366b12df6, type: 2}
@@ -4426,7 +4426,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 11111111111111111111111111111111111111111111
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f7153262e64e4954b8ea6b7366b12df6, type: 2}
   m_sharedMaterial: {fileID: 9106749714577531726, guid: f7153262e64e4954b8ea6b7366b12df6, type: 2}
@@ -5131,7 +5131,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 7a39d27cb62eb304e93e03cb7ef8304f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: cda5e9796a0ff964d8116a88457e0481, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -13724,7 +13724,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Item Name
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f7153262e64e4954b8ea6b7366b12df6, type: 2}
   m_sharedMaterial: {fileID: 9106749714577531726, guid: f7153262e64e4954b8ea6b7366b12df6, type: 2}
@@ -14444,6 +14444,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ce6e7a40919f224d954799054756373, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  descriptionBox: {fileID: 1761802796}
 --- !u!225 &1734922932
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -14839,6 +14840,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   description: {fileID: 432921275}
   itemImg: {fileID: 483408440}
+  itemName: {fileID: 1712922492}
   itemBelongingsCount: {fileID: 289098572}
   backImg: {fileID: 81921354}
   backTitle: {fileID: 1677484422}
@@ -16206,7 +16208,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 40
+    m_Left: 50
     m_Right: 0
     m_Top: 150
     m_Bottom: 10
@@ -16214,7 +16216,7 @@ MonoBehaviour:
   m_StartCorner: 0
   m_StartAxis: 0
   m_CellSize: {x: 120, y: 150}
-  m_Spacing: {x: 5, y: 50}
+  m_Spacing: {x: 40, y: 50}
   m_Constraint: 0
   m_ConstraintCount: 7
 --- !u!114 &2025506010

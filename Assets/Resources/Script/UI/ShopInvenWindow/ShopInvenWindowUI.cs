@@ -40,11 +40,18 @@ public class ShopInvenWindowUI : MonoBehaviour,IPointerEnterHandler
     /// 임시로 아이템 데이터를 가지고있을 변수
     /// </summary>
     UseItemData temporaryItemData = null;
+
+    /// <summary>
+    /// 설명 박스
+    /// </summary>
+    [SerializeField]
+    Description descriptionBox;
     #endregion
 
     private void Start()
     {
         shopInvenCanvas = GetComponent<CanvasGroup>();
+        descriptionBox.DescriptionDataNull();
     }
 
     private void Update()
@@ -72,14 +79,8 @@ public class ShopInvenWindowUI : MonoBehaviour,IPointerEnterHandler
                 temporaryItemData = new UseItemData();
                 temporaryItemData = resultSlot.itemData;
 
-                // 설명박스 값 설정 TODO
-                //Description.temporaryItemData =                           ////////////////////////////// 여기서부터
-            }
-
-            // 아이템값이 존재하지 않는다면 실행
-            if(resultSlot.itemData == null)
-            {
-                // 설명박스 값 초기화 TODO
+                // 설명박스 값 설정
+                descriptionBox.DescriptionDataSetting(resultSlot.itemData);
             }
         }
 
@@ -87,7 +88,17 @@ public class ShopInvenWindowUI : MonoBehaviour,IPointerEnterHandler
         // 마우스 위치값이 상점 슬롯에 들어왔을시 실행
         if(result.gameObject.GetComponent<ShopSlot>())
         {
+            var resultSlot = result.gameObject.GetComponent<ShopSlot>();
 
+            // 해당 아이템 값이 존재한다면 실행
+            if (resultSlot.itemData != null)
+            {
+                temporaryItemData = new UseItemData();
+                temporaryItemData = resultSlot.itemData;
+
+                // 설명박스 값 설정
+                descriptionBox.DescriptionDataSetting(resultSlot.itemData);
+            }
         }
     }
 
