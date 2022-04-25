@@ -215,7 +215,12 @@ public static class Define
         /// <summary>
         /// 인벤토리 슬롯 경로  (Resources.Load)
         /// </summary>
-        public const string invenSlotPath = "Prefabs/UI/InvenSlot/InvenSlot";
+        public const string invenSlotPath = "Prefabs/UI/Slot/InvenSlot";
+
+        /// <summary>
+        /// 상점 슬롯 경로 (Resources.Load)
+        /// </summary>
+        public const string shopSlotPath = "Prefabs/UI/Slot/ShopSlot";
     }
 
 }

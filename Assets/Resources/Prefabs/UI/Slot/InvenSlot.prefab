@@ -102,6 +102,7 @@ MonoBehaviour:
     description: 
     resourcePath: 
     currentHandCount: 0
+  itemImg: {fileID: 3689720558407561653}
 --- !u!1 &3140804399544426266
 GameObject:
   m_ObjectHideFlags: 0

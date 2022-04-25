@@ -30,9 +30,9 @@ public class ItemData : StaticData
     public Define.ItemMixEnum.ItemHandedType handed;
 
     /// <summary>
-    /// 최대 소지가능한 개수 (인벤토리)
+    /// 현재 소지 개수
     /// </summary>
-    public int maxHandCount;
+    public int currentHandCount;
 
     /// <summary>
     /// 드랍 확률

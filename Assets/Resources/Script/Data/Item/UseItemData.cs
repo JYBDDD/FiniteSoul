@@ -6,15 +6,6 @@ using UnityEngine;
 [Serializable]
 public class UseItemData : ItemData
 {
-    /// <summary>
-    /// 현재 소지 개수
-    /// </summary>
-    public int currentHandCount;
-
-
-
-
-
     public UseItemData() { }
 
     public UseItemData(UseItemData useItem)
@@ -24,7 +15,7 @@ public class UseItemData : ItemData
         jobIndex = useItem.jobIndex;
         itemType = useItem.itemType;
         handed = useItem.handed;
-        maxHandCount = useItem.maxHandCount;
+        currentHandCount = useItem.currentHandCount;
         dropPer = useItem.dropPer;
         salePrice = useItem.salePrice;
         description = useItem.description;
