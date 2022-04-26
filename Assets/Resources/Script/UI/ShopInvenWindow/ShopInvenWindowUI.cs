@@ -39,7 +39,7 @@ public class ShopInvenWindowUI : MonoBehaviour,IPointerEnterHandler
     /// <summary>
     /// 임시로 아이템 데이터를 가지고있을 변수
     /// </summary>
-    UseItemData temporaryItemData = null;
+    UseItemData temporaryItemData = new UseItemData();
 
     /// <summary>
     /// 설명 박스
@@ -74,9 +74,8 @@ public class ShopInvenWindowUI : MonoBehaviour,IPointerEnterHandler
             var resultSlot = result.gameObject.GetComponent<InvenSlot>();
 
             // 해당 아이템 값이 존재한다면 실행
-            if(resultSlot.itemData != null)
+            if(resultSlot.itemData != null && resultSlot.itemData.index > 1000)
             {
-                temporaryItemData = new UseItemData();
                 temporaryItemData = resultSlot.itemData;
 
                 // 설명박스 값 설정
@@ -91,9 +90,8 @@ public class ShopInvenWindowUI : MonoBehaviour,IPointerEnterHandler
             var resultSlot = result.gameObject.GetComponent<ShopSlot>();
 
             // 해당 아이템 값이 존재한다면 실행
-            if (resultSlot.itemData != null)
-            {
-                temporaryItemData = new UseItemData();
+            if (resultSlot.itemData != null && resultSlot.itemData.index > 1000)
+            {;
                 temporaryItemData = resultSlot.itemData;
 
                 // 설명박스 값 설정

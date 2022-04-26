@@ -54,7 +54,8 @@ public class Description : MonoBehaviour
     /// </summary>
     public void DescriptionDataNull()
     {
-        temporaryItemData = null;
+        // 인덱스값을 사용하지 않는 값으로 설정
+        temporaryItemData.index = 1000;
 
         DescriptionAlphaZero();
     }
