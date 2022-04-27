@@ -77,6 +77,9 @@ public class OrderInteraction : MonoBehaviour
                 var runeEffect = ObjectPoolManager.Instance.GetPool<ParticleChild>(Define.ParticleEffectPath.PlayerParticle.runeEffect, Define.CharacterType.Particle);
                 runeEffect.transform.position = other.gameObject.transform.position + Vector3.up;
             }
+
+            // 상점과 상호작용하려 한다면 실행   TODO
+
         }
 
     }
