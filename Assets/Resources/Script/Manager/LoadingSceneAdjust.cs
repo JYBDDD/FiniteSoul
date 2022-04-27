@@ -106,7 +106,7 @@ public class LoadingSceneAdjust : MonoBehaviour
                 StageManager.Instance.MonsterSpawn();
                 // UIManager 드로잉 서서히 활성화
                 UIManager.UIDrawState = Define.UIDraw.SlowlyActivation;
-                StatEquipWindowUI.Num2CanvasState = Define.UIDraw.SlowlyActivation;
+                UIManager.Num2CanvasState = Define.UIDraw.SlowlyActivation;
             };
 
             yield break;

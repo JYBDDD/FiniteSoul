@@ -29,6 +29,16 @@ public class InteractionUI : MonoBehaviour
     /// </summary>
     public static string interactionText;
 
+    /// <summary>
+    /// 상호작용 UI의 RectTransform
+    /// </summary>
+    RectTransform interactionRect;
+
+    private void Start()
+    {
+        interactionRect = gameObject.GetComponent<RectTransform>();
+    }
+
     private void Update()
     {
         UIManager.Instance.SwitchWindowOption(ref InteractionUIState, ref interactionOriginUIState, interactionCanvasGroup,TextChange);
@@ -40,5 +50,23 @@ public class InteractionUI : MonoBehaviour
     private void TextChange()
     {
         interactionTMPG.text = interactionText;
+
+        // 글자가 8글자를 넘어갈 경우 한글자당 gameObject.Rectransform = left -10 , right - 20
+        int textLength = -10;
+        if(interactionTMPG.text?.Length > 8)
+        {
+            textLength *= interactionTMPG.text.Length - 7;
+
+            interactionRect.offsetMin = new Vector2(-200 + textLength, 0);
+            interactionRect.offsetMax = new Vector2(200 + (textLength * 2), 0);
+            interactionRect.sizeDelta = new Vector2(400 + (-textLength * 2) + (-textLength), 90);       // 여기 부분 수정중.. TODO
+        }
+        else
+        {
+            interactionRect.offsetMin = new Vector2(-200, 0);
+            interactionRect.offsetMax = new Vector2(200, 0);
+            interactionRect.sizeDelta = new Vector2(400, 90);
+        }
+
     }
 }

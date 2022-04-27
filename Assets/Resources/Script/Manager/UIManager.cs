@@ -8,6 +8,21 @@ using UnityEngine;
 /// </summary>
 public class UIManager : Singleton<UIManager>
 {
+    #region 2번째 캔버스 그룹 조정 변수
+    [SerializeField, Tooltip("스텟+장비창 활성화시 기존의 모든 UI를 Alpha 0으로 만들고 스텟+장비창만 출력시키기위한 캔버스 그룹")]
+    public static CanvasGroup Number2CanvasGroup;
+
+    /// <summary>
+    /// 2번째 캔버스그룹을 On/Off할 상태
+    /// </summary>
+    public static Define.UIDraw Num2CanvasState = Define.UIDraw.Activation;
+
+    /// <summary>
+    /// 2번째 캔버스그룹 변경전 상태
+    /// </summary>
+    public static Define.UIDraw Num2OriginState = Define.UIDraw.Inactive;
+    #endregion
+
     /// <summary>
     /// UI 총괄 상태
     /// </summary>
@@ -23,9 +38,11 @@ public class UIManager : Singleton<UIManager>
     /// </summary>
     private CanvasGroup canvasGroup;
 
-    private void OnEnable()
+
+    private void Start()
     {
         canvasGroup = GetComponent<CanvasGroup>();
+        Number2CanvasGroup = gameObject.transform.GetChild(0).GetComponent<CanvasGroup>();
     }
 
     private void Update()

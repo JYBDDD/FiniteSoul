@@ -114,7 +114,7 @@ public class DyingWindowUI : MonoBehaviour
     public static void DyingWindowStart()
     {
         startWindow = true;
-        StatEquipWindowUI.Num2CanvasState = Define.UIDraw.SlowlyInactive;
+        UIManager.Num2CanvasState = Define.UIDraw.SlowlyInactive;
     }
 
     /// <summary>

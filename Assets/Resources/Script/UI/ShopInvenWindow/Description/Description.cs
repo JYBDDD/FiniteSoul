@@ -29,7 +29,7 @@ public class Description : MonoBehaviour
     /// <summary>
     /// 임시로 아이템 데이터를 가지고있을 변수
     /// </summary>
-    UseItemData temporaryItemData = null;
+    UseItemData temporaryItemData = new UseItemData();
 
 
     /// <summary>

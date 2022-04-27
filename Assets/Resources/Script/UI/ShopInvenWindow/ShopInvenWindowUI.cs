@@ -56,7 +56,34 @@ public class ShopInvenWindowUI : MonoBehaviour,IPointerEnterHandler
 
     private void Update()
     {
-        UIManager.Instance.SwitchWindowOption(ref ShopInvenUIState, ref ShopInvenOriginState, shopInvenCanvas);
+        UIManager.Instance.SwitchWindowOption(ref ShopInvenUIState, ref ShopInvenOriginState, shopInvenCanvas,NumberTwoCanvasSetting);
+    }
+
+    /// <summary>
+    /// 2번째 캔버스 그룹과 상점+인벤토리창의 캔버스그룹을 상호 조정하는 메서드 (상점+인벤토리창의 상태가 변경될시 실행)
+    /// </summary>
+    private void NumberTwoCanvasSetting()
+    {
+        if (ShopInvenUIState != ShopInvenOriginState)
+        {
+            CanvasGroup Num2Canvas = UIManager.Number2CanvasGroup;
+
+            // 상점창이 서서히 On 상태라면
+            if (ShopInvenUIState == Define.UIDraw.SlowlyActivation)
+            {
+                // 상점+인벤토리창을 제외한 모든창을 서서히 Off
+                UIManager.Num2CanvasState = Define.UIDraw.SlowlyInactive;
+                UIManager.Instance.SwitchWindowOption(ref UIManager.Num2CanvasState, ref UIManager.Num2OriginState, Num2Canvas);
+            }
+            // 상점창이 서서히 Off 상태라면
+            if (ShopInvenUIState == Define.UIDraw.SlowlyInactive)
+            {
+                // 상점+인벤토리창을 제외한 모든창을 서서히 On
+                UIManager.Num2CanvasState = Define.UIDraw.SlowlyActivation;
+                UIManager.Instance.SwitchWindowOption(ref UIManager.Num2CanvasState, ref UIManager.Num2OriginState, Num2Canvas);
+
+            }
+        }
     }
 
     /// <summary>

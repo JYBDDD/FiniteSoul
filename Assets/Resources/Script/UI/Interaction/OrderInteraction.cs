@@ -48,7 +48,7 @@ public class OrderInteraction : MonoBehaviour
                     // 플레이어 상호작용 해제
                     playerInteractionTrue = false;
 
-                    // 스테이터스창 활성화
+                    // 스테이터스창 천천히 비활성화
                     StatEquipWindowUI.StatEquipState = Define.UIDraw.SlowlyInactive;
 
                     // 데이터 저장
@@ -78,7 +78,30 @@ public class OrderInteraction : MonoBehaviour
                 runeEffect.transform.position = other.gameObject.transform.position + Vector3.up;
             }
 
-            // 상점과 상호작용하려 한다면 실행   TODO
+            // 상점과 상호작용하려 한다면 실행
+            if(other.GetComponent<Interaction>().interactionTarget == Define.InteractionTarget.Shop && playerInteractionTrue)
+            {
+                // Esc 키를 누를시 상점창 탈출
+                if (Input.GetKey(KeyCode.Escape))
+                {
+                    // 이동 가능 지정
+                    InGameManager.Instance.Player.NotToMove = true;
+
+                    // 플레이어 상호작용 해제
+                    playerInteractionTrue = false;
+
+                    // 상점창 천천히 비활성화
+                    ShopInvenWindowUI.ShopInvenUIState = Define.UIDraw.SlowlyInactive;
+
+                    return;
+                }
+
+                // 이동 불가 지정
+                InGameManager.Instance.Player.NotToMove = false;
+
+                // 상점 + 인벤토리 창 활성화
+                ShopInvenWindowUI.ShopInvenUIState = Define.UIDraw.SlowlyActivation;
+            }
 
         }
 

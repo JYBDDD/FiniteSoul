@@ -7,20 +7,7 @@ using UnityEngine;
 /// </summary>
 public class StatEquipWindowUI : MonoBehaviour
 {
-    #region 2번째 캔버스 그룹 조정 변수
-    [SerializeField,Tooltip("스텟+장비창 활성화시 기존의 모든 UI를 Alpha 0으로 만들고 스텟+장비창만 출력시키기위한 캔버스 그룹")]
-    CanvasGroup Number2CanvasGroup;
-
-    /// <summary>
-    /// 2번째 캔버스그룹을 On/Off할 상태
-    /// </summary>
-    public static Define.UIDraw Num2CanvasState = Define.UIDraw.Activation;
-
-    /// <summary>
-    /// 2번째 캔버스그룹 변경전 상태
-    /// </summary>
-    Define.UIDraw Num2OriginState = Define.UIDraw.Inactive;
-    #endregion
+    
 
     #region 스탯+장비창 캔버스 그룹 조정 변수
     /// <summary>
@@ -42,7 +29,6 @@ public class StatEquipWindowUI : MonoBehaviour
     private void Start()
     {
         StatEquipCanvasGroup = GetComponent<CanvasGroup>();
-        StatEquipCanvasGroup.blocksRaycasts = false;     // 해당 캔버스 자식의 레이캐스트 미호출상태 전환
     }
 
     private void Update()
@@ -55,23 +41,23 @@ public class StatEquipWindowUI : MonoBehaviour
     /// </summary>
     private void NumberTwoCanvasSetting()
     {
-        if(StatEquipState != StatEquipOriginState)
+        if (StatEquipState != StatEquipOriginState)
         {
+            CanvasGroup Num2Canvas = UIManager.Number2CanvasGroup;
+
             // 스탯창이 서서히 On 상태라면
             if (StatEquipState == Define.UIDraw.SlowlyActivation)
             {
                 // 스탯 + 장비창을 제외한 모든창을 서서히 Off
-                Num2CanvasState = Define.UIDraw.SlowlyInactive;
-                UIManager.Instance.SwitchWindowOption(ref Num2CanvasState, ref Num2OriginState, Number2CanvasGroup);
-                StatEquipCanvasGroup.blocksRaycasts = false;     // 해당 캔버스 자식의 레이캐스트 미호출상태 전환
+                UIManager.Num2CanvasState = Define.UIDraw.SlowlyInactive;
+                UIManager.Instance.SwitchWindowOption(ref UIManager.Num2CanvasState, ref UIManager.Num2OriginState, Num2Canvas);
             }
             // 스탯창이 서서히 Off 상태라면
             if (StatEquipState == Define.UIDraw.SlowlyInactive)
             {
                 // 스탯 + 장비창을 제외한 모든창을 서서히 On
-                Num2CanvasState = Define.UIDraw.SlowlyActivation;
-                UIManager.Instance.SwitchWindowOption(ref Num2CanvasState, ref Num2OriginState, Number2CanvasGroup);
-                StatEquipCanvasGroup.blocksRaycasts = true;     // 해당 캔버스 자식의 레이캐스트 호출상태 전환
+                UIManager.Num2CanvasState = Define.UIDraw.SlowlyActivation;
+                UIManager.Instance.SwitchWindowOption(ref UIManager.Num2CanvasState, ref UIManager.Num2OriginState, Num2Canvas);
 
             }
         }
