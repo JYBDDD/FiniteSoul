@@ -81,7 +81,43 @@ public class ResourceUtil : MonoBehaviour
         UsePlayerData playerData = GameManager.Instance.FullData.playersData.Where(_ => _.index == playerVolatilityData.index).SingleOrDefault();
         GrowthStatData growthStatData = GameManager.Instance.FullData.growthsData.Where(_ => _.index == playerData.growthRef).SingleOrDefault();
 
+        // 인벤토리 저장 데이터 삽입
+        LoadInvenSaveFile();
+
         return new UsePlayerData(growthStatData, playerData, playerVolatilityData);
+    }
+
+    /// <summary>
+    /// 인벤토리의 저장된 데이터를 가져오는 메서드
+    /// </summary>
+    public static void LoadInvenSaveFile()
+    {
+        var textAsset = Resources.Load<TextAsset>("Document/SaveData/InvenSaveData");
+        string path = textAsset.ToString();
+
+        List<InvenSaveData> invenList = JsonConvert.DeserializeObject<List<InvenSaveData>>(path);
+
+        var fullItem = GameManager.Instance.FullData.itemsData;
+
+        // 저장된 데이터가 존재한다면 실행
+        if (invenList.Count > 0)
+        {
+            for (int i = 0; i < invenList.Count; ++i)
+            {
+                // 값이 정상값 이라면 인벤토리에 값을 삽입
+                if (invenList[i].index > 1000)
+                {
+                    // 저장된 데이터의 아이템인덱스와 전체데이터 아이템 인덱스가 같다면 가져옴
+                    UseItemData IData = fullItem.Where(_ => _.index == invenList[i].index).FirstOrDefault();
+
+                    // 아이템 이미지 및 데이터 셋팅
+                    ShopInvenWindowUI.Inventory[invenList[i].invenIndex].ImageDataSetting(IData);
+                    // 해당 인벤토리에 데이터 삽입, 갯수 설정
+                    ShopInvenWindowUI.Inventory[invenList[i].invenIndex].itemData.currentHandCount = IData.currentHandCount;
+                    
+                }
+            }
+        }
     }
 
     /// <summary>

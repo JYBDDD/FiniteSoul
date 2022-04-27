@@ -51,20 +51,16 @@ public class InteractionUI : MonoBehaviour
     {
         interactionTMPG.text = interactionText;
 
-        // 글자가 8글자를 넘어갈 경우 한글자당 gameObject.Rectransform = left -10 , right - 20
-        int textLength = -10;
+        // 글자가 8글자를 넘어갈 경우 한글자당 크기 증가
+        int textLength = 15;
         if(interactionTMPG.text?.Length > 8)
         {
             textLength *= interactionTMPG.text.Length - 7;
 
-            interactionRect.offsetMin = new Vector2(-200 + textLength, 0);
-            interactionRect.offsetMax = new Vector2(200 + (textLength * 2), 0);
-            interactionRect.sizeDelta = new Vector2(400 + (-textLength * 2) + (-textLength), 90);       // 여기 부분 수정중.. TODO
+            interactionRect.sizeDelta = new Vector2(400 + textLength, 90);
         }
         else
         {
-            interactionRect.offsetMin = new Vector2(-200, 0);
-            interactionRect.offsetMax = new Vector2(200, 0);
             interactionRect.sizeDelta = new Vector2(400, 90);
         }
 
