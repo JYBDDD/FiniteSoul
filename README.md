@@ -256,6 +256,8 @@
 1. 할 것    TODO
 
 			 6. NPC(상점) 에게 말을 걸때 G키로 상호작용을 할수있도록 만들기
+					-> 상호작용은 만들었는데 InteractionUI쪽에 텍스트 길이에 따라 이미지 길이 설정 가능하도록 만드는중 TODO
+					- 참고 : https://blog.naver.com/PostView.naver?blogId=teiwoong&logNo=221466446147&redirect=Dlog&widgetTypeCall=true&directAccess=false
 	
 				-> 인벤토리를 만든후 인벤토리 저장데이터도 만들기
 	
