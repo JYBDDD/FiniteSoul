@@ -24,13 +24,13 @@ public class ShopSlot : SlotBase
     {
         itemPrice ??= GetComponentInChildren<TextMeshProUGUI>();
 
-        if(itemData != null)
+        if(itemData?.index > 1000)
         {
             itemPrice.text = $"{itemData.salePrice}";
             ItemPriceAlphaSetting();
             ItemAlphaSet(priceImg);
         }
-        if(itemData == null)
+        if(itemData?.index <= 1000)
         {
             ItemPriceAlphaSetting();
             ItemAlphaSet(priceImg);
@@ -44,11 +44,11 @@ public class ShopSlot : SlotBase
     private void ItemPriceAlphaSetting()
     {
         var priceColor = itemPrice.color;
-        if (itemData == null)
+        if (itemData?.index <= 1000)
         {
             itemPrice.color = new Color(priceColor.r, priceColor.g, priceColor.b, 0);
         }
-        if (itemData != null)
+        if (itemData?.index > 1000)
         {
             itemPrice.color = new Color(priceColor.r, priceColor.g, priceColor.b, 255f / 255f);
         }

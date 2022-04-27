@@ -11,7 +11,7 @@ public class SlotBase : MonoBehaviour
     /// <summary>
     /// 아이템 데이터를 담아둘 변수
     /// </summary>
-    public UseItemData itemData = null;
+    public UseItemData itemData = new UseItemData();
 
     [SerializeField,Tooltip("아이템 이미지를 출력시켜줄 자식 이미지")]
     protected Image itemImg;

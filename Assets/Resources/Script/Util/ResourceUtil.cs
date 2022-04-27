@@ -211,9 +211,36 @@ public class ResourceUtil : MonoBehaviour
         // 저장 파일 위치
         var path = "Assets/Resources/Document/SaveData/SaveData.json";
 
-        // 인벤토리 저장 데이터도 만들어야함 TODO
-
         File.WriteAllText(path, JsonUtility.ToJson(playerVolatilityData, true));
+
+        // 인벤토리 데이터 저장
+        InvenSaveData();
+
+        // 데이터 베이스 새로고침
+        AssetDatabase.Refresh();
+    }
+
+    /// <summary>
+    /// 인벤토리 데이터 저장
+    /// </summary>
+    public static void InvenSaveData()
+    {
+        // 인벤 데이터 저장 위치
+        var path = "Assets/Resources/Document/SaveData/InvenSaveData.json";
+
+        var inventory = ShopInvenWindowUI.Inventory;
+        List<InvenSaveData> invenSaves = new List<InvenSaveData>();
+        for(int i = 0; i < inventory.Count;++i)
+        {
+            // 정상값이라면 데이터 삽입
+            if(inventory[i].itemData.index > 1000)
+            {
+                var data = new InvenSaveData(i, inventory[i]);
+                invenSaves.Add(data);
+            }
+        }
+
+        File.WriteAllText(path, JsonUtility.ToJson(invenSaves, true));
 
         // 데이터 베이스 새로고침
         AssetDatabase.Refresh();
@@ -224,10 +251,13 @@ public class ResourceUtil : MonoBehaviour
     /// </summary>
     public static void NewDataReturn(int characterIndex)
     {
-        // 저장 파일 위치
-        var path = "Assets/Resources/Document/SaveData/SaveData.json";
-        
-        File.WriteAllText(path, JsonUtility.ToJson(new PlayerVolatilityData(characterIndex), true));
+        // 플레이어 기본 저장 파일 위치
+        var path1 = "Assets/Resources/Document/SaveData/SaveData.json";
+        // 플레이어 인벤토리 저장 파일 위치
+        var path2 = "Assets/Resources/Document/SaveData/InvenSaveData.json";
+
+        File.WriteAllText(path1, JsonUtility.ToJson(new PlayerVolatilityData(characterIndex), true));
+        File.WriteAllText(path2, JsonUtility.ToJson(new InvenSaveData(1000), true));
 
         // 데이터 베이스 새로고침
         AssetDatabase.Refresh();

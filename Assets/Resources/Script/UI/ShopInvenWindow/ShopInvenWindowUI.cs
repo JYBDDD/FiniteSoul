@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 /// <summary>
 /// 상점과 인벤토리를 담당하는 클래스
 /// </summary>
-public class ShopInvenWindowUI : MonoBehaviour,IPointerEnterHandler
+public class ShopInvenWindowUI : MonoBehaviour,IPointerEnterHandler,IPointerClickHandler
 {
     #region UI 상태 관련 변수
     /// <summary>
@@ -41,11 +41,11 @@ public class ShopInvenWindowUI : MonoBehaviour,IPointerEnterHandler
     /// </summary>
     UseItemData temporaryItemData = new UseItemData();
 
-    /// <summary>
-    /// 설명 박스
-    /// </summary>
-    [SerializeField]
+    [SerializeField,Tooltip("설명 박스")]
     Description descriptionBox;
+
+    [SerializeField,Tooltip("구매,판매 창")]
+    SellPurchaseWindow sellPurchaseWindow;
     #endregion
 
     private void Start()
@@ -127,9 +127,37 @@ public class ShopInvenWindowUI : MonoBehaviour,IPointerEnterHandler
         }
     }
 
+    /// <summary>
+    /// 클릭한 슬롯에 아이템데이터가 정상적으로 들어가져 있다면 실행하도록 설정
+    /// </summary>
+    /// <param name="eventData"></param>
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        RaycastResult result = eventData.pointerCurrentRaycast;
+
+        // 클릭한 위치가 상점슬롯이며, 아이템값이 정상적으로 존재하는 상태라면 실행
+        if(result.gameObject.GetComponent<ShopSlot>().itemData?.index > 1000)
+        {
+            // 구매 창 출력
+            sellPurchaseWindow.gameObject.SetActive(true);
+            sellPurchaseWindow.PurchaseWindowPrint(result.gameObject.GetComponent<ShopSlot>().itemData);
 
 
-    // 해당 창이 켜질때    Num2캔버스와 스탯+장비창 캔버스를 종료  TODO
 
+        }
+
+        // 클릭한 위치가 인벤토리슬롯이며, 아이템값이 정상적을 ㅗ존재하는 상태라면 실행
+        if(result.gameObject.GetComponent<InvenSlot>().itemData?.index > 1000)
+        {
+            // 판매 창 출력
+            sellPurchaseWindow.gameObject.SetActive(true);
+            sellPurchaseWindow.SellWindowPrint(result.gameObject.GetComponent<InvenSlot>().itemData);
+        }
+    }
+
+
+    // 더블클릭시 해당 아이템데이터의 정보를 구매,판매 윈도우로 값을 넘겨줄것   TODO
+    // 인벤토리를 클릭했을 경우 판매윈도우로 전환
+    // 상점을 클릭했을 경우 구매윈도우로 전환 
 
 }
