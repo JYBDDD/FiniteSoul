@@ -21,12 +21,6 @@ public class SlotBase : MonoBehaviour
     /// </summary>
     public void ImageDataSetting(UseItemData useItemData = null)
     {
-        // 들어온 데이터값이 Null 일경우, Null로 데이터 셋팅
-        if (useItemData == null)
-        {
-            itemData = null;
-        }
-
         // 정상적인 데이터가 들어왔을경우 데이터 삽입 및 이미지 삽입
         if (useItemData != null)
         {
@@ -44,11 +38,11 @@ public class SlotBase : MonoBehaviour
     protected void ItemAlphaSet(Image setImage)
     {
         var itemColor = setImage.color;
-        if (itemData == null)
+        if (itemData?.index < 1000)
         {
             setImage.color = new Color(itemColor.r, itemColor.g, itemColor.b, 0f / 0f);
         }
-        if (itemData != null)
+        if (itemData?.index > 1000)
         {
             setImage.color = new Color(itemColor.r, itemColor.g, itemColor.b, 255f / 255f);
         }
