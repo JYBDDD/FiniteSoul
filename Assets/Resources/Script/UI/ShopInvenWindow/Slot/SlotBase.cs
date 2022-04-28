@@ -29,20 +29,20 @@ public class SlotBase : MonoBehaviour
             itemImg.sprite = Resources.Load<Sprite>(itemData.resourcePath);
         }
 
-        ItemAlphaSet(itemImg);
+        ItemAlphaSet(useItemData,itemImg);
     }
 
     /// <summary>
     /// 아이템 이미지 알파값 셋팅
     /// </summary>
-    protected void ItemAlphaSet(Image setImage)
+    protected void ItemAlphaSet(UseItemData useItemData,Image setImage)
     {
         var itemColor = setImage.color;
-        if (itemData?.index < 1000)
+        if (useItemData?.index < 1000)
         {
             setImage.color = new Color(itemColor.r, itemColor.g, itemColor.b, 0f / 0f);
         }
-        if (itemData?.index > 1000)
+        if (useItemData?.index > 1000)
         {
             setImage.color = new Color(itemColor.r, itemColor.g, itemColor.b, 255f / 255f);
         }
