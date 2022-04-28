@@ -41,6 +41,11 @@ public class ShopInvenWindowUI : MonoBehaviour,IPointerEnterHandler,IPointerClic
     /// </summary>
     UseItemData temporaryItemData = new UseItemData();
 
+    /// <summary>
+    /// 판매시 사용되는 Inventory의 해당 아이템 슬롯
+    /// </summary>
+    public static InvenSlot subtractSlot;
+
     [SerializeField,Tooltip("설명 박스")]
     Description descriptionBox;
 
@@ -52,6 +57,9 @@ public class ShopInvenWindowUI : MonoBehaviour,IPointerEnterHandler,IPointerClic
     {
         shopInvenCanvas = GetComponent<CanvasGroup>();
         descriptionBox.DescriptionDataNull();
+
+        // 구매 판매창 첫설정 비활성화로 조정
+        sellPurchaseWindow.gameObject.SetActive(false);
     }
 
     private void Update()
@@ -136,7 +144,7 @@ public class ShopInvenWindowUI : MonoBehaviour,IPointerEnterHandler,IPointerClic
         RaycastResult result = eventData.pointerCurrentRaycast;
 
         // 클릭한 위치가 상점슬롯이며, 아이템값이 정상적으로 존재하는 상태라면 실행
-        if(result.gameObject.GetComponent<ShopSlot>().itemData?.index > 1000)
+        if(result.gameObject.GetComponent<ShopSlot>()?.itemData?.index > 1000)
         {
             // 구매 창 출력
             sellPurchaseWindow.gameObject.SetActive(true);
@@ -144,31 +152,90 @@ public class ShopInvenWindowUI : MonoBehaviour,IPointerEnterHandler,IPointerClic
         }
 
         // 클릭한 위치가 인벤토리슬롯이며, 아이템값이 정상적을 존재하는 상태라면 실행
-        if(result.gameObject.GetComponent<InvenSlot>().itemData?.index > 1000)
+        if(result.gameObject.GetComponent<InvenSlot>()?.itemData?.index > 1000)
         {
             // 판매 창 출력
             sellPurchaseWindow.gameObject.SetActive(true);
             sellPurchaseWindow.SellWindowPrint(result.gameObject.GetComponent<InvenSlot>().itemData);
+
+            // 판매 시 사용되는 인벤토리 임시 변수 값 할당
+            subtractSlot = result.gameObject.GetComponent<InvenSlot>();
         }
     }
 
     /// <summary>
-    /// 인벤토리에 아이템을 셋팅하는 데이터를 설정하는 메서드 (호출용)
+    /// 매개변수에 넣은 아이템이 인벤토리에 존재하는지 찾고 존재한다면 값을 삽입, 
+    /// 아니라면 가장 앞의 빈 슬롯을 반환 -> (값을 모두 적용된 상태로 반환)
     /// </summary>
     /// <param name="useItemData"></param>
-    /// <param name="itemCount"></param>
-    public static void InventoryItemSetting(UseItemData useItemData)
+    /// <returns></returns>
+    public static void SearchAddtionData(UseItemData useItemData)
     {
-        // 아이템 타입이 장비라면 실행
-        if(useItemData.itemType == Define.ItemMixEnum.ItemType.Equipment)
+        // 최대 삽입후 남은 갯수
+        int remainCount = 0;
+        // 최대 개수를 초과했을시 사용되는 임시 박스
+        var changeItemData = new UseItemData();
+
+        InvenSlot blankSlot = new InvenSlot();
+        bool OneCheck = false;
+
+        for (int i = 0; i < Inventory.Count; ++i)
         {
+            // 인벤토리에 아이템 인덱스가 같은 값이 있고 장비아이템이 아니라면, 
+            if(useItemData.index == Inventory[i].itemData.index && useItemData.itemType != Define.ItemMixEnum.ItemType.Equipment)
+            {
+                //보유개수가 99개를 넘었다면 실행
+                if (useItemData.currentHandCount + Inventory[i].itemData.currentHandCount > 99)
+                {
+                    // 최대 개수를 뺀 남은 개수
+                    remainCount = (useItemData.currentHandCount + Inventory[i].itemData.currentHandCount) - 99;
 
+                    changeItemData = new UseItemData(useItemData);
+                    changeItemData.currentHandCount = 99;
+                    Inventory[i].ItemCountSetting(changeItemData);
+                }
+                //보유개수가 99개를 넘지않았다면
+                else
+                {
+                    // 해당 인벤토리 슬롯에 소지 개수 상승
+                    Inventory[i].ItemCountSetting(useItemData);
+                }
+            }
+
+            // 남은 갯수가 존재한다면 인벤토리슬롯이 비어있는 가장 앞의 슬롯값 삽입
+            if (remainCount > 0 && Inventory[i].itemData?.index <= 1000)
+            {
+                // 남은 값까지 모두 삽입후 remainCount = 0 으로 지정
+                changeItemData.currentHandCount = remainCount;
+                Inventory[i].ImageDataSetting(changeItemData);
+                Inventory[i].ItemCountSetting(changeItemData);
+                remainCount = 0;
+            }
+
+            // 인벤토리슬롯이 비어있는 가장 앞의 슬롯값 삽입
+            if (remainCount <= 0 && Inventory[i].itemData?.index <= 1000 && !OneCheck)
+            {
+                OneCheck = true;
+                blankSlot = Inventory[i];
+            }
         }
-        else
+
+        // 일치하는 값이 없다면 인벤토리 비어있는 가장 앞 슬롯으로 삽입
+        blankSlot.ImageDataSetting(useItemData);
+    }
+
+    /// <summary>
+    /// 매개변수로 받은 값의 아이템 개수 차감, 0이 되었을시 해당 인벤토리 아이템의 인덱스를 1000(사용 불가능값)으로 변경하며
+    /// 해당 인벤토리 슬롯의 이미지 값을 재설정
+    /// </summary>
+    public static void SearchSubtractData(UseItemData useItemData)
+    {
+        subtractSlot.itemData.currentHandCount -= useItemData.currentHandCount;
+
+        // 만약 갯수가 0이 되었을 경우 해당 이미지, 데이터값을 재조정
+        if(subtractSlot.itemData.currentHandCount <= 0)
         {
-
+            subtractSlot.ImageDataSetting();
         }
-
-
     }
 }

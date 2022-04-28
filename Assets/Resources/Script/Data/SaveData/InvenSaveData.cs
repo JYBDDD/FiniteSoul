@@ -19,6 +19,8 @@ public class InvenSaveData : StaticData
     /// </summary>
     public int currentHandCount;
 
+    public InvenSaveData() { }
+
     /// <summary>
     /// 인벤토리 데이터 저장시 사용되는 생성자
     /// </summary>

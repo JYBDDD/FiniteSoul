@@ -10,7 +10,7 @@ using UnityEngine;
 
 public class ResourceUtil : MonoBehaviour
 {
-    /// <summary>
+    /*/// <summary>
     /// 소수점 세자릿수까지만 출력하는 메서드(Vector3 용)
     /// </summary>
     /// <param name="vec"></param>
@@ -47,7 +47,7 @@ public class ResourceUtil : MonoBehaviour
         Quaternion quaternion = new Quaternion(qutX, qutY, qutZ, 0);
         return quaternion;
     }
-
+*/
 
     /// <summary>
     /// 이어하기 할수있는 파일인지 확인하는 메서드
@@ -95,7 +95,7 @@ public class ResourceUtil : MonoBehaviour
         var textAsset = Resources.Load<TextAsset>("Document/SaveData/InvenSaveData");
         string path = textAsset.ToString();
 
-        List<InvenSaveData> invenList = JsonConvert.DeserializeObject<List<InvenSaveData>>(path);
+        List<InvenSaveData> invenList = JsonConvert.DeserializeObject<InvenSaveData[]>(path).ToList();
 
         var fullItem = GameManager.Instance.FullData.itemsData;
 
@@ -112,10 +112,15 @@ public class ResourceUtil : MonoBehaviour
 
                     // 아이템 이미지 및 데이터 셋팅
                     ShopInvenWindowUI.Inventory[invenList[i].invenIndex].ImageDataSetting(IData);
-                    // 해당 인벤토리에 데이터 삽입, 갯수 설정
-                    ShopInvenWindowUI.Inventory[invenList[i].invenIndex].itemData.currentHandCount = IData.currentHandCount;
-                    
+                    ShopInvenWindowUI.Inventory[invenList[i].invenIndex].ItemCountSetting(invenList[i]);
+
                 }
+                // 값이 정상값이 아니라면 실행
+                if(invenList[i].index <= 1000)
+                {
+                    ShopInvenWindowUI.Inventory[i].ImageDataSetting();
+                }
+
             }
         }
     }
@@ -232,15 +237,12 @@ public class ResourceUtil : MonoBehaviour
         List<InvenSaveData> invenSaves = new List<InvenSaveData>();
         for(int i = 0; i < inventory.Count;++i)
         {
-            // 정상값이라면 데이터 삽입
-            if(inventory[i].itemData.index > 1000)
-            {
-                var data = new InvenSaveData(i, inventory[i]);
-                invenSaves.Add(data);
-            }
+            // i = 인벤토리 인덱스, 해당 인벤토리 인덱스의 아이템 데이터 삽입
+            var data = new InvenSaveData(i, inventory[i]);
+            invenSaves.Add(data);
         }
 
-        File.WriteAllText(path, JsonUtility.ToJson(invenSaves, true));
+        File.WriteAllText(path, JsonConvert.SerializeObject(invenSaves));
 
         // 데이터 베이스 새로고침
         AssetDatabase.Refresh();
@@ -257,11 +259,28 @@ public class ResourceUtil : MonoBehaviour
         var path2 = "Assets/Resources/Document/SaveData/InvenSaveData.json";
 
         File.WriteAllText(path1, JsonUtility.ToJson(new PlayerVolatilityData(characterIndex), true));
-        File.WriteAllText(path2, JsonUtility.ToJson(new InvenSaveData(1000), true));
+
+        File.WriteAllText(path2, JsonConvert.SerializeObject(InventoryRefreash()));
 
         // 데이터 베이스 새로고침
         AssetDatabase.Refresh();
         
+        // 인벤토리 전체값 초기화
+        List<InvenSaveData> InventoryRefreash()
+        {
+            var textAsset = Resources.Load<TextAsset>("Document/SaveData/InvenSaveData");
+            string path = textAsset.ToString();
+
+            List<InvenSaveData> invenList = JsonConvert.DeserializeObject<InvenSaveData[]>(path).ToList();
+
+            for (int i = 0; i < invenList.Count; ++i)
+            {
+                // 모두 초기화
+                invenList[i] = new InvenSaveData(1000);
+            }
+
+            return invenList;
+        }
     }
 
     

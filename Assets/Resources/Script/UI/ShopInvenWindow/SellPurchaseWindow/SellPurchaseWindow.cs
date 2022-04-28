@@ -12,6 +12,9 @@ public class SellPurchaseWindow : MonoBehaviour
     [SerializeField,Tooltip("표시할 메인 텍스트")]
     TextMeshProUGUI mainText;
 
+    [SerializeField, Tooltip("필요룬 / 판매룬")]
+    TextMeshProUGUI changeBackText;
+
     [SerializeField, Tooltip("구매,판매할 아이템 이미지")]
     Image itemImg;
 
@@ -72,6 +75,7 @@ public class SellPurchaseWindow : MonoBehaviour
     public void PurchaseWindowPrint(UseItemData itemData)
     {
         mainText.text = "구매할 수량을 선택해주십시오";
+        changeBackText.text = "필요 룬";
         itemImg.sprite = Resources.Load<Sprite>(itemData.resourcePath);
         itemName.text = itemData.name;
         // 플레이어가 가지고 있는 최대 구매개수만큼 설정
@@ -80,18 +84,13 @@ public class SellPurchaseWindow : MonoBehaviour
         while(true)
         {
             // 플레이어의 보유룬으로 해당 아이템 구매 비용을 넘어선다면 실행
-            if (playerRune < itemData.salePrice * maxCount)
+            if (playerRune < itemData.salePrice * maxCount + 1)
                 break;
             ++maxCount;
         }
-        allCount.text = $"1 / {maxCount}";
-        allPrice.text = $"{itemData.salePrice * maxCount}";
-
-        useItemData = new UseItemData(itemData);
-        purchaseTrue = true;
 
         // 플레이어의 소지룬으로 구매 가능한 갯수라면 1부터 설정
-        if(maxCount > 0)
+        if (maxCount > 0)
         {
             currentCount = 1;
         }
@@ -101,6 +100,20 @@ public class SellPurchaseWindow : MonoBehaviour
             currentCount = 0;
         }
 
+        allCount.text = $"0 / {maxCount}";
+        allPrice.text = $"{itemData.salePrice * currentCount}";
+
+        // 장비아이템이라면 한개로만 적용
+        if (itemData.itemType == Define.ItemMixEnum.ItemType.Equipment)
+        {
+            allCount.text = $"{currentCount} / {currentCount}";
+        }
+
+        useItemData = new UseItemData(itemData);
+        purchaseTrue = true;
+
+        
+
     }
 
     /// <summary>
@@ -109,6 +122,7 @@ public class SellPurchaseWindow : MonoBehaviour
     public void SellWindowPrint(UseItemData itemData)
     {
         mainText.text = "판매할 수량을 선택해주십시오";
+        changeBackText.text = "판매 룬";
         itemImg.sprite = Resources.Load<Sprite>(itemData.resourcePath);
         itemName.text = itemData.name;
         // 플레이어가 가지고 있는 최대 판매개수만큼 설정
@@ -122,11 +136,18 @@ public class SellPurchaseWindow : MonoBehaviour
                 maxCount += inventory[i].itemData.currentHandCount;
             }
         }
+        currentCount = 1;
+
         allCount.text = $"1 / {maxCount}";
-        allPrice.text = $"{itemData.salePrice * maxCount}";
+        allPrice.text = $"{itemData.salePrice * currentCount}";
+
+        // 장비아이템이라면 한개로만 적용
+        if(itemData.itemType == Define.ItemMixEnum.ItemType.Equipment)
+        {
+            allCount.text = $"1 / {currentCount}";
+        }
 
         useItemData = new UseItemData(itemData);
-        currentCount = 1;
         purchaseTrue = false;
     }
     #endregion
@@ -137,12 +158,14 @@ public class SellPurchaseWindow : MonoBehaviour
     /// </summary>
     private void UpCount()
     {
-        // 구매, 판매가 가능한 개수라면 실행
-        if(useItemData.salePrice * maxCount < InGameManager.Instance.Player.playerData.currentRune)
+        // 구매, 판매가 가능한 개수라면 실행 (+ 장비가 아니라면)
+        if(useItemData.salePrice * currentCount < InGameManager.Instance.Player.playerData.currentRune &&
+            useItemData.itemType != Define.ItemMixEnum.ItemType.Equipment)
         {
             ++currentCount;
 
             // 총가격, 구매/판매 갯수 설정
+            ++useItemData.currentHandCount;
             CountAndPriceSet();
         }
     }
@@ -152,12 +175,14 @@ public class SellPurchaseWindow : MonoBehaviour
     /// </summary>
     private void DownCount()
     {
-        // 구매, 판매 개수가 1이하가 아니라면 실행
-        if(currentCount > 1)
+        // 구매, 판매 개수가 1이하가 아니라면 실행 (+ 장비가 아니라면)
+        if (currentCount > 1 &&
+            useItemData.itemType != Define.ItemMixEnum.ItemType.Equipment)
         {
             --currentCount;
 
             // 총가격, 구매/판매 갯수 설정
+            --useItemData.currentHandCount;
             CountAndPriceSet();
         }
     }
@@ -189,9 +214,10 @@ public class SellPurchaseWindow : MonoBehaviour
                 // 플레이어 소지룬 감소
                 InGameManager.Instance.Player.playerData.currentRune -= (currentCount * useItemData.salePrice);
                 // 인벤토리에 아이템 추가, 해당 아이템이 장비라면 다음 비어있는 칸으로 추가 / 기타,소비 아이템은 99개가 넘을경우 다음 칸으로 추가
+                ShopInvenWindowUI.SearchAddtionData(useItemData);
 
-
-
+                // 적용후 종료
+                CancelButtonClick();
             }
             // 아이템을 판매중이라면
             if(purchaseTrue == false)
@@ -199,17 +225,17 @@ public class SellPurchaseWindow : MonoBehaviour
                 // 플레이어 소지룬 증가
                 InGameManager.Instance.Player.playerData.currentRune += (currentCount * useItemData.salePrice);
                 // 소지중인 아이템 갯수 감소 갯수가 0이라면 인벤토리에서 아이템 인덱스값 1000(미사용값)으로 변경
-                
+                ShopInvenWindowUI.SearchSubtractData(useItemData);
 
-
-
+                // 적용후 종료
+                CancelButtonClick();
             }
         }
     }
 
     private void CancelButtonClick()
     {
-
+        gameObject.SetActive(false);
     }
 
     #endregion

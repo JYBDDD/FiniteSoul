@@ -28,6 +28,11 @@ public class SlotBase : MonoBehaviour
 
             itemImg.sprite = Resources.Load<Sprite>(itemData.resourcePath);
         }
+        // Null 값이 들어왔다면 사용불가능한 값으로 변경
+        if(useItemData == null)
+        {
+            itemData.index = 1000;
+        }
 
         ItemAlphaSet(itemImg, useItemData);
     }
@@ -38,7 +43,7 @@ public class SlotBase : MonoBehaviour
     protected void ItemAlphaSet(Image setImage, UseItemData useItemData = null)
     {
         var itemColor = setImage.color;
-        if (useItemData?.index < 1000)
+        if (useItemData?.index < 1000 | useItemData == null)
         {
             setImage.color = new Color(itemColor.r, itemColor.g, itemColor.b, 0f / 0f);
         }
