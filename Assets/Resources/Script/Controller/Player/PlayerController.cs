@@ -384,6 +384,8 @@ public class PlayerController : MoveableObject
 
         // 플레이어 사망시 드랍룬 설정
         Rune.DropRuneDataSetting(playerData.currentRune,transform.position);
+        // 플레이어 사망시 인벤토리 데이터 저장
+        ResourceUtil.InvenSaveData();
     }
 
     #region 캐릭터 움직임 구현부

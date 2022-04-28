@@ -158,14 +158,22 @@ public class SellPurchaseWindow : MonoBehaviour
     /// </summary>
     private void UpCount()
     {
-        // 구매, 판매가 가능한 개수라면 실행 (+ 장비가 아니라면)
+        // 구매라면 실행 (+ 장비가 아니라면)
         if(useItemData.salePrice * currentCount < InGameManager.Instance.Player.playerData.currentRune &&
-            useItemData.itemType != Define.ItemMixEnum.ItemType.Equipment)
+            useItemData.itemType != Define.ItemMixEnum.ItemType.Equipment && purchaseTrue)
         {
             ++currentCount;
 
             // 총가격, 구매/판매 갯수 설정
-            ++useItemData.currentHandCount;
+            CountAndPriceSet();
+        }
+        // 판매라면 실행 (+ 장비가 아니라면) (+ 최대 판매갯수가 넘어가지 않았다면)
+        if(useItemData.itemType != Define.ItemMixEnum.ItemType.Equipment && !purchaseTrue &&
+            useItemData.currentHandCount > currentCount)
+        {
+            ++currentCount;
+
+            // 총가격, 구매/판매 갯수 설정
             CountAndPriceSet();
         }
     }
@@ -176,13 +184,11 @@ public class SellPurchaseWindow : MonoBehaviour
     private void DownCount()
     {
         // 구매, 판매 개수가 1이하가 아니라면 실행 (+ 장비가 아니라면)
-        if (currentCount > 1 &&
-            useItemData.itemType != Define.ItemMixEnum.ItemType.Equipment)
+        if (currentCount > 1 && useItemData.itemType != Define.ItemMixEnum.ItemType.Equipment)
         {
             --currentCount;
 
             // 총가격, 구매/판매 갯수 설정
-            --useItemData.currentHandCount;
             CountAndPriceSet();
         }
     }
@@ -214,6 +220,7 @@ public class SellPurchaseWindow : MonoBehaviour
                 // 플레이어 소지룬 감소
                 InGameManager.Instance.Player.playerData.currentRune -= (currentCount * useItemData.salePrice);
                 // 인벤토리에 아이템 추가, 해당 아이템이 장비라면 다음 비어있는 칸으로 추가 / 기타,소비 아이템은 99개가 넘을경우 다음 칸으로 추가
+                useItemData.currentHandCount = currentCount;
                 ShopInvenWindowUI.SearchAddtionData(useItemData);
 
                 // 적용후 종료
@@ -225,7 +232,8 @@ public class SellPurchaseWindow : MonoBehaviour
                 // 플레이어 소지룬 증가
                 InGameManager.Instance.Player.playerData.currentRune += (currentCount * useItemData.salePrice);
                 // 소지중인 아이템 갯수 감소 갯수가 0이라면 인벤토리에서 아이템 인덱스값 1000(미사용값)으로 변경
-                ShopInvenWindowUI.SearchSubtractData(useItemData);
+                useItemData.currentHandCount = currentCount;
+                ShopInvenWindowUI.SearchSubtractData(currentCount);
 
                 // 적용후 종료
                 CancelButtonClick();

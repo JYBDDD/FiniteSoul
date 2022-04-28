@@ -22,13 +22,10 @@ public class ShopSlot : SlotBase
     /// </summary>
     public void ItemPriceSetting()
     {
-        itemPrice ??= GetComponentInChildren<TextMeshProUGUI>();
-
         if(itemData?.index > 1000)
         {
             itemPrice.text = $"{itemData.salePrice}";
             ItemPriceAlphaSetting();
-            ItemAlphaSet(priceImg);
         }
         if(itemData?.index <= 1000)
         {

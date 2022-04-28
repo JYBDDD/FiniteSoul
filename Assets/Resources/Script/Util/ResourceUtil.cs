@@ -119,6 +119,7 @@ public class ResourceUtil : MonoBehaviour
                 if(invenList[i].index <= 1000)
                 {
                     ShopInvenWindowUI.Inventory[i].ImageDataSetting();
+                    ShopInvenWindowUI.Inventory[i].TextCountAlpha();
                 }
 
             }

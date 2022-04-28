@@ -199,6 +199,7 @@ public class ShopInvenWindowUI : MonoBehaviour,IPointerEnterHandler,IPointerClic
                 {
                     // 해당 인벤토리 슬롯에 소지 개수 상승
                     Inventory[i].ItemCountSetting(useItemData);
+                    return;
                 }
             }
 
@@ -222,20 +223,22 @@ public class ShopInvenWindowUI : MonoBehaviour,IPointerEnterHandler,IPointerClic
 
         // 일치하는 값이 없다면 인벤토리 비어있는 가장 앞 슬롯으로 삽입
         blankSlot.ImageDataSetting(useItemData);
+        blankSlot.TextCountAlpha();
     }
 
     /// <summary>
     /// 매개변수로 받은 값의 아이템 개수 차감, 0이 되었을시 해당 인벤토리 아이템의 인덱스를 1000(사용 불가능값)으로 변경하며
     /// 해당 인벤토리 슬롯의 이미지 값을 재설정
     /// </summary>
-    public static void SearchSubtractData(UseItemData useItemData)
+    public static void SearchSubtractData(int sellCount)
     {
-        subtractSlot.itemData.currentHandCount -= useItemData.currentHandCount;
+        subtractSlot.itemData.currentHandCount -= sellCount;
 
         // 만약 갯수가 0이 되었을 경우 해당 이미지, 데이터값을 재조정
         if(subtractSlot.itemData.currentHandCount <= 0)
         {
             subtractSlot.ImageDataSetting();
+            subtractSlot.TextCountAlpha();
         }
     }
 }
