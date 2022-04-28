@@ -47,9 +47,9 @@ public class SellPurchaseWindow : MonoBehaviour
     int currentCount;
 
     /// <summary>
-    /// 구매,판매창에 사용되는 아이템 가격
+    /// 구매,판매창에 사용되는 아이템 데이터
     /// </summary>
-    float itemPrice;
+    UseItemData useItemData;
 
     /// <summary>
     /// 구매,판매 구별 Bool타입 (구매 - true / 판매 - false)
@@ -87,7 +87,7 @@ public class SellPurchaseWindow : MonoBehaviour
         allCount.text = $"1 / {maxCount}";
         allPrice.text = $"{itemData.salePrice * maxCount}";
 
-        itemPrice = itemData.salePrice;
+        useItemData = new UseItemData(itemData);
         purchaseTrue = true;
 
         // 플레이어의 소지룬으로 구매 가능한 갯수라면 1부터 설정
@@ -125,7 +125,7 @@ public class SellPurchaseWindow : MonoBehaviour
         allCount.text = $"1 / {maxCount}";
         allPrice.text = $"{itemData.salePrice * maxCount}";
 
-        itemPrice = itemData.salePrice;
+        useItemData = new UseItemData(itemData);
         currentCount = 1;
         purchaseTrue = false;
     }
@@ -138,7 +138,7 @@ public class SellPurchaseWindow : MonoBehaviour
     private void UpCount()
     {
         // 구매, 판매가 가능한 개수라면 실행
-        if(itemPrice * maxCount < InGameManager.Instance.Player.playerData.currentRune)
+        if(useItemData.salePrice * maxCount < InGameManager.Instance.Player.playerData.currentRune)
         {
             ++currentCount;
 
@@ -170,7 +170,7 @@ public class SellPurchaseWindow : MonoBehaviour
         // 카운트 재설정
         allCount.text = $"{currentCount} / " + $"{maxCount}";
         // 총금액 재설정
-        allPrice.text = $"{currentCount * itemPrice}";
+        allPrice.text = $"{currentCount * useItemData.salePrice}";
     }
     #endregion
 
@@ -187,9 +187,8 @@ public class SellPurchaseWindow : MonoBehaviour
             if(purchaseTrue == true)
             {
                 // 플레이어 소지룬 감소
-                InGameManager.Instance.Player.playerData.currentRune -= (currentCount * itemPrice);
-                // 인벤토리에 아이템 추가, 해당 아이템이 장비라면 다음 비어있는 칸으로 추가 / 기타,소비 아이템은 99개가 넘을경우 다음 칸으로 추가 TODO
-
+                InGameManager.Instance.Player.playerData.currentRune -= (currentCount * useItemData.salePrice);
+                // 인벤토리에 아이템 추가, 해당 아이템이 장비라면 다음 비어있는 칸으로 추가 / 기타,소비 아이템은 99개가 넘을경우 다음 칸으로 추가
 
 
 
@@ -198,9 +197,9 @@ public class SellPurchaseWindow : MonoBehaviour
             if(purchaseTrue == false)
             {
                 // 플레이어 소지룬 증가
-                InGameManager.Instance.Player.playerData.currentRune += (currentCount * itemPrice);
-                // 소지중인 아이템 갯수 감소 갯수가 0이라면 인벤토리에서 아이템 인덱스값 1000(미사용값)으로 변경 TODO
-
+                InGameManager.Instance.Player.playerData.currentRune += (currentCount * useItemData.salePrice);
+                // 소지중인 아이템 갯수 감소 갯수가 0이라면 인벤토리에서 아이템 인덱스값 1000(미사용값)으로 변경
+                
 
 
 

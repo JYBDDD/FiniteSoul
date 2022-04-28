@@ -141,12 +141,9 @@ public class ShopInvenWindowUI : MonoBehaviour,IPointerEnterHandler,IPointerClic
             // 구매 창 출력
             sellPurchaseWindow.gameObject.SetActive(true);
             sellPurchaseWindow.PurchaseWindowPrint(result.gameObject.GetComponent<ShopSlot>().itemData);
-
-
-
         }
 
-        // 클릭한 위치가 인벤토리슬롯이며, 아이템값이 정상적을 ㅗ존재하는 상태라면 실행
+        // 클릭한 위치가 인벤토리슬롯이며, 아이템값이 정상적을 존재하는 상태라면 실행
         if(result.gameObject.GetComponent<InvenSlot>().itemData?.index > 1000)
         {
             // 판매 창 출력
@@ -155,9 +152,23 @@ public class ShopInvenWindowUI : MonoBehaviour,IPointerEnterHandler,IPointerClic
         }
     }
 
+    /// <summary>
+    /// 인벤토리에 아이템을 셋팅하는 데이터를 설정하는 메서드 (호출용)
+    /// </summary>
+    /// <param name="useItemData"></param>
+    /// <param name="itemCount"></param>
+    public static void InventoryItemSetting(UseItemData useItemData)
+    {
+        // 아이템 타입이 장비라면 실행
+        if(useItemData.itemType == Define.ItemMixEnum.ItemType.Equipment)
+        {
 
-    // 더블클릭시 해당 아이템데이터의 정보를 구매,판매 윈도우로 값을 넘겨줄것   TODO
-    // 인벤토리를 클릭했을 경우 판매윈도우로 전환
-    // 상점을 클릭했을 경우 구매윈도우로 전환 
+        }
+        else
+        {
 
+        }
+
+
+    }
 }
