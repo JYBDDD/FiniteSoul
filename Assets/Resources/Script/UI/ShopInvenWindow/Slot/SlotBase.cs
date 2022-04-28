@@ -29,13 +29,13 @@ public class SlotBase : MonoBehaviour
             itemImg.sprite = Resources.Load<Sprite>(itemData.resourcePath);
         }
 
-        ItemAlphaSet(useItemData,itemImg);
+        ItemAlphaSet(itemImg, useItemData);
     }
 
     /// <summary>
     /// 아이템 이미지 알파값 셋팅
     /// </summary>
-    protected void ItemAlphaSet(UseItemData useItemData,Image setImage)
+    protected void ItemAlphaSet(Image setImage, UseItemData useItemData = null)
     {
         var itemColor = setImage.color;
         if (useItemData?.index < 1000)
