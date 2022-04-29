@@ -41,7 +41,7 @@ public class Archer : PlayerController
     public void ArrowSpawn()
     {
         // 발사체 생성
-        var arrowObject = ObjectPoolManager.Instance.GetPool<Arrow>(Define.ProjectilePath.arrowPath,Define.CharacterType.Projectile);
+        var arrowObject = ObjectPoolManager.Instance.GetPool<Arrow>(Define.ProjectilePath.arrowPath,transform.position,Define.CharacterType.Projectile);
         // 발사체 생성 위치값, 방향값 지정
         ResourceUtil.PosDirectionDesign(arrowObject, SpawnPos.transform.position, Quaternion.LookRotation(hit.point - transform.position)); 
         // 발사체 해당 방향으로 이동 설정

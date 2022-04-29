@@ -74,8 +74,8 @@ public class OrderInteraction : MonoBehaviour
                 ObjectPoolManager.Instance.GetPush(other.gameObject);
 
                 // 룬 획득 이펙트 활성화
-                var runeEffect = ObjectPoolManager.Instance.GetPool<ParticleChild>(Define.ParticleEffectPath.PlayerParticle.runeEffect, Define.CharacterType.Particle);
-                runeEffect.transform.position = other.gameObject.transform.position + Vector3.up;
+                var runeEffect = ObjectPoolManager.Instance.GetPool<ParticleChild>(Define.ParticleEffectPath.PlayerParticle.runeEffect, 
+                    other.gameObject.transform.position + Vector3.up, Define.CharacterType.Particle);
             }
 
             // 상점과 상호작용하려 한다면 실행

@@ -196,7 +196,7 @@ public class ResourceUtil : MonoBehaviour
     {
         if (ac.checkBool == true)
         {
-            GameObject particleObj = ObjectPoolManager.Instance.GetPool<ParticleChild>(path, type);
+            GameObject particleObj = ObjectPoolManager.Instance.GetPool<ParticleChild>(path,pos,type);
             PosDirectionDesign(particleObj, pos, rot);
         }
     }

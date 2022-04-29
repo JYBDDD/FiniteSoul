@@ -104,6 +104,7 @@ MonoBehaviour:
     description: 
     resourcePath: 
   itemImg: {fileID: 3689720558407561653}
+  itemPrice: {fileID: 8221793020599564665}
   priceImg: {fileID: 7743082119060205102}
 --- !u!1 &2272094774604853254
 GameObject:

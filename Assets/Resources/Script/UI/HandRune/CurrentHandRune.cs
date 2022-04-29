@@ -23,7 +23,6 @@ public class CurrentHandRune : MonoBehaviour
     private void Update()
     {
         RuneSetting();
-
     }
 
     /// <summary>

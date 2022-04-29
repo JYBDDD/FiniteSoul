@@ -318,6 +318,7 @@ public class MonsterController : MoveableObject
         coll.enabled = false;
 
         anim.SetBool("Die", true);
+        // 아이템 드랍 추가하기 TODO @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     }
 
     /// <summary>

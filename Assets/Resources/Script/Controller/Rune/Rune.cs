@@ -32,10 +32,7 @@ public class Rune : MonoBehaviour,RecyclePooling
         // 룬 드랍을 결정할 Bool타입 변수가 활성화 되었다면 실행 -> DropRuneDataSetting 호출시 활성화됨(플레이어 사망시)
         if(DropRuneTrue == true && DropRuneAmount > 0)
         {
-            var runeObj = ObjectPoolManager.Instance.GetPool<Rune>(Define.DropRunePath.dropRunePath, Define.CharacterType.Rune);
-
-            // 드랍 룬 위치값 지정
-            runeObj.transform.position = DropRunePos;
+            var runeObj = ObjectPoolManager.Instance.GetPool<Rune>(Define.DropRunePath.dropRunePath, DropRunePos, Define.CharacterType.Rune);
         }
 
     }

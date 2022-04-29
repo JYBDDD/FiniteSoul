@@ -241,4 +241,25 @@ public class ShopInvenWindowUI : MonoBehaviour,IPointerEnterHandler,IPointerClic
             subtractSlot.TextCountAlpha();
         }
     }
+
+    /// <summary>
+    /// 인벤토리에 있는 해당 아이템타입을 가진 인벤토리 슬롯 리스트를 반환
+    /// </summary>
+    /// <param name="itemType"></param>
+    /// <returns></returns>
+    public static List<InvenSlot> InventoryDataFind(Define.ItemMixEnum.ItemType itemType)
+    {
+        List<InvenSlot> ivenList = new List<InvenSlot>();
+
+        for(int i =0; i < Inventory.Count; ++i)
+        {
+            if(itemType == Inventory[i].itemData.itemType)
+            {
+                ivenList.Add(Inventory[i]);
+            }
+        }
+
+
+        return ivenList;
+    }
 }

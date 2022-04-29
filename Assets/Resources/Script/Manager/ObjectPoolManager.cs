@@ -78,7 +78,7 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
     /// <summary>
     /// 오브젝트 반환
     /// </summary>
-    public GameObject GetPool<T>(string resourcePath,Define.CharacterType type = Define.CharacterType.None) where T : MonoBehaviour,RecyclePooling
+    public GameObject GetPool<T>(string resourcePath,Vector3 postion,Define.CharacterType type = Define.CharacterType.None) where T : MonoBehaviour,RecyclePooling
     {
         // 해당 오브젝트의 이름
         string ObjectName = Resources.Load(resourcePath).name;
@@ -89,12 +89,14 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
             if (ObjectName + "(Clone)" == gameObjects[i].name && !gameObjects[i].activeSelf)
             {
                 gameObjects[i].SetActive(true);
+                gameObjects[i].transform.position = postion;
                 return gameObjects[i];
             }
         }
 
         // 아니라면 하나를 재생성한다
         GameObject returnObj = ResourceUtil.InsertPrefabs(resourcePath);
+        returnObj.transform.position = postion;
 
         // type이 몬스터라면, 오브젝트의 부모를 몬스터로 설정
         if(type == Define.CharacterType.Monster)

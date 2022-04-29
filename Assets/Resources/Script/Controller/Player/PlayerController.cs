@@ -27,6 +27,13 @@ public class PlayerController : MoveableObject
     [SerializeField, Tooltip("플레이어 무기의 콜라이더 (Attack 애니메이션 재생시, 해당 애니메이션에서 자체적으로 On/Off 전환)")]
     private Collider[] playerAtkColl;
 
+    [SerializeField,Tooltip("플레이어 오른손 포션 (Mat 변경용)")]
+    MeshRenderer leftHandPotion;
+    /// <summary>
+    /// 포션이 사용중인지 체크하는 변수
+    /// </summary>
+    bool potionUseBool = true;
+
     /// <summary>
     /// 초기 스텟 변경시 변경된 스탯을 재설정 해주는 메소드
     /// </summary>
@@ -64,6 +71,7 @@ public class PlayerController : MoveableObject
 
         InputManager.Instance.KeyAction += Move;
         InputManager.Instance.KeyAction += Jump;
+        InputManager.Instance.KeyAction += ConsumAction;
 
         InsertComponent();
     }
@@ -94,6 +102,7 @@ public class PlayerController : MoveableObject
         {
             InputManager.Instance.KeyAction -= Move;
             InputManager.Instance.KeyAction -= Jump;
+            InputManager.Instance.KeyAction -= ConsumAction;
         }
     }
 
@@ -388,7 +397,7 @@ public class PlayerController : MoveableObject
         ResourceUtil.InvenSaveData();
     }
 
-    #region 캐릭터 움직임 구현부
+    #region 캐릭터 움직임 구현부, 소지품 변경
     private void Move()
     {
         Vector3 posVec = new Vector3(moveX, 0, moveZ).normalized;
@@ -428,6 +437,105 @@ public class PlayerController : MoveableObject
         }
     }
 
+    private void ConsumAction()
+    {
+        // 소비 아이템 변경 (인벤토리에 있는 모든 소비아이템으로 변경가능)
+        if(Input.GetKeyDown(KeyCode.Z) && IsGround)
+        {
+            BelongingsUI.TempInstance.ConsumDataChange();   
+        }
+
+        // 물약이 1개이상 존재한다면 실행
+        if (Input.GetKeyDown(KeyCode.Q) && IsGround && BelongingsUI.TempInstance.ConsumBool() && potionUseBool == true)
+        {
+            // 현재 장착중인 소비아이템 사용
+            var potion = BelongingsUI.TempInstance.ConsumUse();
+            potionUseBool = false;
+
+            anim.SetTrigger("DrinkTrigger");
+
+            // 쓰는 포션에따라 Mat값 변경
+            DrinkPotionMatSetting(potion.name);
+
+            // 두번에 걸쳐 회복하도록 설정
+            StartCoroutine(PotionHeal(potion.name));
+        }
+
+        void DrinkPotionMatSetting(string name)
+        {
+            if (name == "HpPotion")
+            {
+                leftHandPotion.material = Resources.Load<Material>(Define.ItemMixEnum.hpPotionMat);
+            }
+            else
+            {
+                leftHandPotion.material = Resources.Load<Material>(Define.ItemMixEnum.mpPotionMat);
+            }
+        }
+
+        IEnumerator PotionHeal(string name)
+        {
+            float duraction = 1f;
+            float time = 0;
+
+            int cutTime = 0;
+
+            while(time < duraction)
+            {
+                // 물약을 마시는 도중 피해를 입는다면 회복을 중지
+                if (FSM.State == Define.State.Hurt)
+                {
+                    potionUseBool = true;
+                    yield break;
+                }
+
+                time += Time.deltaTime;
+
+                if(time > 0.2f && cutTime == 0)
+                {
+                    ++cutTime;
+                    PotionSet(name);
+                }
+
+                if(time > 0.9f && cutTime == 1)
+                {
+                    PotionSet(name);
+                    potionUseBool = true;
+                    yield break;
+                }
+
+                yield return null;
+            }
+        }
+
+        void PotionSet(string name)
+        {
+            if (name == "HpPotion")
+            {
+                playerData.currentHp += 50;
+                var healObj = ObjectPoolManager.Instance.GetPool<ParticleChild>(Define.ParticleEffectPath.PotionHeal.hpPotionHeal, 
+                    transform.position + Vector3.up, Define.CharacterType.Particle);
+                
+                // 최대 체력이상으로 회복 불가
+                if(playerData.currentHp > playerData.maxHp)
+                {
+                    playerData.currentHp = playerData.maxHp;
+                }
+            }
+            else
+            {
+                playerData.currentMana += 30;
+                var healObj = ObjectPoolManager.Instance.GetPool<ParticleChild>(Define.ParticleEffectPath.PotionHeal.manaPotionHeal,
+                    transform.position + Vector3.up, Define.CharacterType.Particle);
+
+                // 최대 마나이상으로 회복 불가
+                if (playerData.currentMana > playerData.maxMana)
+                {
+                    playerData.currentMana = playerData.maxMana;
+                }
+            }
+        }
+    }
 
     #endregion
 

@@ -9,9 +9,7 @@ using UnityEngine.UI;
 /// </summary>
 public class ShopSlot : SlotBase
 {
-    /// <summary>
-    /// 아이템 값을 출력할 TMPro
-    /// </summary>
+    [SerializeField,Tooltip("아이템 값을 출력할 TMPro")]
     TextMeshProUGUI itemPrice;
 
     [SerializeField,Tooltip("금액 이미지")]

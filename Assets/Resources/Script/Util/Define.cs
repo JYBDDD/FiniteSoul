@@ -83,6 +83,15 @@ public static class Define
 
             None,
         }
+
+        /// <summary>
+        /// HpPotion Mat 경로 (Resources.Load 전용)
+        /// </summary>
+        public const string hpPotionMat = "Art/Material/Item/Potion/HpPotion";
+        /// <summary>
+        /// ManaPotion Mat 경로 (Resources.Load 전용)
+        /// </summary>
+        public const string mpPotionMat = "Art/Material/Item/Potion/ManaPotion";
     }
 
     /// <summary>
@@ -164,6 +173,18 @@ public static class Define
             /// 몬스터 공격 이펙트 (Resources.Load)
             /// </summary>
             public const string monsterAttack = "Prefabs/ParticleEffect/MonsterAttackEffect";
+        }
+
+        public class PotionHeal
+        {
+            /// <summary>
+            /// 체력 포션 사용 이펙트 (Resources.Load)
+            /// </summary>
+            public const string hpPotionHeal = "Prefabs/ParticleEffect/Item/Potion/HpPotionHeal";
+            /// <summary>
+            /// 마나 포션 사용 이펙트 (Resources.Load)
+            /// </summary>
+            public const string manaPotionHeal = "Prefabs/ParticleEffect/Item/Potion/ManaPotionHeal";
         }
     }
 

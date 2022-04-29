@@ -34,9 +34,8 @@ public class StageManager : Singleton<StageManager>
             if (monsterData != null)
             {
                 // 몬스터 생성
-                GameObject monsterObj = ObjectPoolManager.Instance.GetPool<MoveableObject>(monsterData.resourcePath, Define.CharacterType.Monster);
-                // 몬스터 위치값 지정
-                monsterObj.transform.position = MonsterSpawnsDoc.stageItem.locations[j];
+                GameObject monsterObj = ObjectPoolManager.Instance.GetPool<MoveableObject>(monsterData.resourcePath, 
+                    MonsterSpawnsDoc.stageItem.locations[j], Define.CharacterType.Monster);
                 MonsterController monsterC = monsterObj.GetComponent<MonsterController>();
                 // InGameManager Monsters 리스트에 몬스터 등록
                 InGameManager.Instance.MonsterRegist(monsterC);
@@ -62,11 +61,11 @@ public class StageManager : Singleton<StageManager>
     public void PlayerSpawn()       
     {
         var loadFile = ResourceUtil.LoadSaveFile();
-        GameObject player = ObjectPoolManager.Instance.GetPool<PlayerController>(loadFile.resourcePath,Define.CharacterType.Player);
         var volData = loadFile.playerVolatility;
 
         // 해당 플레이어를 0,0,0 위치 or 저장된 위치에서 생성
-        player.transform.position = new Vector3(volData.posX, volData.posY, volData.posZ);
+        GameObject player = ObjectPoolManager.Instance.GetPool<PlayerController>(loadFile.resourcePath, 
+            new Vector3(volData.posX, volData.posY, volData.posZ), Define.CharacterType.Player);
 
         PlayerController playerC = player.GetComponent<PlayerController>();
         // 플레이어 데이터 삽입
@@ -102,6 +101,10 @@ public class StageManager : Singleton<StageManager>
 
         // 룬 드랍
         Rune.RuneDrop();
+
+        // 스테이지 UI 리셋후 실행
+        DrawStageWindow.TempInstance.StageUIReset();
+        DrawStageWindow.TempInstance.StageUIPrint();
     }
 
     /// <summary>
