@@ -199,6 +199,9 @@ public class ShopInvenWindowUI : MonoBehaviour,IPointerEnterHandler,IPointerClic
                 {
                     // 해당 인벤토리 슬롯에 소지 개수 상승
                     Inventory[i].ItemCountSetting(useItemData);
+
+                    // 소지품 데이터 재설정
+                    BelongingsUI.TempInstance.InvenConsumDataChange();
                     return;
                 }
             }

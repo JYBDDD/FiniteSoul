@@ -61,7 +61,7 @@ public class MonsterController : MoveableObject
         anim.SetBool("Attack", false);
         anim.SetBool("Die", false);
 
-        FSM.ChangeState(FSM.State, IdleState, false);
+        FSM.ChangeState(FSM.State, IdleState);
 
         coll.enabled = true;
     }
@@ -206,60 +206,52 @@ public class MonsterController : MoveableObject
 
     protected virtual void RunningState()
     {
-        if(monsterData.currentHp > 0)
+        // 이동속도 증가
+        agent.speed = (monsterData.moveSpeed * 2f);
+
+        // 플레이어 목표 설정, 이동
+        agent.SetDestination(target.transform.position);
+
+        StartCoroutine(LockTarget());
+
+        IEnumerator LockTarget()
         {
-            // 이동속도 증가
-            agent.speed = (monsterData.moveSpeed * 2f);
-
-            // 플레이어 목표 설정, 이동
-            agent.SetDestination(target.transform.position);
-
-            StartCoroutine(LockTarget());
-
-            IEnumerator LockTarget()
+            while (true)
             {
-                while (true)
+                if(monsterData.currentHp <= 0)
                 {
-                    // 플레이어와 몬스터의 거리
-                    float distance = Vector3.Distance(target.transform.position, transform.position);
-
-                    // 플레이어가 공격범위 안으로 들어올경우 AttackState() 로 변경시킨다
-                    if (distance <= monsterData.atkRange)
-                    {
-                        // 스피드 본래값으로 재설정
-                        agent.speed = monsterData.moveSpeed;
-
-                        // 공격값 랜덤으로 재설정
-                        anim.SetFloat("RandA", UnityEngine.Random.Range(0f, -1f));
-
-                        // 공격상태로 변경
-                        FSM.ChangeState(Define.State.Attack, AttackState);
-                        yield break;
-                    }
-
-                    // 애니메이터 이동 블랜드 파라미터값 설정
-                    anim.SetFloat("MoveZ", Mathf.Lerp(anim.GetFloat("MoveZ"), 2, Time.deltaTime * 2f));
-                    anim.SetFloat("RandA", Mathf.Lerp(anim.GetFloat("RandA"), 0, Time.deltaTime * 2f));
-
-                    // 거리가 공격 사거리보다 멀고, Hurt,Die 상태가 아니라면 실행
-                    if (distance > monsterData.atkRange && FSM.State != Define.State.Hurt && FSM.State != Define.State.Die)
-                    {
-                        agent.SetDestination(target.transform.position);
-                    }
-
-                    yield return null;
+                    yield break;
                 }
+                // 플레이어와 몬스터의 거리
+                float distance = Vector3.Distance(target.transform.position, transform.position);
+
+                // 플레이어가 공격범위 안으로 들어올경우 AttackState() 로 변경시킨다
+                if (distance <= monsterData.atkRange)
+                {
+                    // 스피드 본래값으로 재설정
+                    agent.speed = monsterData.moveSpeed;
+
+                    // 공격값 랜덤으로 재설정
+                    anim.SetFloat("RandA", UnityEngine.Random.Range(0f, -1f));
+
+                    // 공격상태로 변경
+                    FSM.ChangeState(Define.State.Attack, AttackState);
+                    yield break;
+                }
+
+                // 애니메이터 이동 블랜드 파라미터값 설정
+                anim.SetFloat("MoveZ", Mathf.Lerp(anim.GetFloat("MoveZ"), 2, Time.deltaTime * 2f));
+                anim.SetFloat("RandA", Mathf.Lerp(anim.GetFloat("RandA"), 0, Time.deltaTime * 2f));
+
+                // 거리가 공격 사거리보다 멀고, Hurt,Die 상태가 아니라면 실행
+                if (distance > monsterData.atkRange && FSM.State != Define.State.Hurt && FSM.State != Define.State.Die)
+                {
+                    agent.SetDestination(target.transform.position);
+                }
+
+                yield return null;
             }
         }
-        else
-        {
-            // 경로 초기화
-            agent.ResetPath();
-
-            FSM.ChangeState(Define.State.Die, DieState);
-            return;
-        }
-        
     }
 
     protected virtual void AttackState()
@@ -288,7 +280,6 @@ public class MonsterController : MoveableObject
                 // 몬스터의 체력이 0이 되었을때 실행
                 if (monsterData.currentHp <= 0)
                 {
-                    FSM.ChangeState(Define.State.Die, DieState);
                     yield break;
                 }
 
@@ -318,7 +309,9 @@ public class MonsterController : MoveableObject
         coll.enabled = false;
 
         anim.SetBool("Die", true);
-        // 아이템 드랍 추가하기 TODO @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+        // 몬스터 드랍 오픈
+        DropTable.DropPerCalculation(monsterData);
     }
 
     /// <summary>

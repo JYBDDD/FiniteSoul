@@ -9,39 +9,4 @@ using UnityEngine;
 public class MutantController : CreatureBase
 {
 
-    public override void Update()
-    {
-        base.Update();
-    }
-
-    protected override void IdleState()
-    {
-        base.IdleState();
-    }
-
-    protected override void WalkState()
-    {
-        base.WalkState();
-    }
-
-    protected override void RunningState()
-    {
-        base.RunningState();
-
-    }
-
-    protected override void AttackState()
-    {
-        base.AttackState();
-    }
-
-    public override void HurtState()
-    {
-        base.HurtState();
-    }
-
-    public override void DieState()
-    {
-        base.DieState();
-    }
 }

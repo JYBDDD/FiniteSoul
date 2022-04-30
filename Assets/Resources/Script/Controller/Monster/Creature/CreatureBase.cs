@@ -15,32 +15,6 @@ public class CreatureBase : MonsterController
     // Ω√¿€¿¸ originCount;
     int originCount = 0;
 
-    public override void Update()
-    {
-        base.Update();
-    }
-
-    protected override void IdleState()
-    {
-        base.IdleState();
-    }
-
-    protected override void WalkState()
-    {
-        base.WalkState();
-    }
-
-    protected override void RunningState()
-    {
-        base.RunningState();
-
-    }
-
-    protected override void AttackState()
-    {
-        base.AttackState();
-    }
-
     public override void HurtState()
     {
         base.HurtState();
@@ -129,11 +103,6 @@ public class CreatureBase : MonsterController
             anim.SetInteger("HitCount", 0);
             startCount = 0;
         }
-    }
-
-    public override void DieState()
-    {
-        base.DieState();
     }
 
 }

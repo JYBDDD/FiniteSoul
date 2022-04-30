@@ -143,6 +143,21 @@ public class BelongingsUI : MonoBehaviour
     }
 
     /// <summary>
+    /// 인벤토리에서 소비아이템 변동시 사용되는 메서드
+    /// </summary>
+    public void InvenConsumDataChange()
+    {
+        var invenConsumData = ShopInvenWindowUI.InventoryDataFind(Define.ItemMixEnum.ItemType.Consumption);
+        if (invenConsumData.Count > 0)
+        {
+            // 데이터값 인벤토리와 연동
+            belongingsList[2].itemData = invenConsumData[consumCount].itemData;
+            ImgAndTextChange(invenConsumData[consumCount].itemData);
+            useConsumSlot = invenConsumData[consumCount];
+        }
+    }
+
+    /// <summary>
     /// 소비 아이템 사용 메서드
     /// </summary>
     /// <returns></returns>
