@@ -352,6 +352,9 @@ public class MonsterController : MoveableObject
                     {
                         // 타겟 설정
                         target = hit.transform.gameObject;
+
+                        // 몬스터 Cry 사운드 설정
+                        SoundManager.Instance.PlayAudio("MonsterCry", SoundPlayType.Multi);
                     }
                 }
             }

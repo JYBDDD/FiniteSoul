@@ -140,6 +140,9 @@ public class StatusUI : MonoBehaviour
                 UpText(tmp);
                 UpText(lvText);
                 TextUpdate();
+
+                // UI 사운드 출력
+                SoundManager.Instance.PlayAudio("UIClick",SoundPlayType.Multi);
             }
         }
     }
@@ -177,6 +180,8 @@ public class StatusUI : MonoBehaviour
                 UpText(lvText);
                 TextUpdate();
 
+                // UI 사운드 출력
+                SoundManager.Instance.PlayAudio("UIClick", SoundPlayType.Multi);
             }
             // 값이 같다면 색상 리턴
             if(data == originData)
@@ -202,6 +207,9 @@ public class StatusUI : MonoBehaviour
             statusSetting = false;
             originPlayerData = new UsePlayerData(playerData,InGameManager.Instance.Player.playerData.growthStat);
             ReturnText();
+
+            // 사운드 출력
+            SoundManager.Instance.PlayAudio("UIComplete",SoundPlayType.Single);
         }
     }
 

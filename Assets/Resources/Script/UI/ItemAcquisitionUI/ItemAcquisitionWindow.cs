@@ -60,6 +60,9 @@ public class ItemAcquisitionWindow : MonoBehaviour
     /// </summary>
     public void AcquisitionWindowPrint(UseItemData useItemData)
     {
+        // 아이템 획득 사운드 출력
+        SoundManager.Instance.PlayAudio("ItemAcheive", SoundPlayType.Single);
+
         ItemDataSetting(useItemData);
 
         // 즉시 활성화

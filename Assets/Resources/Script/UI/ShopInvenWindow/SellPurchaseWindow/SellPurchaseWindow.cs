@@ -166,6 +166,9 @@ public class SellPurchaseWindow : MonoBehaviour
 
             // 총가격, 구매/판매 갯수 설정
             CountAndPriceSet();
+
+            // UI 사운드 출력
+            SoundManager.Instance.PlayAudio("UIClick", SoundPlayType.Multi);
         }
         // 판매라면 실행 (+ 장비가 아니라면) (+ 최대 판매갯수가 넘어가지 않았다면)
         if(useItemData.itemType != Define.ItemMixEnum.ItemType.Equipment && !purchaseTrue &&
@@ -175,6 +178,9 @@ public class SellPurchaseWindow : MonoBehaviour
 
             // 총가격, 구매/판매 갯수 설정
             CountAndPriceSet();
+
+            // UI 사운드 출력
+            SoundManager.Instance.PlayAudio("UIClick", SoundPlayType.Multi);
         }
     }
     
@@ -190,6 +196,9 @@ public class SellPurchaseWindow : MonoBehaviour
 
             // 총가격, 구매/판매 갯수 설정
             CountAndPriceSet();
+
+            // UI 사운드 출력
+            SoundManager.Instance.PlayAudio("UIClick", SoundPlayType.Multi);
         }
     }
 
@@ -225,6 +234,9 @@ public class SellPurchaseWindow : MonoBehaviour
 
                 // 적용후 종료
                 CancelButtonClick();
+
+                // 사운드 출력
+                SoundManager.Instance.PlayAudio("UIComplete", SoundPlayType.Single);
             }
             // 아이템을 판매중이라면
             if(purchaseTrue == false)
@@ -237,6 +249,9 @@ public class SellPurchaseWindow : MonoBehaviour
 
                 // 적용후 종료
                 CancelButtonClick();
+
+                // 사운드 출력
+                SoundManager.Instance.PlayAudio("UIComplete", SoundPlayType.Single);
             }
         }
     }

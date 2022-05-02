@@ -12,7 +12,7 @@
     "atk": "40",
     "def": "3",
     "dropRune": "200",
-    "dropItemPer": "20",
+    "dropItemPer": "50",
     "resourcePath": "Prefabs/Monster/Mutant"
   },
   {
@@ -28,7 +28,7 @@
     "atk": "55",
     "def": "5",
     "dropRune": "350",
-    "dropItemPer": "15",
+    "dropItemPer": "45",
     "resourcePath": "Prefabs/Monster/Warrok"
   }
 ]

@@ -38,6 +38,21 @@ public class LoadingSceneAdjust : MonoBehaviour
         StageManager.StageDataInsert(nextSceneName);
     }
 
+    public static void LoadStartScene()
+    {
+        SceneManager.LoadScene("StartScene");
+        // BGM 전환
+        SoundManager.Instance.SceneConversionBGM();
+
+        // UIManager 캔버스 설정
+        UIManager.Num2CanvasState = Define.UIDraw.Inactive;
+        UIManager.Num2OriginState = Define.UIDraw.Activation;
+        UIManager.Instance.SwitchWindowOption(ref UIManager.Num2CanvasState, ref UIManager.Num2OriginState, UIManager.Number2CanvasGroup);
+
+        // 기타값 재설정
+        Time.timeScale = 1;
+    }
+
   
     /// <summary>
     /// 다음 씬으로 전환시켜주는 코루틴
@@ -45,6 +60,9 @@ public class LoadingSceneAdjust : MonoBehaviour
     /// <returns></returns>
     IEnumerator LoadScene()
     {
+        // BGM 전환
+        SoundManager.Instance.SceneConversionBGM();
+
         AsyncOperation op = SceneManager.LoadSceneAsync(nextSceneName);
         op.allowSceneActivation = false;
         float timer = 0.0f;
@@ -107,6 +125,8 @@ public class LoadingSceneAdjust : MonoBehaviour
                 // UIManager 드로잉 서서히 활성화
                 UIManager.UIDrawState = Define.UIDraw.SlowlyActivation;
                 UIManager.Num2CanvasState = Define.UIDraw.SlowlyActivation;
+                // BGM 전환
+                SoundManager.Instance.SceneConversionBGM();
             };
 
             yield break;

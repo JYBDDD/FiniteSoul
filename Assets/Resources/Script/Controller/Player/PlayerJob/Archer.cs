@@ -50,4 +50,14 @@ public class Archer : PlayerController
         var arrowAttackC = arrowObject.GetComponent<AttackController>();
         arrowAttackC.AttackControllerInit(mainData, playerData.atkType);
     }
+
+    #region 애니메이션에 들어가는 사운드 Event
+    /// <summary>
+    /// 플레이어(Archer) 공격시 재생되는 사운드
+    /// </summary>
+    private void SoundAttack()
+    {
+        SoundManager.Instance.PlayAudio("ArcherAttack", SoundPlayType.Multi);
+    }
+    #endregion
 }

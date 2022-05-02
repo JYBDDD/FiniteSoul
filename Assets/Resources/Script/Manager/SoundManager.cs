@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// 사운드 총괄 매니저 클래스
@@ -18,19 +19,21 @@ public class SoundManager : Singleton<SoundManager>
     /// </summary>
     Dictionary<string, AudioClip> audioClipDic = new Dictionary<string, AudioClip>();
 
-    private void Start()
+    protected override void Awake()
     {
+        base.Awake();
+
         // 사운드 매니저 자식으로 BGM 폴더, Effect 폴더 생성
         string[] soundName = System.Enum.GetNames(typeof(SoundType));
 
-        for(int i = 0; i < soundName.Length - 1; ++i)
+        for (int i = 0; i < soundName.Length; ++i)
         {
             GameObject obj = new GameObject { name = soundName[i] };
             audioSources[i] = obj.AddComponent<AudioSource>();
-            transform.SetParent(obj.transform, false);
+            obj.transform.SetParent(transform);
 
             // 이름이 BGM 폴더라면 해당 클립은 무한 반복
-            if(soundName[i] == "BGM")
+            if (soundName[i] == "BGM")
             {
                 audioSources[i].loop = true;
             }
@@ -46,7 +49,7 @@ public class SoundManager : Singleton<SoundManager>
     /// <param name="name">오디오파일 이름</param>
     /// <param name="soundType">오디오타입 - BGM / Effect</param>
     /// <param name="soundPlayType">오디오플레이 타입 - Single / Multi</param>
-    public void PlayAudio(string name,SoundType soundType,SoundPlayType soundPlayType)
+    public void PlayAudio(string name, SoundPlayType soundPlayType, SoundType soundType = SoundType.Effect)
     {
         // Effect 실행
         if(soundType == SoundType.Effect)
@@ -78,7 +81,19 @@ public class SoundManager : Singleton<SoundManager>
     }
 
     /// <summary>
-    /// 딕셔너리에서 오디오 여러개를 랜덤 출력하려고 할시 해당된 모든 클립을 찾는 메서드
+    /// 해당씬 이름에 따라 BGM 변경해주는 메서드
+    /// </summary>
+    public void SceneConversionBGM()
+    {
+        Scene scene = SceneManager.GetActiveScene();
+
+        // 해당 씬에 맞는 BGM 오디오 실행
+        AudioClip bgmAudio = AudioOnShotFind(scene.name);
+        PlayAudio(bgmAudio.name,SoundPlayType.Single, SoundType.BGM);
+    }
+
+    /// <summary>
+    /// 딕셔너리에서 오디오 여러개를 랜덤 출력하려고 할때 해당된 모든 클립을 찾는 메서드
     /// </summary>
     /// <param name="name"></param>
     /// <returns></returns>
@@ -100,7 +115,7 @@ public class SoundManager : Singleton<SoundManager>
     /// <summary>
     /// 딕셔너리에서 오디오 하나만 출력시킬 클립을 찾는 메서드
     /// </summary>
-    private AudioClip AudioOnShotFind(string name)
+    public AudioClip AudioOnShotFind(string name)
     {
         foreach(KeyValuePair<string,AudioClip> audio in audioClipDic)
         {

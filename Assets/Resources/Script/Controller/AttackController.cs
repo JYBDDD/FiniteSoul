@@ -65,6 +65,9 @@ public class AttackController : MonoBehaviour
                 // 몬스터 현재 체력 - (플레이어 공격력 - 몬스터 방어력)
                 monsterC.monsterData.currentHp -= damage;
 
+                // 몬스터 피격 사운드 실행
+                SoundManager.Instance.PlayAudio("MonsterHit", SoundPlayType.Multi);
+
                 // 몬스터 상태 Hurt로 변경
                 monsterC.FSM.ChangeState(Define.State.Hurt, monsterC.HurtState);
 
@@ -110,6 +113,9 @@ public class AttackController : MonoBehaviour
                 // 플레이어 현재 체력 - (몬스터 공격력 - 플레이어 방어력)
                 var damage = monsterAtk - playerC.playerData.def;
                 playerC.playerData.currentHp -= damage;
+
+                // 플레이어 피격 사운드 실행
+                SoundManager.Instance.PlayAudio("PlayerHit", SoundPlayType.Single);
 
                 // 플레이어 상태 Hurt로 변경
                 playerC.FSM.ChangeState(Define.State.Hurt, playerC.HurtState);

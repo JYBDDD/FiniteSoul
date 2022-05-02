@@ -115,6 +115,9 @@ public class ShopInvenWindowUI : MonoBehaviour,IPointerEnterHandler,IPointerClic
 
                 // 설명박스 값 설정
                 descriptionBox.DescriptionDataSetting(resultSlot.itemData);
+
+                // UI 사운드 출력
+                SoundManager.Instance.PlayAudio("UIClick", SoundPlayType.Multi);
             }
         }
 
@@ -131,6 +134,9 @@ public class ShopInvenWindowUI : MonoBehaviour,IPointerEnterHandler,IPointerClic
 
                 // 설명박스 값 설정
                 descriptionBox.DescriptionDataSetting(resultSlot.itemData);
+
+                // UI 사운드 출력
+                SoundManager.Instance.PlayAudio("UIClick", SoundPlayType.Multi);
             }
         }
     }

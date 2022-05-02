@@ -512,6 +512,9 @@ public class PlayerController : MoveableObject
         {
             if (name == "HpPotion")
             {
+                // 포션 사운드
+                SoundPotionDrink();
+
                 playerData.currentHp += 50;
                 var healObj = ObjectPoolManager.Instance.GetPool<ParticleChild>(Define.ParticleEffectPath.PotionHeal.hpPotionHeal, 
                     transform.position + Vector3.up, Define.CharacterType.Particle);
@@ -591,6 +594,32 @@ public class PlayerController : MoveableObject
     private void AnimHitCanMove()
     {
         NotToMove = true;
+    }
+    #endregion
+
+    #region 애니메이션에 들어가는 사운드 Event  (public)
+    /// <summary>
+    /// 플레이어가 걷거나 뛸때 재생되는 사운드
+    /// </summary>
+    private void SoundWalkAndRun()
+    {
+        SoundManager.Instance.PlayAudio("PlayerWalk",SoundPlayType.Multi);
+    }
+    /// <summary>
+    /// 플레이어 회피 이동시 재생되는 사운드
+    /// </summary>
+    private void SoundEvasion()
+    {
+        SoundManager.Instance.PlayAudio("Evasion", SoundPlayType.Single);
+    }
+    #endregion
+    #region 애니메이션에 삽입하지 않고 사용할 사운드 Event
+    /// <summary>
+    /// 플레이어 포션 사용시 재생되는 사운드
+    /// </summary>
+    private void SoundPotionDrink()
+    {
+        SoundManager.Instance.PlayAudio("PotionDrink", SoundPlayType.Single);
     }
     #endregion
 }

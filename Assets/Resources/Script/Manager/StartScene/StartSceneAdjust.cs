@@ -28,10 +28,15 @@ public class StartSceneAdjust : MonoBehaviour
     [SerializeField, Tooltip("종료하기 버튼")]
     Button exitButton;
 
+    [SerializeField,Tooltip("사운드 버튼")]
+    Button soundButton;
+
     [SerializeField, Tooltip("설명 윈도우")]
     Image descriptionWindow;
     [SerializeField, Tooltip("설명 윈도우 텍스트")]
     TextMeshProUGUI dWText;
+    [SerializeField, Tooltip("셋팅 윈도우")]
+    SettingWindowUI settingWindow;
     #endregion
 
     #region 시네머신 관련 변수
@@ -66,6 +71,9 @@ public class StartSceneAdjust : MonoBehaviour
 
     private void Start()
     {
+        // BGM 실행
+        SoundManager.Instance.SceneConversionBGM();
+
         // 메인 타이틀 셋팅
         StartCoroutine(MainTitleSetting(mainTitle));
 
@@ -76,11 +84,13 @@ public class StartSceneAdjust : MonoBehaviour
         StartCoroutine(ButtonSetting(newButton,0));
         StartCoroutine(ButtonSetting(continueButton,1));
         StartCoroutine(ButtonSetting(exitButton,2));
+        StartCoroutine(ButtonAlphaSet(soundButton));
 
         // 이벤트 바인딩
         newButton.onClick.AddListener(NewButtonSet);
         continueButton.onClick.AddListener(ContinueButtonSet);
         exitButton.onClick.AddListener(ExitButtonSet);
+        soundButton.onClick.AddListener(SoundButtonSet);
     }
 
     private void Update()
@@ -96,6 +106,9 @@ public class StartSceneAdjust : MonoBehaviour
     {
         // 캐릭터 선택창으로 이동
         CharacterChoiseMoving();
+
+        // UI 사운드 출력
+        SoundManager.Instance.PlayAudio("UIClick", SoundPlayType.Multi);
     }
 
     /// <summary>
@@ -120,6 +133,8 @@ public class StartSceneAdjust : MonoBehaviour
         dWText.text = "이어하기 데이터를 \n 불러옵니다..";
         StartCoroutine(ContinueGame());
 
+        // UI 사운드 출력
+        SoundManager.Instance.PlayAudio("UIClick", SoundPlayType.Multi);
 
         IEnumerator ContinueGame()
         {
@@ -165,6 +180,29 @@ public class StartSceneAdjust : MonoBehaviour
     {
         // 게임 종료
         Application.Quit();
+    }
+
+    /// <summary>
+    /// 사운드 설정 메서드
+    /// </summary>
+    public void SoundButtonSet()
+    {
+        // 셋팅 윈도우 출력
+        if(!settingWindow.gameObject.activeSelf)
+        {
+            settingWindow.gameObject.SetActive(true);
+        }
+        // 셋팅 윈도우 삭제
+        else
+        {
+            settingWindow.gameObject.SetActive(false);
+        }
+
+
+        // UI 사운드 출력
+        SoundManager.Instance.PlayAudio("UIClick", SoundPlayType.Multi);
+
+        
     }
 
     #region 시작시 화면 셋팅 메서드
@@ -267,6 +305,35 @@ public class StartSceneAdjust : MonoBehaviour
 
         text.fontSize = 200;
         yield return null;
+    }
+
+    /// <summary>
+    /// 시작시 버튼 알파값을 셋팅하는 코루틴
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator ButtonAlphaSet(Button button)
+    {
+        var btnText = button.transform.GetChild(0).GetComponent<Text>();
+        btnText.color = new Color(btnText.color.r, btnText.color.g, btnText.color.b, 0);
+        btnText.enabled = false;
+
+        float duraction = 3f;
+        float time = 0;
+
+        while(true)
+        {
+            if(time > duraction)
+            {
+                btnText.color = new Color(btnText.color.r, btnText.color.g, btnText.color.b, 255f / 255f);
+                btnText.enabled = true;
+                yield break;
+            }
+
+            time += Time.deltaTime;
+            btnText.color = Color.Lerp(btnText.color, new Color(btnText.color.r, btnText.color.g, btnText.color.b, 255f / 255f),time / duraction);
+
+            yield return null;
+        }
     }
     #endregion
 
