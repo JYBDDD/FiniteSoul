@@ -298,9 +298,9 @@
 		-> SoundManager 만들것
 			-> 셋팅 윈도우에서 시작씬으로 넘어간후 다시 시작하려고 할때 버그있는것으로 보임 확인하셈
 				-> DrawStageWindow 에서 시작씬으로 넘어간후 다시 로드할경우 객체를 삭제 안했는데 자꾸 삭제했다고 나옴
+				- MissingReferenceException: The object of type 'RectTransform' has been destroyed but you are still trying to access it.
 	
-			-> 시작씬에서 사운드 버튼 생기는게 (천천히 활성화 되야되는데, 갑자기 툭! 하고 생김)  TODO
-	
+
 			-> 사운드 조정 필요한것
 				-> 	플레이어 사망시 사운드 추가
 					몬스터 사망시 사운드 추가
