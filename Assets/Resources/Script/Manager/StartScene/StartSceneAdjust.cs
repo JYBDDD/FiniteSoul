@@ -315,7 +315,6 @@ public class StartSceneAdjust : MonoBehaviour
     {
         var btnText = button.transform.GetChild(0).GetComponent<Text>();
         btnText.color = new Color(btnText.color.r, btnText.color.g, btnText.color.b, 0);
-        btnText.enabled = false;
 
         float duraction = 3f;
         float time = 0;
@@ -325,7 +324,6 @@ public class StartSceneAdjust : MonoBehaviour
             if(time > duraction)
             {
                 btnText.color = new Color(btnText.color.r, btnText.color.g, btnText.color.b, 255f / 255f);
-                btnText.enabled = true;
                 yield break;
             }
 
