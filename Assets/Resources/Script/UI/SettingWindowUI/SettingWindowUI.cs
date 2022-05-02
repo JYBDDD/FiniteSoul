@@ -19,10 +19,6 @@ public class SettingWindowUI : MonoBehaviour
 
     private void Start()
     {
-        // 초기 설정값 지정
-        bgmScrollbar.value = SoundManager.Instance.transform.GetChild(0).GetComponent<AudioSource>().volume;
-        effectScrollbar.value = SoundManager.Instance.transform.GetChild(1).GetComponent<AudioSource>().volume;
-
         returnSceneButton.onClick.AddListener(StartSceneReturn);
 
         gameObject.SetActive(false);
@@ -30,6 +26,10 @@ public class SettingWindowUI : MonoBehaviour
 
     private void OnEnable()
     {
+        // 초기 설정값 지정
+        bgmScrollbar.value = SoundManager.Instance.transform.GetChild(0).GetComponent<AudioSource>().volume;
+        effectScrollbar.value = SoundManager.Instance.transform.GetChild(1).GetComponent<AudioSource>().volume;
+
         ButtonActive();
     }
 

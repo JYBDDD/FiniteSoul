@@ -40,14 +40,14 @@ public class LoadingSceneAdjust : MonoBehaviour
 
     public static void LoadStartScene()
     {
-        SceneManager.LoadScene("StartScene");
+        SceneManager.LoadScene("LoadingScene");
+        nextSceneName = "StartScene";
+
         // BGM 전환
         SoundManager.Instance.SceneConversionBGM();
 
         // UIManager 캔버스 설정
-        UIManager.Num2CanvasState = Define.UIDraw.Inactive;
-        UIManager.Num2OriginState = Define.UIDraw.Activation;
-        UIManager.Instance.SwitchWindowOption(ref UIManager.Num2CanvasState, ref UIManager.Num2OriginState, UIManager.Number2CanvasGroup);
+        UIManager.UIDrawState = Define.UIDraw.Inactive;
 
         // 기타값 재설정
         Time.timeScale = 1;
@@ -114,6 +114,10 @@ public class LoadingSceneAdjust : MonoBehaviour
             }
 
             op.allowSceneActivation = true;
+
+            // 이동씬이 시작씬일경우 정지
+            if (nextSceneName == "StartScene")
+                yield break;
 
             // 비동기 작업이 완료된 후 실행
             op.completed += (AsyncOperation p) => 
