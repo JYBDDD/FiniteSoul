@@ -182,7 +182,8 @@ public class ShopInvenWindowUI : MonoBehaviour,IPointerEnterHandler,IPointerClic
         // 최대 개수를 초과했을시 사용되는 임시 박스
         var changeItemData = new UseItemData();
 
-        InvenSlot blankSlot = new InvenSlot();
+        // 임시로 인벤토리[0]번을 넣어줌
+        InvenSlot blankSlot = Inventory[0];
         bool OneCheck = false;
 
         for (int i = 0; i < Inventory.Count; ++i)
@@ -228,11 +229,13 @@ public class ShopInvenWindowUI : MonoBehaviour,IPointerEnterHandler,IPointerClic
                 OneCheck = true;
                 blankSlot = Inventory[i];
             }
+
         }
 
         // 일치하는 값이 없다면 인벤토리 비어있는 가장 앞 슬롯으로 삽입
         blankSlot.ImageDataSetting(useItemData);
         blankSlot.TextCountAlpha();
+
     }
 
     /// <summary>

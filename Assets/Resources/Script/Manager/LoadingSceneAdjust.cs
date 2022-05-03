@@ -122,13 +122,13 @@ public class LoadingSceneAdjust : MonoBehaviour
             // 비동기 작업이 완료된 후 실행
             op.completed += (AsyncOperation p) => 
             {
+                // UIManager 드로잉 서서히 활성화
+                UIManager.UIDrawState = Define.UIDraw.SlowlyActivation;
+                UIManager.Num2CanvasState = Define.UIDraw.SlowlyActivation;
                 // 플레이어 스폰
                 StageManager.Instance.PlayerSpawn();
                 // 몬스터 스폰
                 StageManager.Instance.MonsterSpawn();
-                // UIManager 드로잉 서서히 활성화
-                UIManager.UIDrawState = Define.UIDraw.SlowlyActivation;
-                UIManager.Num2CanvasState = Define.UIDraw.SlowlyActivation;
                 // BGM 전환
                 SoundManager.Instance.SceneConversionBGM();
             };

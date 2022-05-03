@@ -98,7 +98,7 @@ public class PlayerController : MoveableObject
     protected void OnDisable()
     {
         // 오류 방지
-        if(playerData.currentHp <= 0)
+        if(playerData.currentHp <= 0 | !gameObject.activeSelf)
         {
             InputManager.Instance.KeyAction -= Move;
             InputManager.Instance.KeyAction -= Jump;

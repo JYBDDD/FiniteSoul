@@ -60,6 +60,8 @@ public class SettingWindowUI : MonoBehaviour
         Vector3 pos = new Vector3(playVolData.posX, playVolData.posY, playVolData.posZ);
         ResourceUtil.SaveData(new PlayerVolatilityData(InGameManager.Instance.Player.playerData, pos, StageManager.stageData));
 
+        gameObject.SetActive(false);
+
         LoadingSceneAdjust.LoadStartScene();
     }
 

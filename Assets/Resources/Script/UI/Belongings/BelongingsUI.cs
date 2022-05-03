@@ -35,7 +35,7 @@ public class BelongingsUI : MonoBehaviour
     /// <summary>
     /// 현재 소지품 창에 출력중인 인벤토리 슬롯와 연결된 소비품 데이터
     /// </summary>
-    private InvenSlot useConsumSlot = new InvenSlot();
+    private InvenSlot useConsumSlot;
 
     private void Awake()
     {
@@ -117,7 +117,7 @@ public class BelongingsUI : MonoBehaviour
         if (invenConsumData.Count > 0)
         {
             // 호출되는 카운트가 소비아이템의 리스트 갯수를 넘어섰다면 0으로 초기화후, 0번째 아이템으로 되돌린다 
-            if(invenConsumData.Count <= consumCount + 1)
+            if (invenConsumData.Count <= consumCount + 1)
             {
                 consumCount = 0;
 

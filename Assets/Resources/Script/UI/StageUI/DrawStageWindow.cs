@@ -21,8 +21,14 @@ public class DrawStageWindow : MonoBehaviour
     /// </summary>
     RectTransform stageRectTrans;
 
-    private void Awake()
+    private void Start()
     {
+        if (TempInstance != null)   // -> 시작씬으로 돌아갈경우 재호출이 되어 해당 인스턴스가 두번 생기는 오류 방지
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+
         TempInstance = this;
         stageRectTrans = gameObject.GetComponent<RectTransform>();
     }
