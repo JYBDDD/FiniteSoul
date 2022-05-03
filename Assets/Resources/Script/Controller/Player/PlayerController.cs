@@ -282,6 +282,9 @@ public class PlayerController : MoveableObject
 
     protected virtual void NormalAttackState()
     {
+        if (NotToMove == false)
+            return;
+
         //  Attack 애니메이션을 실행시키는 트리거 호출
         anim.SetTrigger("AttackTrigger");
 

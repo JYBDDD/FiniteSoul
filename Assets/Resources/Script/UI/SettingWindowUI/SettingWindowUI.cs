@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -46,6 +48,7 @@ public class SettingWindowUI : MonoBehaviour
         SoundManager.Instance.transform.GetChild(0).GetComponent<AudioSource>().volume = bgmScrollbar.value;
         SoundManager.Instance.transform.GetChild(1).GetComponent<AudioSource>().volume = effectScrollbar.value;
     }
+
 
     /// <summary>
     /// 시작씬으로 리턴하는 버튼

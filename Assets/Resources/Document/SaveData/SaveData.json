@@ -6,8 +6,8 @@
     "posY": -0.013043224811553955,
     "posZ": 38.46152877807617,
     "rune": 0.0,
-    "raiseHp": 0.0,
-    "currentHp": 0.0,
-    "raiseAtk": 0.0,
-    "raiseDef": 0.0
+    "raiseHp": 200.0,
+    "currentHp": 200.0,
+    "raiseAtk": 40.0,
+    "raiseDef": 1.0
 }
