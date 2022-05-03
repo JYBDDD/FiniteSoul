@@ -530,6 +530,9 @@ public class PlayerController : MoveableObject
             }
             else
             {
+                // 포션 사운드
+                SoundPotionDrink();
+
                 playerData.currentMana += 30;
                 var healObj = ObjectPoolManager.Instance.GetPool<ParticleChild>(Define.ParticleEffectPath.PotionHeal.manaPotionHeal,
                     transform.position + Vector3.up, Define.CharacterType.Particle);

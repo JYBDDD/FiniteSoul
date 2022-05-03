@@ -17,9 +17,9 @@ public class ResourceUtil : MonoBehaviour
     /// <returns></returns>
     public static bool LoadConfirmFile()
     {
-        string path = Resources.Load<TextAsset>("Document/SaveData/SaveData").ToString();
-
-        PlayerVolatilityData playerVolatilityData = JsonConvert.DeserializeObject<PlayerVolatilityData>(path);
+        string path = Path.Combine(Application.dataPath + "/Resources/Document/SaveData/SaveData.json");
+        string jsonData = File.ReadAllText(path);
+        PlayerVolatilityData playerVolatilityData = JsonConvert.DeserializeObject<PlayerVolatilityData>(jsonData);
 
         // 스테이지 인덱스가 1000 보다 클 경우
         if (playerVolatilityData.stageIndex > 1000)
@@ -35,8 +35,8 @@ public class ResourceUtil : MonoBehaviour
     /// </summary>
     public static UsePlayerData LoadSaveFile()
     {
-        var textAsset = Resources.Load<TextAsset>("Document/SaveData/SaveData");
-        string path = textAsset.ToString();
+        var textAsset = Path.Combine(Application.dataPath +"/Resources/Document/SaveData/SaveData.json");
+        string path = File.ReadAllText(textAsset);
 
         PlayerVolatilityData playerVolatilityData = JsonConvert.DeserializeObject<PlayerVolatilityData>(path);
 
@@ -54,8 +54,8 @@ public class ResourceUtil : MonoBehaviour
     /// </summary>
     public static void LoadInvenSaveFile()
     {
-        var textAsset = Resources.Load<TextAsset>("Document/SaveData/InvenSaveData");
-        string path = textAsset.ToString();
+        var textAsset = Path.Combine(Application.dataPath + "/Resources/Document/SaveData/InvenSaveData.json");
+        string path = File.ReadAllText(textAsset);
 
         List<InvenSaveData> invenList = JsonConvert.DeserializeObject<InvenSaveData[]>(path).ToList();
 
@@ -96,7 +96,7 @@ public class ResourceUtil : MonoBehaviour
         var fullData = GameManager.Instance.FullData;
 
         // 플레이어 데이터
-        fullData.playersData = ParsingJsonData<UsePlayerData>("Player").ToList();
+        fullData.playersData = ParsingJsonData<UsePlayerData>("Player").ToList(); 
 
         // 성장 데이터
         fullData.growthsData = ParsingJsonData<GrowthStatData>("GrowthStat").ToList();
@@ -113,15 +113,15 @@ public class ResourceUtil : MonoBehaviour
 
         T[] ParsingJsonData<T>(string name)
         {
-            string path = Path.Combine(Application.dataPath, $"Resources/Document/Json");
+            //string path = Path.Combine(Application.dataPath + "/Resources/Document/Json");
+            //string path = Path.Combine(Application.dataPath + Resources.Load<TextAsset>($"Document/Json/{name}").ToString());
+            //FileStream fileStream = new FileStream(path, FileMode.Open);
+            //byte[] data = new byte[fileStream.Length];
+            //fileStream.Read(data, 0, data.Length);
+            //fileStream.Close();
+            //string jsonData = Encoding.UTF8.GetString(data);
 
-            FileStream fileStream = new FileStream(string.Format("{0}/{1}.json", path, name), FileMode.Open);
-            byte[] data = new byte[fileStream.Length];
-            fileStream.Read(data, 0, data.Length);
-            fileStream.Close();
-            string jsonData = Encoding.UTF8.GetString(data);
-
-            return JsonConvert.DeserializeObject<T[]>(jsonData);
+            return JsonConvert.DeserializeObject<T[]>(Resources.Load<TextAsset>($"Document/Json/{name}").ToString());           /// -> 다른 부분들도 이렇게 바꿔라 TODO
         }
     }
 
@@ -177,7 +177,7 @@ public class ResourceUtil : MonoBehaviour
     public static void SaveData(PlayerVolatilityData playerVolatilityData)
     {
         // 저장 파일 위치
-        var path = "Assets/Resources/Document/SaveData/SaveData.json";
+        var path = Path.Combine(Application.dataPath + "/Resources/Document/SaveData/SaveData.json");
 
         File.WriteAllText(path, JsonUtility.ToJson(playerVolatilityData, true));
 
@@ -185,7 +185,7 @@ public class ResourceUtil : MonoBehaviour
         InvenSaveData();
 
         // 데이터 베이스 새로고침
-        AssetDatabase.Refresh();
+        //AssetDatabase.Refresh();
     }
 
     /// <summary>
@@ -194,7 +194,7 @@ public class ResourceUtil : MonoBehaviour
     public static void InvenSaveData()
     {
         // 인벤 데이터 저장 위치
-        var path = "Assets/Resources/Document/SaveData/InvenSaveData.json";
+        var path = Path.Combine(Application.dataPath + "/Resources/Document/SaveData/InvenSaveData.json");
 
         var inventory = ShopInvenWindowUI.Inventory;
         List<InvenSaveData> invenSaves = new List<InvenSaveData>();
@@ -208,7 +208,7 @@ public class ResourceUtil : MonoBehaviour
         File.WriteAllText(path, JsonConvert.SerializeObject(invenSaves));
 
         // 데이터 베이스 새로고침
-        AssetDatabase.Refresh();
+        //AssetDatabase.Refresh();
     }
 
     /// <summary>
@@ -217,22 +217,22 @@ public class ResourceUtil : MonoBehaviour
     public static void NewDataReturn(int characterIndex)
     {
         // 플레이어 기본 저장 파일 위치
-        var path1 = "Assets/Resources/Document/SaveData/SaveData.json";
+        var path1 = Path.Combine(Application.dataPath + "/Resources/Document/SaveData/SaveData.json");
         // 플레이어 인벤토리 저장 파일 위치
-        var path2 = "Assets/Resources/Document/SaveData/InvenSaveData.json";
+        var path2 = Path.Combine(Application.dataPath + "/Resources/Document/SaveData/InvenSaveData.json");
 
         File.WriteAllText(path1, JsonUtility.ToJson(new PlayerVolatilityData(characterIndex), true));
 
         File.WriteAllText(path2, JsonConvert.SerializeObject(InventoryRefreash()));
 
         // 데이터 베이스 새로고침
-        AssetDatabase.Refresh();
+        //AssetDatabase.Refresh();
         
         // 인벤토리 전체값 초기화
         List<InvenSaveData> InventoryRefreash()
         {
-            var textAsset = Resources.Load<TextAsset>("Document/SaveData/InvenSaveData");
-            string path = textAsset.ToString();
+            var textAsset = Path.Combine(Application.dataPath + "/Resources/Document/SaveData/InvenSaveData.json");
+            string path = File.ReadAllText(textAsset);
 
             List<InvenSaveData> invenList = JsonConvert.DeserializeObject<InvenSaveData[]>(path).ToList();
 

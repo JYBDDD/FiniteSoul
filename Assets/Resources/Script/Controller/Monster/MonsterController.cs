@@ -228,7 +228,6 @@ public class MonsterController : MoveableObject
                 // 플레이어가 공격범위 안으로 들어올경우 AttackState() 로 변경시킨다
                 if (distance <= monsterData.atkRange)
                 {
-                    Debug.Log("공격범위로 들어옴");
                     // 스피드 본래값으로 재설정
                     agent.speed = monsterData.moveSpeed;
 

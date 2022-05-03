@@ -64,7 +64,7 @@ public class DropTable
         {
             while(true)
             {
-                startCumulative += queItem.Peek().dropPer;              // 돌면서 지나가는거 다주는거 같은데???  TODO
+                startCumulative += queItem.Peek().dropPer;
 
                 // 드랍확률 범위에 들어왔다면 실행
                 if(dropRand <= startCumulative)
