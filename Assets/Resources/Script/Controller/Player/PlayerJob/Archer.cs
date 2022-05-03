@@ -35,6 +35,13 @@ public class Archer : PlayerController
         base.NormalAttackState();
     }
 
+    protected override void DieState()
+    {
+        base.DieState();
+        // 사망 Effect 출력
+        SoundManager.Instance.PlayAudio("FemaleDeath", SoundPlayType.Single);
+    }
+
     /// <summary>
     /// 발사체를 생성하는 메소드(Shoot 애니메이션에서 재생  -> Animation Event)
     /// </summary>
