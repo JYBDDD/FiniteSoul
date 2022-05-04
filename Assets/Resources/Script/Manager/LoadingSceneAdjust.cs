@@ -125,6 +125,11 @@ public class LoadingSceneAdjust : MonoBehaviour
                 // UIManager 드로잉 서서히 활성화
                 UIManager.UIDrawState = Define.UIDraw.SlowlyActivation;
                 UIManager.Num2CanvasState = Define.UIDraw.SlowlyActivation;
+                // 상호작용 UI 비활성화
+                InteractionUI.InteractionUIState = Define.UIDraw.Inactive;
+                // StartScene 캐릭터 선택 캔버스 비활성화 / StartSceneCanvas 활성화
+                StartSceneAdjust.ChoiseCanvasState = Define.UIDraw.Inactive;
+                StartSceneAdjust.StartCanvasState = Define.UIDraw.Activation;
                 // 플레이어 스폰
                 StageManager.Instance.PlayerSpawn();
                 // 몬스터 스폰

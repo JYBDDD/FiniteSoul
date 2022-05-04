@@ -53,7 +53,7 @@ public class Arrow : ProjectileBase
             }
 
             // 거리가 다르더라도 동일한 속력으로 출력
-            transform.position = Vector3.MoveTowards(transform.position, hitPoint, 0.3f);
+            transform.position = Vector3.MoveTowards(transform.position, hitPoint, 0.5f);
 
 
             yield return null;

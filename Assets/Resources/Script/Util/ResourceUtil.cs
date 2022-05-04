@@ -17,9 +17,10 @@ public class ResourceUtil : MonoBehaviour
     /// <returns></returns>
     public static bool LoadConfirmFile()
     {
-        string path = Path.Combine(Application.dataPath + "/Resources/Document/SaveData/SaveData.json");
-        string jsonData = File.ReadAllText(path);
-        PlayerVolatilityData playerVolatilityData = JsonConvert.DeserializeObject<PlayerVolatilityData>(jsonData);
+        var path = Path.Combine(Application.persistentDataPath + "/Document/Savedata.json");
+        var data = File.ReadAllText(path);
+
+        PlayerVolatilityData playerVolatilityData = JsonConvert.DeserializeObject<PlayerVolatilityData>(data);
 
         // 스테이지 인덱스가 1000 보다 클 경우
         if (playerVolatilityData.stageIndex > 1000)
@@ -35,10 +36,10 @@ public class ResourceUtil : MonoBehaviour
     /// </summary>
     public static UsePlayerData LoadSaveFile()
     {
-        var textAsset = Path.Combine(Application.dataPath +"/Resources/Document/SaveData/SaveData.json");
-        string path = File.ReadAllText(textAsset);
+        var path = Path.Combine(Application.persistentDataPath + "/Document/Savedata.json");
+        var data = File.ReadAllText(path);
 
-        PlayerVolatilityData playerVolatilityData = JsonConvert.DeserializeObject<PlayerVolatilityData>(path);
+        PlayerVolatilityData playerVolatilityData = JsonConvert.DeserializeObject<PlayerVolatilityData>(data);
 
         UsePlayerData playerData = GameManager.Instance.FullData.playersData.Where(_ => _.index == playerVolatilityData.index).SingleOrDefault();
         GrowthStatData growthStatData = GameManager.Instance.FullData.growthsData.Where(_ => _.index == playerData.growthRef).SingleOrDefault();
@@ -54,10 +55,10 @@ public class ResourceUtil : MonoBehaviour
     /// </summary>
     public static void LoadInvenSaveFile()
     {
-        var textAsset = Path.Combine(Application.dataPath + "/Resources/Document/SaveData/InvenSaveData.json");
-        string path = File.ReadAllText(textAsset);
+        var path = Path.Combine(Application.persistentDataPath + "/Document/InvenSaveData.json");
+        var data = File.ReadAllText(path);
 
-        List<InvenSaveData> invenList = JsonConvert.DeserializeObject<InvenSaveData[]>(path).ToList();
+        List<InvenSaveData> invenList = JsonConvert.DeserializeObject<InvenSaveData[]>(data).ToList();
 
         var fullItem = GameManager.Instance.FullData.itemsData;
 
@@ -113,15 +114,7 @@ public class ResourceUtil : MonoBehaviour
 
         T[] ParsingJsonData<T>(string name)
         {
-            //string path = Path.Combine(Application.dataPath + "/Resources/Document/Json");
-            //string path = Path.Combine(Application.dataPath + Resources.Load<TextAsset>($"Document/Json/{name}").ToString());
-            //FileStream fileStream = new FileStream(path, FileMode.Open);
-            //byte[] data = new byte[fileStream.Length];
-            //fileStream.Read(data, 0, data.Length);
-            //fileStream.Close();
-            //string jsonData = Encoding.UTF8.GetString(data);
-
-            return JsonConvert.DeserializeObject<T[]>(Resources.Load<TextAsset>($"Document/Json/{name}").ToString());           /// -> 다른 부분들도 이렇게 바꿔라 TODO
+            return JsonConvert.DeserializeObject<T[]>(Resources.Load<TextAsset>($"Document/Json/{name}").ToString());
         }
     }
 
@@ -177,7 +170,7 @@ public class ResourceUtil : MonoBehaviour
     public static void SaveData(PlayerVolatilityData playerVolatilityData)
     {
         // 저장 파일 위치
-        var path = Path.Combine(Application.dataPath + "/Resources/Document/SaveData/SaveData.json");
+        var path = Path.Combine(Application.persistentDataPath + "/Document/Savedata.json");
 
         File.WriteAllText(path, JsonUtility.ToJson(playerVolatilityData, true));
 
@@ -194,7 +187,7 @@ public class ResourceUtil : MonoBehaviour
     public static void InvenSaveData()
     {
         // 인벤 데이터 저장 위치
-        var path = Path.Combine(Application.dataPath + "/Resources/Document/SaveData/InvenSaveData.json");
+        var path = Path.Combine(Application.persistentDataPath + "/Document/InvenSaveData.json");
 
         var inventory = ShopInvenWindowUI.Inventory;
         List<InvenSaveData> invenSaves = new List<InvenSaveData>();
@@ -216,13 +209,16 @@ public class ResourceUtil : MonoBehaviour
     /// </summary>
     public static void NewDataReturn(int characterIndex)
     {
+        DirectoryCreateFolder("/Document");
+
         // 플레이어 기본 저장 파일 위치
-        var path1 = Path.Combine(Application.dataPath + "/Resources/Document/SaveData/SaveData.json");
+        var path1 = Path.Combine(Application.persistentDataPath + "/Document/Savedata.json");
         // 플레이어 인벤토리 저장 파일 위치
-        var path2 = Path.Combine(Application.dataPath + "/Resources/Document/SaveData/InvenSaveData.json");
+        var path2 = Path.Combine(Application.persistentDataPath + "/Document/InvenSaveData.json");
 
         File.WriteAllText(path1, JsonUtility.ToJson(new PlayerVolatilityData(characterIndex), true));
 
+        // 인벤토리 저장 배열 파일 새로 저장
         File.WriteAllText(path2, JsonConvert.SerializeObject(InventoryRefreash()));
 
         // 데이터 베이스 새로고침
@@ -231,10 +227,8 @@ public class ResourceUtil : MonoBehaviour
         // 인벤토리 전체값 초기화
         List<InvenSaveData> InventoryRefreash()
         {
-            var textAsset = Path.Combine(Application.dataPath + "/Resources/Document/SaveData/InvenSaveData.json");
-            string path = File.ReadAllText(textAsset);
-
-            List<InvenSaveData> invenList = JsonConvert.DeserializeObject<InvenSaveData[]>(path).ToList();
+            // 초기 인벤토리 저장 데이터값을 불러온다 -> 초기 값이 존재하지 않을시 오류가 발생할수 있음
+            List<InvenSaveData> invenList = JsonConvert.DeserializeObject<InvenSaveData[]>(Resources.Load<TextAsset>("Document/SaveData/InvenSaveData").ToString()).ToList();
 
             for (int i = 0; i < invenList.Count; ++i)
             {
@@ -243,6 +237,18 @@ public class ResourceUtil : MonoBehaviour
             }
 
             return invenList;
+        }
+    }
+
+    /// <summary>
+    /// 파일 저장위치에 해당 폴더를 생성하는 메서드
+    /// </summary>
+    private static void DirectoryCreateFolder(string path)
+    {
+        // 해당 위치에 파일이 존재하지 않는다면 생성
+        if(Directory.Exists(path) == false)
+        {
+            Directory.CreateDirectory(Application.persistentDataPath + $"{path}");
         }
     }
 }

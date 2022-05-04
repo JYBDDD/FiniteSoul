@@ -100,7 +100,7 @@ public class SellPurchaseWindow : MonoBehaviour
             currentCount = 0;
         }
 
-        allCount.text = $"0 / {maxCount}";
+        allCount.text = $"{currentCount} / {maxCount}";
         allPrice.text = $"{itemData.salePrice * currentCount}";
 
         // 장비아이템이라면 한개로만 적용

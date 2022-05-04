@@ -38,7 +38,7 @@ public class EquipSlot : MonoBehaviour
             itemImg.enabled = true;
             itemImg.sprite = Resources.Load<Sprite>(itemData.resourcePath);
         }
-        if (itemData.index < 1001)
+        if (itemData.index < 1001 && AbleToItemtype != "Consumption")
         {
             itemImg.enabled = false;
         }

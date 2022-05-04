@@ -17,6 +17,10 @@ public class SlotGenerator : MonoBehaviour
         // 슬롯 타입이 Inven일경우 실행 (인벤토리)
         if(SlotType == "Inven")
         {
+            // 인벤토리 값이 존재하는 경우 리턴
+            if (ShopInvenWindowUI.Inventory.Count > 0)
+                return;
+
             // 인벤토리 슬롯 42개를 만들어 리스트에 삽입
             for (int i = 0; i < 42; ++i)
             {
@@ -27,6 +31,7 @@ public class SlotGenerator : MonoBehaviour
                 // 인벤토리 슬롯 데이터 및 이미지 셋팅
                 InvenSlot invenSlot = invenObj.GetComponent<InvenSlot>();
                 invenSlot.ImageDataSetting();
+                invenSlot.TextCountAlpha();
                 // 인벤 슬롯 리스트 삽입
                 ShopInvenWindowUI.Inventory.Add(invenSlot);
 

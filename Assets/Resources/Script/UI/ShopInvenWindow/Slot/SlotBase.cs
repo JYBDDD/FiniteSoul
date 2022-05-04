@@ -22,14 +22,14 @@ public class SlotBase : MonoBehaviour
     public void ImageDataSetting(UseItemData useItemData = null)
     {
         // 정상적인 데이터가 들어왔을경우 데이터 삽입 및 이미지 삽입
-        if (useItemData != null)
+        if (useItemData?.currentHandCount > 0)
         {
             itemData = new UseItemData(useItemData);
 
             itemImg.sprite = Resources.Load<Sprite>(itemData.resourcePath);
         }
         // Null 값이 들어왔다면 사용불가능한 값으로 변경
-        if(useItemData == null)
+        if(useItemData == null | useItemData?.currentHandCount <= 0)
         {
             itemData.index = 1000;
         }
@@ -43,11 +43,11 @@ public class SlotBase : MonoBehaviour
     protected void ItemAlphaSet(Image setImage, UseItemData useItemData = null)
     {
         var itemColor = setImage.color;
-        if (useItemData?.index < 1000 | useItemData == null)
+        if (useItemData?.index < 1000 | useItemData == null | useItemData?.currentHandCount <= 0)
         {
             setImage.color = new Color(itemColor.r, itemColor.g, itemColor.b, 0f / 0f);
         }
-        if (useItemData?.index > 1000)
+        if (useItemData?.index > 1000 && useItemData?.currentHandCount > 0)
         {
             setImage.color = new Color(itemColor.r, itemColor.g, itemColor.b, 255f / 255f);
         }
