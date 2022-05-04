@@ -246,12 +246,8 @@ public class ShopInvenWindowUI : MonoBehaviour,IPointerEnterHandler,IPointerClic
     {
         subtractSlot.itemData.currentHandCount -= sellCount;
 
-        // 만약 갯수가 0이 되었을 경우 해당 이미지, 데이터값을 재조정
-        if(subtractSlot.itemData.currentHandCount <= 0)
-        {
-            subtractSlot.ImageDataSetting();
-            subtractSlot.TextCountAlpha();
-        }
+        subtractSlot.ImageDataSetting(subtractSlot.itemData);
+        subtractSlot.TextCountAlpha();
     }
 
     /// <summary>

@@ -67,6 +67,9 @@ public class OrderInteraction : MonoBehaviour
             // 룬과 상호작용하려 한다면 해당 룬 회수
             if(other.GetComponent<Interaction>().interactionTarget == Define.InteractionTarget.Rune && playerInteractionTrue)
             {
+                // 사운드 출력
+                SoundManager.Instance.PlayAudio("UIComplete", SoundPlayType.Single);
+
                 // 플레이어에게 룬을 넘김
                 Rune.DropRuneHandOver();
 
@@ -76,6 +79,9 @@ public class OrderInteraction : MonoBehaviour
                 // 룬 획득 이펙트 활성화
                 var runeEffect = ObjectPoolManager.Instance.GetPool<ParticleChild>(Define.ParticleEffectPath.PlayerParticle.runeEffect, 
                     other.gameObject.transform.position + Vector3.up, Define.CharacterType.Particle);
+
+                // 상호작용 UI 해제
+                InteractionUI.InteractionUIState = Define.UIDraw.Inactive;
             }
 
             // 상점과 상호작용하려 한다면 실행

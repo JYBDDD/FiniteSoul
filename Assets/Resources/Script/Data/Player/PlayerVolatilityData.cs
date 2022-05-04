@@ -84,10 +84,21 @@ public class PlayerVolatilityData
         this.posY = pos.y;
         this.posZ = pos.z;
         this.rune = playerData.currentRune;
-        this.raiseHp = playerData.maxHp;
-        this.currentHp = playerData.currentHp;
-        this.raiseAtk = playerData.atk;
-        this.raiseDef = playerData.def;
+
+        if(playerData.maxHp > 0)
+        {
+            this.raiseHp = playerData.maxHp;
+            this.currentHp = playerData.currentHp;
+            this.raiseAtk = playerData.atk;
+            this.raiseDef = playerData.def;
+        }
+        else
+        {
+            this.raiseHp = playerData.playerVolatility.raiseHp;
+            this.currentHp = playerData.playerVolatility.currentHp;
+            this.raiseAtk = playerData.playerVolatility.raiseAtk;
+            this.raiseDef = playerData.playerVolatility.raiseDef;
+        }
     }
 
     /// <summary>
