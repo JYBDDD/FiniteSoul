@@ -120,6 +120,7 @@ public class PlayerController : MoveableObject
 
     // Paladin, Archer 공통으로 작성
 
+    #region 상태 전환 메서드
     protected virtual void IdleState()
     {
         if(NotToMove)
@@ -399,6 +400,7 @@ public class PlayerController : MoveableObject
         // 플레이어 사망시 인벤토리 데이터 저장
         ResourceUtil.InvenSaveData();
     }
+#endregion
 
     #region 캐릭터 움직임 구현부, 소지품 변경
     private void Move()
@@ -558,9 +560,7 @@ public class PlayerController : MoveableObject
 
         mouseX += Input.GetAxis("Mouse X") * 10f;     // 좌,우
 
-        float mouseY = Input.GetAxis("Mouse Y");     // 상,하
-
-        if (!(mouseX == 0 && mouseY == 0))
+        if (mouseX != 0)
         {
             transform.eulerAngles = new Vector3(0, mouseX, 0);  // 좌, 우 회전
         }
