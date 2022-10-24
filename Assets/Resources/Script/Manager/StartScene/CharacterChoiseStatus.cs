@@ -63,23 +63,27 @@ public class CharacterChoiseStatus : MonoBehaviour
         VirtualCamSetReturn();
     }
 
-    private void Update()
+    /// <summary>
+    /// 캐릭터 초기 디폴트값 및 캐릭터 생성진입
+    /// </summary>
+    public void CharacterChoiseDefault()
     {
-        // 시작씬 캔버스에서 캐릭터 생성창으로 넘어올시 사용
-        if(StartSceneAdjust.choiseBool == true)
+        // 캐릭터 선택창 UI 서서히 활성화
+        StartSceneAdjust.ChoiseCanvasState = Define.UIDraw.SlowlyActivation;
+
+        // 캐릭터의 이름값을 넘겨줌
+        charcterStaticName = "Paladin";
+
+        var playerData = GameManager.Instance.FullData.playersData.Where(_ => _.name == charcterStaticName).SingleOrDefault();
+        var growthData = GameManager.Instance.FullData.growthsData.Where(_ => _.index == playerData.index).SingleOrDefault();
+
+        // 스탯값이 Null 이라면 재설정
+        if (playerData.growthStat == null)
         {
-            var playerData = GameManager.Instance.FullData.playersData.Where(_ => _.name == charcterStaticName).SingleOrDefault();
-            var growthData = GameManager.Instance.FullData.growthsData.Where(_ => _.index == playerData.index).SingleOrDefault();
-
-            // 스탯값이 Null 이라면 재설정
-            if (playerData.growthStat == null)
-            {
-                playerData = new UsePlayerData(playerData, growthData);
-            }
-
-            StatusFillAmountChange(playerData);
-            StartSceneAdjust.choiseBool = false;
+            playerData = new UsePlayerData(playerData, growthData);
         }
+
+        StatusFillAmountChange(playerData);
     }
 
     /// <summary>

@@ -62,12 +62,10 @@ public class StartSceneAdjust : MonoBehaviour
     [Tooltip("캐릭터 선택창의 기본 캔버스 상태")]
     private Define.UIDraw ChoiseOriginState = Define.UIDraw.Activation;
 
-    /// <summary>
-    /// 캐릭터 선택창으로 넘어갈시 스테이터스 값설정이 가능한지 넘겨줄 Bool 타입
-    /// </summary>
-    public static bool choiseBool = false;
     #endregion
 
+    [SerializeField]
+    CharacterChoiseStatus _choiseStatus;
 
     private void Start()
     {
@@ -353,14 +351,8 @@ public class StartSceneAdjust : MonoBehaviour
         {
             yield return new WaitForSeconds(2f);
 
-            // 캐릭터 선택창 UI 서서히 활성화
-            ChoiseCanvasState = Define.UIDraw.SlowlyActivation;
-
-            // 캐릭터의 이름값을 넘겨줌
-            CharacterChoiseStatus.charcterStaticName = "Paladin";
-
-            // 스테이터스 초기값을 변경할수 있음
-            choiseBool = true;
+            // 캐릭터 초기 생성 디폴특값 진입
+            _choiseStatus.CharacterChoiseDefault();
 
             yield break;
         }
