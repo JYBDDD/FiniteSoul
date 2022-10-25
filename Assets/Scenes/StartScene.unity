@@ -8120,7 +8120,7 @@ GameObject:
   - component: {fileID: 638266511}
   - component: {fileID: 638266510}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: StartSceneCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8151,6 +8151,7 @@ MonoBehaviour:
   timelineAsset: {fileID: 11400000, guid: b1e43614c2c98ad4395a18a15a93a1c8, type: 2}
   canvasGroup: {fileID: 501453986}
   choiseCanvasGroup: {fileID: 1538628351}
+  _choiseStatus: {fileID: 1901507066}
 --- !u!114 &638266511
 MonoBehaviour:
   m_ObjectHideFlags: 0
