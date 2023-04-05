@@ -59,7 +59,7 @@ public class ShopInvenWindowUI : MonoBehaviour,IPointerEnterHandler,IPointerClic
         descriptionBox.DescriptionDataNull();
 
         // 구매 판매창 첫설정 비활성화로 조정
-        sellPurchaseWindow.gameObject.SetActive(false);
+        //sellPurchaseWindow.gameObject.SetActive(false);
     }
 
     private void Update()

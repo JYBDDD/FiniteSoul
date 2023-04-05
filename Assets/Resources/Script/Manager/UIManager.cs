@@ -64,15 +64,19 @@ public class UIManager : Singleton<UIManager>
         {
             switch (uiDraw)
             {
+                // 즉시 활성화
                 case Define.UIDraw.Activation:
                     UIWindowActive(cGroup);
                     break;
+                // 천천히 활성화
                 case Define.UIDraw.SlowlyActivation:
                     UIWindowSlowlyActive(cGroup);
                     break;
+                // 즉시 비활성
                 case Define.UIDraw.Inactive:
                     UIWindowInActive(cGroup);
                     break;
+                // 천천히 비활성
                 case Define.UIDraw.SlowlyInactive:
                     UIWindowSlowlyInActive(cGroup);
                     break;
