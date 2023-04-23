@@ -73,8 +73,8 @@ public class StageManager : Singleton<StageManager>
         // 플레이어 초기화
         playerC.Initialize(playerC.playerData);
         playerC.AttackColliderSet();
-        // 플레이어 스텟 설정
-        playerC.SetStat(volData);
+        // 플레이어 스텟, 이동 체인 설정
+        playerC.Set(volData);
         // 플레이어 레이어,태그 설정
         playerC.gameObject.layer = LayerMask.NameToLayer("Player");
         playerC.tag = "Player";

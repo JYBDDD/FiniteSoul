@@ -34,44 +34,14 @@ public class PlayerController : MoveableObject
     /// </summary>
     bool potionUseBool = true;
 
-    /// <summary>
-    /// 초기 스텟 변경시 변경된 스탯을 재설정 해주는 메소드
-    /// </summary>
-    public void SetStat(PlayerVolatilityData volData)
+    public void Set(PlayerVolatilityData volData)
     {
-        // 룬으로 레벨업시 교체되는 데이터
-        playerData.maxHp = playerData.growthStat.maxHp;
-        playerData.atk = playerData.growthStat.atk;
-        playerData.def = playerData.growthStat.def;
-        playerData.maxRune = playerData.growthStat.maxRune * playerData.level * playerData.growthStat.growthRune;
-
-        // 첫설정일 경우 최대 Hp로 설정
-        if(playerData.playerVolatility.currentHp == 0)
-        {
-            playerData.currentHp = playerData.maxHp;
-        }
-
-        // 변동없는 데이터
-        playerData.currentMana = playerData.maxMana;
-        playerData.currentStamina = playerData.maxStamina;
-
-        // 이어하기를 설정하였다면 값 재설정
-        if(volData.currentHp > 0)
-        {
-            playerData.level = volData.level;
-            playerData.currentRune = volData.rune;
-            playerData.currentHp = volData.currentHp;
-            playerData.maxHp = volData.raiseHp;
-            playerData.atk = volData.raiseAtk;
-            playerData.def = volData.raiseDef;
-        }
+        playerData.StatSetting(volData);
 
         NotToMove = true;
         FSM.ChangeState(FSM.State, IdleState, true);
 
-        InputManager.Instance.KeyAction += Move;
-        InputManager.Instance.KeyAction += Jump;
-        InputManager.Instance.KeyAction += ConsumAction;
+        InputManager.Instance.DelgateKeyAdd(() => { Move(); Jump(); ConsumAction(); });
 
         InsertComponent();
     }
@@ -98,11 +68,9 @@ public class PlayerController : MoveableObject
     protected void OnDisable()
     {
         // 오류 방지
-        if(playerData.currentHp <= 0 | !gameObject.activeSelf)
+        if(playerData.currentHp <= 0 || !gameObject.activeSelf)
         {
-            InputManager.Instance.KeyAction -= Move;
-            InputManager.Instance.KeyAction -= Jump;
-            InputManager.Instance.KeyAction -= ConsumAction;
+            InputManager.Instance.DelgateKeyRemove(() => { Move(); Jump(); ConsumAction(); });
         }
     }
 
@@ -125,7 +93,7 @@ public class PlayerController : MoveableObject
     {
         if(NotToMove)
         {
-            if (Input.GetKey(KeyCode.W) | Input.GetKey(KeyCode.S) | Input.GetKey(KeyCode.A) | Input.GetKey(KeyCode.D))         // Walk
+            if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))         // Walk
             {
                 FSM.ChangeState(Define.State.Walk, WalkState, true);
                 return;
@@ -137,7 +105,7 @@ public class PlayerController : MoveableObject
                 FSM.ChangeState(Define.State.Evasion, EvasionState, true);
                 return;
             }
-            if (Input.GetKey(KeyCode.W) | Input.GetKey(KeyCode.A) | Input.GetKey(KeyCode.S) | Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.LeftShift))      // Running
+            if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.LeftShift))      // Running
             {
                 FSM.ChangeState(Define.State.Running, RunningState, true);
                 return;
@@ -192,7 +160,7 @@ public class PlayerController : MoveableObject
                 FSM.ChangeState(Define.State.Idle, IdleState, true);
                 return;
             }
-            if (Input.GetKey(KeyCode.W) | Input.GetKey(KeyCode.A) | Input.GetKey(KeyCode.S) | Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.LeftShift))      // Running
+            if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.LeftShift))      // Running
             {
                 FSM.ChangeState(Define.State.Running, RunningState, true);
                 return;
@@ -296,12 +264,12 @@ public class PlayerController : MoveableObject
             // Attack1 이 재생중인 상태에서 마우스 클릭시 Attack2 재생, Attack2 가 재생중인 상태에서 재생시 Attack3 재생
             while (true)
             {
-                if (Input.GetKey(KeyCode.W) | Input.GetKey(KeyCode.A) | Input.GetKey(KeyCode.S) | Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.LeftShift))         // 뛰기
+                if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.LeftShift))         // 뛰기
                 {
                     FSM.ChangeState(Define.State.Running, RunningState, true);
                     yield break;
                 }
-                if (Input.GetKey(KeyCode.W) | Input.GetKey(KeyCode.S))         // 이동
+                if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S))         // 이동
                 {
                     FSM.ChangeState(Define.State.Walk, WalkState, true);
                     yield break;

@@ -28,4 +28,14 @@ public class InputManager : Singleton<InputManager>
         }
     }
 
+
+    public void DelgateKeyAdd(Action action)
+    {
+        KeyAction += action;
+    }
+
+    public void DelgateKeyRemove(Action action)
+    {
+        KeyAction -= action;
+    }
 }

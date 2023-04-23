@@ -89,4 +89,37 @@ public class UsePlayerData : PlayerData
         growthStat = growthStatData;
     }
 
+    /// <summary>
+    /// 초기 스텟 변경시 변경된 스탯을 재설정 해주는 메소드
+    /// </summary>
+    public void StatSetting(PlayerVolatilityData volData)
+    {
+        // 룬으로 레벨업시 교체되는 데이터
+        maxHp = growthStat.maxHp;
+        atk = growthStat.atk;
+        def = growthStat.def;
+        maxRune = growthStat.maxRune * level * growthStat.growthRune;
+
+        // 첫설정일 경우 최대 Hp로 설정
+        if (playerVolatility.currentHp == 0)
+        {
+            currentHp = maxHp;
+        }
+
+        // 변동없는 데이터
+        currentMana = maxMana;
+        currentStamina = maxStamina;
+
+        // 이어하기를 설정하였다면 값 재설정
+        if (volData.currentHp > 0)
+        {
+            level = volData.level;
+            currentRune = volData.rune;
+            currentHp = volData.currentHp;
+            maxHp = volData.raiseHp;
+            atk = volData.raiseAtk;
+            def = volData.raiseDef;
+        }
+    }
+
 }

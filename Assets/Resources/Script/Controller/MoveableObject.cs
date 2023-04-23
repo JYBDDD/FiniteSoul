@@ -52,8 +52,5 @@ public class MoveableObject : MonoBehaviour,RecyclePooling
     /// <summary>
     /// 공격자의 Collider 셋팅
     /// </summary>
-    public virtual void AttackColliderSet()
-    {
-
-    }
+    public virtual void AttackColliderSet() {}
 }
